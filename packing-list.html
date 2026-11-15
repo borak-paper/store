@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Packing List</title>
+<style>
+:root{--ink:#1c2430;--line:#2f343b;--bar:#dcdfe3;--brand:#1f4d3a;--brand2:#2b6a50;--bg:#e9ecef}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:"Segoe UI",Arial,sans-serif;color:var(--ink)}
+.toolbar{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:10px 14px;background:var(--brand);color:#fff}
+.toolbar h1{font-size:16px;margin:0 auto 0 0;font-weight:700}
+.btn{border:1px solid rgba(255,255,255,.45);background:transparent;color:#fff;padding:7px 14px;border-radius:6px;font:600 13px "Segoe UI",Arial,sans-serif;cursor:pointer}
+.btn:hover{background:var(--brand2)}
+.btn.main{background:#fff;color:var(--brand);border-color:#fff}
+.stp{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.stp button{width:28px;height:28px;border-radius:6px;border:1px solid rgba(255,255,255,.55);background:transparent;color:#fff;font-size:17px;line-height:1;cursor:pointer}
+.stp button:hover{background:var(--brand2)}
+.stp output{min-width:22px;text-align:center;font-size:15px}
+.btn:focus-visible,.stp button:focus-visible{outline:2px solid #ffb703;outline-offset:1px}
+.stage{overflow:auto;padding:0 10px 30px}
+.sheet{width:210mm;height:297mm;margin:16px auto;padding:10mm;background:#fff;color:#111;font:13px/1.3 Arial,sans-serif;display:flex;flex-direction:column;box-shadow:0 2px 14px rgba(0,0,0,.18)}
+.sheet input{font:inherit;color:#111;border:none;background:transparent;min-width:0;width:100%;padding:0 3px;border-radius:0}
+.sheet input:hover{background:#f3f7f5}
+.sheet input:focus{background:#eef6f2;outline:none}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:14px}
+.top .l,.top .r{display:flex;align-items:center;gap:6px}
+.sheet .dbox input{width:11mm;height:8.5mm;border:1.3px solid var(--line);text-align:center;font-size:14px;padding:0}
+.sheet .dbox input.y{width:19mm}
+.dbox i{font-style:normal;font-weight:400;font-size:16px}
+.sheet .r input{width:38mm;border-bottom:1.3px dotted #333;font-weight:400;font-size:14px}
+.lb{display:flex;align-items:center;font-weight:700}
+.sheet .r #pre{width:3ch;border-bottom:none;font-weight:700;font-size:14px;text-align:right;padding:0}
+.sheet .r #lbl{width:6ch;border-bottom:none;font-weight:700;font-size:14px;text-align:left;padding:0}
+.title{background:var(--bar);font-weight:800;font-size:19px;letter-spacing:.5px;padding:5px 12px;margin:4mm 0 4mm;width:62%;border-left:5px solid #222}
+.info{display:grid;grid-template-columns:1fr 1fr;margin:0 1px 1px 0}
+.cell{display:flex;align-items:center;gap:6px;border:1.2px solid var(--line);padding:0 6px;height:9mm;margin:0 -1px -1px 0}
+.cell b{white-space:nowrap;font-size:12.5px}
+.cell.w{grid-column:1/-1}
+.cell.ghost{border:none}
+#grid{flex:1;min-height:0;margin-top:4mm;display:grid;grid-template-columns:repeat(var(--c),minmax(0,.55fr) minmax(0,1fr) minmax(0,1.2fr));grid-template-rows:11mm repeat(var(--r),minmax(0,1fr)) 10mm;border-top:1.2px solid var(--line);border-left:1.2px solid var(--line)}
+#grid>*{border-right:1.2px solid var(--line);border-bottom:1.2px solid var(--line);min-width:0;min-height:0}
+#grid .hd{background:var(--bar);display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:12.5px;line-height:1.1}
+#grid .sl{display:flex;align-items:center;justify-content:center;font-size:12px;color:#333}
+#grid input{height:100%;text-align:center;font-size:14px}
+#grid .ft{display:flex;align-items:center;font-weight:700;padding:0 8px}
+#grid .ft.n{justify-content:flex-end}
+#grid .ft.v{justify-content:center;font-size:15px}
+.sign{display:flex;justify-content:space-between;padding-top:15mm}
+.sg{width:50mm;border-top:1.2px solid var(--line);text-align:center;padding-top:3px;font-weight:700;font-size:13px}
+@page{size:A4;margin:10mm}
+@media print{
+html,body{background:#fff}
+.no-print{display:none!important}
+.stage{overflow:visible;padding:0}
+.sheet{margin:0;padding:0;box-shadow:none;width:190mm;height:276mm}
+.sheet input:hover,.sheet input:focus{background:transparent}
+.sheet input::placeholder{color:transparent}
+.title,#grid .hd{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="toolbar no-print">
+  <h1>Packing List</h1>
+  <div class="stp">Columns <button id="cm" aria-label="Fewer columns">&minus;</button><output id="cv">3</output><button id="cp" aria-label="More columns">+</button></div>
+  <div class="stp">Rows <button id="rm" aria-label="Fewer rows">&minus;</button><output id="rv">15</output><button id="rp" aria-label="More rows">+</button></div>
+  <button class="btn" id="bClear">Clear all</button>
+  <button class="btn main" id="bPrint">Print A4</button>
+</div>
+
+<div class="stage">
+<div class="sheet">
+  <div class="top">
+    <div class="l">Date :
+      <span class="dbox"><input id="d1" maxlength="2" inputmode="numeric" placeholder="DD" aria-label="Day"><i>/</i><input id="d2" maxlength="2" inputmode="numeric" placeholder="MM" aria-label="Month"><i>/</i><input id="d3" class="y" maxlength="4" inputmode="numeric" placeholder="YYYY" aria-label="Year"></span>
+    </div>
+    <div class="r"><span class="lb"><input id="lbl" value="ID NO" title="Click to edit the label" aria-label="Label">:</span><span class="lb"><input id="pre" value="11" aria-label="Fixed number" title="Click to edit">/</span><input id="sl" aria-label="Number"></div>
+  </div>
+  <div class="title">PACKING LIST</div>
+  <div class="info">
+    <div class="cell"><b>Vehicle No. :</b><input data-f></div>
+    <div class="cell"><b>Driver Name :</b><input data-f></div>
+    <div class="cell"><b>Name of Party :</b><input data-f></div>
+    <div class="cell"><b>Mobile No :</b><input data-f inputmode="tel"></div>
+    <div class="cell"><b>Mobile No. :</b><input data-f inputmode="tel"></div>
+    <div class="cell ghost"></div>
+    <div class="cell w"><b>Address :</b><input data-f></div>
+  </div>
+  <div id="grid"></div>
+  <div class="sign"><div class="sg">Received By</div><div class="sg">Delivery In-Charge</div><div class="sg">Authorized By</div></div>
+</div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const LIM={c:[1,5],r:[5,25]};
+let C=3,R=15,vals={};
+
+function collect(){
+ document.querySelectorAll('#grid input').forEach(e=>{
+  const n=e.dataset.n;(vals[n]=vals[n]||{s:'',w:''})[e.dataset.k]=e.value;
+ });
+}
+function calc(){
+ let t=0,n=0;
+ document.querySelectorAll('#grid input[data-k=w]').forEach(e=>{const v=parseFloat(e.value);if(!isNaN(v)){t+=v;n++}});
+ const c=$('#cnt'),o=$('#tot');
+ if(c)c.textContent=n;
+ if(o)o.textContent=n?(Math.round(t*1000)/1000).toLocaleString('en-US',{maximumFractionDigits:3}):'';
+}
+function render(){
+ collect();
+ const g=$('#grid');
+ g.style.setProperty('--c',C);g.style.setProperty('--r',R);
+ let h='';
+ for(let c=0;c<C;c++)h+='<div class="hd">Sl.</div><div class="hd">Size</div><div class="hd">Weight<br>(KG)</div>';
+ for(let r=0;r<R;r++)for(let c=0;c<C;c++){
+  const n=c*R+r+1,v=vals[n]||{s:'',w:''};
+  h+=`<div class="sl">${n}</div><div><input data-n="${n}" data-k="s" value="${esc(v.s)}" autocomplete="off"></div><div><input data-n="${n}" data-k="w" value="${esc(v.w)}" inputmode="decimal" autocomplete="off"></div>`;
+ }
+ h+=`<div class="ft n" style="grid-column:span ${3*C-1}">Total</div><div class="ft v" id="tot"></div>`;
+ g.innerHTML=h;
+ $('#cv').textContent=C;$('#rv').textContent=R;
+ calc();
+}
+const step=(k,d)=>{
+ if(k==='c')C=Math.min(LIM.c[1],Math.max(LIM.c[0],C+d));else R=Math.min(LIM.r[1],Math.max(LIM.r[0],R+d));
+ render();
+};
+$('#cm').onclick=()=>step('c',-1);$('#cp').onclick=()=>step('c',1);
+$('#rm').onclick=()=>step('r',-1);$('#rp').onclick=()=>step('r',1);
+$('#bPrint').onclick=()=>window.print();
+const lbl=$('#lbl'),pre=$('#pre'),fit=(e,m)=>{e.style.width=Math.max(m,e.value.length*1.1+.4)+'ch'},
+ fitLbl=()=>{fit(lbl,3);fit(pre,2)};
+lbl.addEventListener('input',fitLbl);pre.addEventListener('input',fitLbl);fitLbl();
+$('#bClear').onclick=()=>{
+ if(!confirm('Clear everything on this sheet?'))return;
+ vals={};document.querySelectorAll('.sheet input').forEach(e=>e.value='');
+ lbl.value='ID NO';pre.value='11';fitLbl();render();
+};
+
+$('#grid').addEventListener('input',e=>{if(e.target.dataset.k==='w')calc()});
+$('#grid').addEventListener('keydown',e=>{
+ const t=e.target;if(!t.dataset.n)return;
+ const n=+t.dataset.n,k=t.dataset.k,max=R*C,go=(m,kk)=>{const x=document.querySelector(`#grid input[data-n="${m}"][data-k="${kk}"]`);if(x){e.preventDefault();x.focus()}};
+ if(e.key==='Enter'){k==='s'?go(n,'w'):go(n+1,'s')}
+ if(e.key==='ArrowDown'&&n<max)go(n+1,k);
+ if(e.key==='ArrowUp'&&n>1)go(n-1,k);
+});
+
+// date boxes: digits only, auto-advance
+const dIds=['d1','d2','d3'];
+dIds.forEach((id,i)=>{
+ const el=$('#'+id);
+ el.addEventListener('input',()=>{
+  el.value=el.value.replace(/\D/g,'');
+  if(el.value.length===el.maxLength&&dIds[i+1])$('#'+dIds[i+1]).focus();
+ });
+ el.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!el.value&&i>0)$('#'+dIds[i-1]).focus()});
+});
+
+render();
+</script>
+</body>
+</html>

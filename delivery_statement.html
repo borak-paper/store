@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Delivery Statement</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #eef2f7;
+            --accent: #0284c7;
+            --navy: #0f2a43;
+            --line: #d7e0eb;
+            --zebra: #f7fafd;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: #1e293b;
+            margin: 0;
+            padding: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        /* ===== Header banner ===== */
+        .app-header {
+            text-align: center;
+            background: linear-gradient(135deg, #0b1f33 0%, #0c4a6e 55%, #0369a1 100%);
+            border-radius: 14px;
+            padding: 22px 18px;
+            margin-bottom: 14px;
+            border-bottom: 4px solid #38bdf8;
+            box-shadow: 0 10px 22px -10px rgba(3, 105, 161, .6);
+        }
+        .app-header h1 { margin: 0 0 6px 0; color: #fff; font-size: 24px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; }
+        .app-header p { margin: 0; color: #bae6fd; font-size: 13px; letter-spacing: .3px; font-weight: 400; }
+
+        /* ===== Data Safety Center (backup / internet / cloud status) ===== */
+        .status-card { padding: 16px 18px 18px !important; margin-bottom: 14px !important; }
+        .status-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+        .status-title { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #0f2a43; }
+        .status-title .shield { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 15px; background: linear-gradient(135deg, #0b1f33, #0369a1); color: #fff; box-shadow: 0 4px 10px -3px rgba(3, 105, 161, .55); }
+        .status-note { font-size: 12px; color: #64748b; }
+        .status-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+
+        .st-tile { --acc: #64748b; --acc-bg: #f1f5f9; --acc-tx: #334155;
+            position: relative; display: flex; gap: 12px; align-items: flex-start; overflow: hidden;
+            padding: 14px 14px 14px 18px; border: 1px solid var(--line); border-radius: 14px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            box-shadow: 0 1px 2px rgba(15, 23, 42, .05), 0 10px 20px -14px rgba(15, 23, 42, .35);
+            transition: box-shadow .2s, transform .2s, border-color .2s; }
+        .st-tile::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--acc); }
+        .st-tile[data-state="on"], .st-tile[data-state="online"], .st-tile[data-state="synced"] { --acc: #16a34a; --acc-bg: #dcfce7; --acc-tx: #166534; }
+        .st-tile[data-state="paused"], .st-tile[data-state="error"], .st-tile[data-state="pending"] { --acc: #d97706; --acc-bg: #fef3c7; --acc-tx: #92400e; }
+        .st-tile[data-state="off"], .st-tile[data-state="offline"], .st-tile[data-state="unsupported"] { --acc: #dc2626; --acc-bg: #fee2e2; --acc-tx: #991b1b; }
+        .st-tile[data-state="paused"], .st-tile[data-state="error"] { cursor: pointer; }
+        .st-tile[data-state="paused"]:hover, .st-tile[data-state="error"]:hover { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(15, 23, 42, .06), 0 14px 24px -14px rgba(15, 23, 42, .45); border-color: var(--acc); }
+        .st-icon { flex: 0 0 auto; width: 40px; height: 40px; border-radius: 12px; background: var(--acc-bg); display: flex; align-items: center; justify-content: center; font-size: 19px; }
+        .st-body { flex: 1; min-width: 0; }
+        .st-label { font-size: 11px; font-weight: 700; letter-spacing: .9px; text-transform: uppercase; color: #64748b; margin-bottom: 3px; }
+        .st-value { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; color: var(--acc-tx); line-height: 1.2; }
+        .st-dot { flex: 0 0 auto; width: 10px; height: 10px; border-radius: 50%; background: var(--acc); }
+        .st-tile[data-state="on"] .st-dot, .st-tile[data-state="online"] .st-dot, .st-tile[data-state="synced"] .st-dot { animation: stPulse 2s infinite; }
+        .st-tile[data-state="pending"] .st-dot, .st-tile[data-state="error"] .st-dot { animation: stBlink 1s infinite; }
+        .st-line { font-size: 12.5px; color: #475569; margin-top: 5px; line-height: 1.4; word-break: break-word; }
+        .st-line b { color: #0f2a43; font-weight: 600; }
+        .st-hint { display: none; margin-top: 7px; font-size: 12px; font-weight: 600; color: var(--acc-tx); background: var(--acc-bg); padding: 5px 9px; border-radius: 8px; }
+        .st-tile[data-state="paused"] .st-hint, .st-tile[data-state="error"] .st-hint, .st-tile[data-state="off"] .st-hint, .st-tile[data-state="unsupported"] .st-hint { display: inline-block; }
+        .st-hint:empty { display: none !important; }
+        .st-tile.flash { animation: stFlash 1.3s ease; }
+        @keyframes stPulse { 0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, .55); } 70% { box-shadow: 0 0 0 8px rgba(22, 163, 74, 0); } 100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); } }
+        @keyframes stBlink { 50% { opacity: .35; } }
+        @keyframes stFlash { 0% { background: #bbf7d0; } 100% { background: #ffffff; } }
+
+        /* Auto-backup tile: link-file actions + drag & drop zone */
+        .st-actions { margin-top: 11px; display: flex; flex-direction: column; gap: 8px; cursor: default; }
+        .st-btnrow { display: flex; gap: 8px; flex-wrap: wrap; }
+        .st-act { flex: 1 1 auto; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 7px 10px;
+            border: 1px solid #cbd5e1; border-radius: 9px; background: #fff; color: #0f172a;
+            font-size: 12.5px; font-weight: 600; line-height: 1.2; font-family: inherit; white-space: nowrap; cursor: pointer;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, .05); transition: background .15s, border-color .15s, color .15s; }
+        .st-act:hover:not(:disabled) { background: #f0f9ff; border-color: #0ea5e9; color: #0369a1; }
+        .st-act:focus-visible { outline: 2px solid #0ea5e9; outline-offset: 2px; }
+        .st-act:disabled { opacity: .5; cursor: not-allowed; }
+        .st-drop { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 9px 10px;
+            border: 1.5px dashed #94a3b8; border-radius: 10px; background: rgba(241, 245, 249, .65);
+            color: #64748b; font-size: 12px; font-weight: 600; text-align: center; user-select: none;
+            transition: border-color .15s, background .15s, color .15s; }
+        .st-drop .dz-over { display: none; }
+        .st-tile.dragover { border-color: #0ea5e9; box-shadow: 0 0 0 3px rgba(14, 165, 233, .18); }
+        .st-tile.dragover .st-drop { border-color: #0ea5e9; border-style: solid; background: #e0f2fe; color: #0369a1; }
+        .st-tile.dragover .st-drop .dz-idle { display: none; }
+        .st-tile.dragover .st-drop .dz-over { display: inline; }
+        .st-drop.disabled { opacity: .5; }
+
+        @media (max-width: 820px) { .status-grid { grid-template-columns: 1fr; } }
+        @media print { .status-card { display: none !important; } }
+
+        /* ===== Admin login popup ===== */
+        /* login popup: soft gradient page + floating white card */
+        #authModal {
+            background:
+                radial-gradient(55% 38% at 14% 24%, rgba(190, 172, 255, .80) 0%, rgba(190, 172, 255, 0) 72%),
+                radial-gradient(42% 32% at 96% 20%, rgba(252, 205, 222, .95) 0%, rgba(252, 205, 222, 0) 72%),
+                radial-gradient(60% 26% at 56% 100%, rgba(158, 196, 255, .90) 0%, rgba(158, 196, 255, 0) 75%),
+                #f3effd;
+            overflow-y: auto; padding: 20px 16px; align-items: center; justify-content: center;
+            font-family: 'DM Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #authModal .auth-card {
+            position: relative; width: 100%; max-width: 440px; margin: auto;
+            background: linear-gradient(180deg, #ffffff 0%, #fdfaff 100%);
+            border-radius: 30px; padding: 26px 26px 24px;
+            box-shadow: 0 1px 2px rgba(60, 40, 120, .05), 0 30px 60px -28px rgba(76, 52, 160, .35);
+            animation: authIn .35s cubic-bezier(.2, .8, .2, 1);
+        }
+        @keyframes authIn { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: none; } }
+        @media (prefers-reduced-motion: reduce) { #authModal .auth-card { animation: none; } }
+
+        #authModal .auth-x {
+            position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; min-height: 0 !important; padding: 0;
+            border-radius: 50%; border: none; background: #f4f4f5; color: #52525b; font-size: 14px; line-height: 1; cursor: pointer;
+        }
+        #authModal .auth-x:hover { background: #e4e4e7; color: #18181b; }
+
+        #authModal .auth-brand { display: flex; align-items: center; gap: 14px; padding-right: 30px; }
+        #authModal .auth-logo { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%; background: #17151f; display: flex; align-items: center; justify-content: center; }
+        #authModal .auth-logo svg { width: 46px; height: 46px; display: block; }
+        #authModal .auth-brand-name { font-size: 17px; font-weight: 700; color: #18181b; line-height: 1.2; }
+        #authModal .auth-brand-sub { font-size: 14px; color: #52525b; margin-top: 3px; }
+
+        #authModal .auth-tabs {
+            position: relative; display: grid; grid-template-columns: 1fr 1fr; margin-top: 22px; padding: 5px;
+            background: #f4f4f5; border-radius: 999px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .02);
+        }
+        #authModal .auth-pill {
+            position: absolute; top: 5px; bottom: 5px; left: 5px; width: calc(50% - 5px); border-radius: 999px; background: #fff;
+            box-shadow: 0 6px 16px -6px rgba(76, 52, 160, .35), 0 1px 2px rgba(0, 0, 0, .06);
+            transition: transform .28s cubic-bezier(.3, .8, .3, 1), opacity .2s;
+        }
+        #authModal .auth-tabs[data-active="create"] .auth-pill { transform: translateX(100%); }
+        #authModal .auth-tabs[data-active="none"] .auth-pill { opacity: 0; }
+        #authModal .auth-tab {
+            position: relative; z-index: 1; background: transparent; border: none; border-radius: 999px; min-height: 0 !important;
+            padding: 12px 8px; font: inherit; font-size: 15.5px; font-weight: 600; color: #52525b; cursor: pointer; transition: color .2s;
+        }
+        #authModal .auth-tab.active { color: #18181b; }
+        #authModal .auth-tab:hover:not(.active) { color: #18181b; background: transparent; }
+
+        #authModal #authTitle { margin: 26px 0 18px; padding: 0; border: none; font-size: 30px; font-weight: 700; letter-spacing: -.4px; color: #18181b; line-height: 1.15; }
+        #authModal #authTitle::before { display: none; }
+
+        #authModal .auth-field { margin-bottom: 16px; }
+        #authModal .auth-labelrow { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+        #authModal label { display: block; margin: 0; font-size: 15.5px; font-weight: 600; color: #18181b; text-transform: none; letter-spacing: 0; }
+        #authModal input {
+            width: 100%; box-sizing: border-box; height: 52px; padding: 0 16px; font: inherit; font-size: 16px; color: #18181b;
+            background: #fff; border: 1.5px solid #d4d4d8; border-radius: 16px; outline: none;
+            transition: border-color .15s, box-shadow .15s;
+        }
+        #authModal input::placeholder { color: #a1a1aa; }
+        #authModal input:hover { border-color: #a1a1aa; }
+        #authModal input:focus { border-color: #6d3df0; box-shadow: 0 0 0 4px rgba(109, 61, 240, .14); }
+        #authModal .auth-pwwrap { position: relative; }
+        #authModal .auth-pwwrap input { padding-right: 52px; }
+        #authModal .auth-eye {
+            position: absolute; top: 50%; right: 8px; transform: translateY(-50%); width: 38px; height: 38px; min-height: 0 !important;
+            padding: 0; border: none; border-radius: 12px; background: transparent; color: #3f3f46; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        #authModal .auth-eye:hover { background: #f4f4f5; }
+        #authModal .auth-eye svg { width: 22px; height: 22px; }
+        #authModal .auth-eye .eye-off { display: none; }
+        #authModal .auth-eye.shown .eye-on { display: none; }
+        #authModal .auth-eye.shown .eye-off { display: block; }
+
+        #authModal .auth-linkbtn, #authModal .auth-link {
+            background: none; border: none; padding: 0; min-height: 0 !important; font: inherit; font-size: 15px !important; font-weight: 700;
+            color: #5b2bd1; text-decoration: none; cursor: pointer; box-shadow: none;
+        }
+        #authModal .auth-linkbtn:hover, #authModal .auth-link:hover { background: none; color: #3f1a9b; text-decoration: underline; }
+
+        #authModal #authSubmit {
+            display: block; width: 100%; height: 56px; margin-top: 8px; padding: 0; border: none; border-radius: 18px;
+            background: #18181b; color: #fff; font: inherit; font-size: 17px; font-weight: 600; letter-spacing: .1px; cursor: pointer;
+            box-shadow: 0 14px 24px -14px rgba(24, 24, 27, .7); transition: transform .12s, background .15s, opacity .15s;
+        }
+        #authModal #authSubmit:hover { background: #000; }
+        #authModal #authSubmit:active { transform: scale(.985); }
+        #authModal #authSubmit:disabled { opacity: .6; cursor: wait; }
+
+        #authModal .auth-links { display: flex; justify-content: center; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 20px; }
+        #authMsg { display: none; margin: 2px 0 12px; padding: 11px 14px; border-radius: 14px; font-size: 14px; line-height: 1.45; }
+        #authInfo { font-size: 12px; color: #475569; }
+        @media print { #authModal { display: none !important; } }
+
+        /* ===== Page navigation ===== */
+        .tabs {
+            display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; padding: 6px;
+            background: #fff; border: 1px solid var(--line); border-radius: 12px;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+        }
+        .tab-btn {
+            flex: 1 1 170px; background: transparent; border: none; color: #475569;
+            padding: 12px 14px; font-size: 14px; font-weight: 600; border-radius: 8px;
+            cursor: pointer; font-family: inherit; letter-spacing: .2px;
+        }
+        .tab-btn:not(.active):hover { background: #f1f5f9; color: #0f172a; }
+        .tab-btn.active {
+            background: linear-gradient(180deg, #0ea5e9, #0369a1); color: #fff;
+            box-shadow: 0 3px 8px rgba(3, 105, 161, .35);
+        }
+
+        /* ===== Pages (cards) ===== */
+        .tab-content { display: none; }
+        .tab-content.active {
+            display: block; background: #fff; padding: 20px; margin-bottom: 20px;
+            border: 1px solid var(--line); border-radius: 12px;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, .04), 0 8px 18px -10px rgba(15, 23, 42, .14);
+        }
+
+        h2, h3 { color: var(--navy); margin-top: 0; }
+        .tab-content > h3 {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 17px; font-weight: 700;
+            border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 18px;
+        }
+        .tab-content > h3::before {
+            content: ""; flex: 0 0 auto; width: 5px; height: 20px; border-radius: 3px;
+            background: linear-gradient(180deg, #38bdf8, #0369a1);
+        }
+        h3.sub-title, .tab-content > h3.sub-title {
+            display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px;
+            color: #0369a1; border-bottom: none; padding-bottom: 0; margin: 0 0 12px 0;
+        }
+        .tab-content > h3.sub-title::before { display: none; }
+        #issueForm .sub-title { border-top: 2px dashed var(--line); padding-top: 16px; margin-top: 4px; }
+
+        /* ===== Form ===== */
+        .header-section { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px; }
+        .form-group { display: flex; flex-direction: column; margin-bottom: 14px; }
+        .date-parts { display: grid; grid-template-columns: 1fr 1.3fr 1.2fr; gap: 8px; }
+        .date-parts input, .date-parts select { text-align: center; }
+        .date-parts .dp-cap { display: block; font-size: 10px; color: #64748b; text-align: center; margin-top: 3px; letter-spacing: .3px; text-transform: uppercase; }
+
+        label {
+            font-weight: 600; font-size: 12px; color: #475569;
+            text-transform: uppercase; letter-spacing: .35px; margin-bottom: 5px;
+        }
+
+        input, select {
+            width: 100%; padding: 9px 12px; font-size: 14px; font-family: inherit;
+            color: #0f172a; background: #fff;
+            border: 1px solid #c5d0de; border-radius: 8px;
+            transition: border-color .15s, box-shadow .15s;
+        }
+        input::placeholder { color: #94a3b8; }
+        input:hover, select:hover { border-color: #94a3b8; }
+        input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(2, 132, 199, .18); }
+
+        .item-head, .item-row {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, .8fr) 44px;
+            gap: 10px;
+        }
+        .item-head {
+            padding: 0 13px 6px 16px; font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: .5px; color: #64748b;
+        }
+        .item-row {
+            align-items: start;
+            background: #f8fbfe; padding: 12px; margin-bottom: 10px;
+            border: 1px solid var(--line); border-left: 4px solid #0284c7; border-radius: 10px;
+        }
+        .item-row .btn-danger { height: 38px; width: 44px; padding: 0; }
+
+        /* ===== Buttons ===== */
+        .btn {
+            background: linear-gradient(180deg, #0ea5e9, #0284c7); color: #fff;
+            border: 1px solid transparent; padding: 10px 16px; font-size: 14px; font-weight: 600;
+            font-family: inherit; letter-spacing: .2px; border-radius: 8px; cursor: pointer;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, .35); transition: background .15s;
+        }
+        .btn:hover { background: linear-gradient(180deg, #0284c7, #0369a1); }
+        .btn-secondary { background: #fff; color: #334155; border: 1px solid #cbd5e1; box-shadow: none; }
+        .btn-secondary:hover { background: #f1f5f9; border-color: #94a3b8; }
+        .btn-danger { background: #ef4444; color: #fff; padding: 10px 12px; box-shadow: none; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-warning { background: #f59e0b; color: #fff; padding: 6px 10px; font-size: 13px; box-shadow: none; }
+        .btn-warning:hover { background: #d97706; }
+
+        .actions { display: flex; gap: 10px; margin-top: 20px; }
+        #saveBtn { flex: 2; }
+        .actions .btn-secondary { flex: 1; }
+
+        /* ===== Search & print panel (History) ===== */
+        .filter-panel {
+            display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; padding: 14px;
+            background: #f8fafc; border: 1px solid var(--line); border-radius: 10px;
+        }
+        .search-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; }
+        .search-field { position: relative; flex: 1 1 190px; min-width: 0; margin: 0; }
+        .date-row {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 10px;
+            border-top: 1px solid var(--line); padding-top: 12px;
+        }
+        .action-group { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; }
+        .action-group .form-group { margin: 0; }
+        .action-group input[type="date"] { width: auto; padding: 7px 10px; font-size: 13px; }
+        .search-row > .btn, .date-row .btn { padding: 9px 14px; font-size: 13.5px; }
+
+        .vlookup-suggestions {
+            display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 50;
+            max-height: 170px; overflow-y: auto; background: #fff; border: 1px solid #c5d0de;
+            border-radius: 0 0 8px 8px; box-shadow: 0 12px 26px -8px rgba(15, 23, 42, .28);
+        }
+        .vlookup-suggestion-item { padding: 9px 12px; font-size: 13px; cursor: pointer; border-bottom: 1px solid #f1f5f9; }
+        .vlookup-suggestion-item:last-child { border-bottom: none; }
+        .vlookup-suggestion-item:hover { background: #f0f9ff; color: #0369a1; }
+
+        .records-summary { text-align: right; font-size: 12px; color: #64748b; margin: 0 2px 8px; }
+        .records-summary b { color: var(--navy); }
+
+        /* ===== Professional data grid ===== */
+        table { width: 100%; border-collapse: collapse; }
+        .table-wrap { border: 1px solid #c5d0de; border-radius: 10px; background: #fff; overflow: auto; max-height: 68vh; }
+        .grid-table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        .grid-table thead th {
+            position: sticky; top: 0; z-index: 2;
+            background: var(--navy); color: #fff; text-align: left;
+            font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .4px;
+            padding: 10px 10px; white-space: nowrap;
+            border-bottom: 2px solid #0c4a6e; border-right: 1px solid rgba(255, 255, 255, .12);
+        }
+        .grid-table thead th:last-child { border-right: none; }
+        .grid-table td {
+            padding: 9px 10px; font-size: 13px; vertical-align: middle; text-align: left;
+            border-bottom: 1px solid #e2e8f0; border-right: 1px solid #edf1f6;
+            font-variant-numeric: tabular-nums;
+        }
+        .grid-table td:last-child { border-right: none; }
+        .grid-table tbody tr:nth-child(even) td { background: var(--zebra); }
+        .grid-table tbody tr:hover td { background: #e8f3fb; }
+        .grid-table th.num, .grid-table td.num { text-align: right; white-space: nowrap; }
+        .grid-table td:first-child { white-space: nowrap; }
+        .grid-table td:last-child { white-space: nowrap; width: 1%; }
+        .grid-table td .btn { padding: 5px 11px; font-size: 12px; margin: 0 3px 0 0; }
+        .grid-table tr.empty-row td {
+            text-align: center; color: #94a3b8; font-style: italic; padding: 30px 12px; background: #fff !important;
+        }
+
+        @media (max-width: 768px) {
+            .header-section { grid-template-columns: 1fr; }
+            .item-head { display: none; }
+            .item-row { grid-template-columns: 1fr; }
+            .item-row .btn-danger { width: 100%; }
+            .dept-head { grid-template-columns: 1fr; }
+            .dept-head .btn-danger { width: 100%; }
+            #historyTable { min-width: 680px; }
+            .actions { flex-wrap: wrap; }
+        }
+        @media (max-width: 480px) {
+            .tab-btn { flex-basis: 100%; }
+            .tab-content.active { padding: 14px; }
+            .records-summary { text-align: left; }
+        }
+
+        /* ===== Records report (print all / filtered) ===== */
+        .modal {
+            display: none; position: fixed; inset: 0; z-index: 9000; overflow-y: auto;
+            align-items: flex-start; justify-content: center; padding: 20px 12px; background: rgba(15, 23, 42, .6);
+        }
+        .modal-content {
+            width: 100%; max-width: 980px; margin: auto; padding: 22px; background: #fff;
+            border-radius: 12px; box-shadow: 0 24px 60px rgba(0, 0, 0, .4);
+        }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+        .report-doc { font-family: Arial, sans-serif; color: #000; }
+        .report-header { text-align: center; border-bottom: 3px double #000; padding-bottom: 10px; margin-bottom: 12px; }
+        .report-header h2 { margin: 0 0 4px 0; font-size: 20px; letter-spacing: 1px; color: #000; }
+        .report-header p { margin: 2px 0; font-size: 12px; }
+        .report-meta {
+            display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 18px; margin-bottom: 10px;
+            padding: 8px 12px; font-size: 12px; background: #f8fafc; border: 1px solid #94a3b8; border-radius: 4px;
+        }
+        .report-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .report-table { width: 100%; min-width: 640px; border-collapse: collapse; }
+        .report-table th, .report-table td { border: 1px solid #64748b; padding: 5px 6px; font-size: 11px; vertical-align: top; text-align: left; }
+        .report-table th { background: #e2e8f0; text-transform: uppercase; font-size: 10px; text-align: center; }
+        .report-table td.c { text-align: center; }
+        .report-table td.num { text-align: right; white-space: nowrap; }
+
+        @page { size: A4 portrait; margin: 5mm; }
+        @media print {
+            /* only while the report is open: print the report, hide the rest of the app */
+            body.report-open { margin: 0 !important; padding: 0 !important; background: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            body.report-open > *:not(#reportModal) { display: none !important; }
+            body.report-open #reportModal {
+                display: block !important; position: static !important; width: 100% !important; height: auto !important;
+                padding: 0 !important; background: #fff !important; overflow: visible !important;
+            }
+            body.report-open #reportModal .modal-content {
+                max-width: none !important; width: 100% !important; margin: 0 !important; padding: 0 !important;
+                box-shadow: none; border-radius: 0; overflow: visible !important;
+            }
+            .no-print { display: none !important; }
+            .report-scroll { overflow: visible !important; }
+            .report-table { min-width: 0; }
+            .report-table thead { display: table-header-group; }
+            .report-table tr, .report-header, .report-meta { break-inside: avoid; page-break-inside: avoid; }
+        }
+
+        @media (max-width: 768px) {
+            .search-field { flex: 1 1 100%; }
+            .search-row > .btn { flex: 1 1 calc(50% - 5px); }
+            .date-row { flex-direction: column; align-items: stretch; }
+            .date-row .action-group { width: 100%; }
+            .date-row .action-group .form-group { flex: 1 1 calc(50% - 8px); }
+            .date-row .action-group input[type="date"] { width: 100%; }
+            .date-row .action-group > .btn { flex: 1 1 calc(50% - 8px); }
+            .modal { padding: 6px; }
+            .modal-content { padding: 14px; }
+            .modal-actions { flex-direction: column-reverse; }
+            .modal-actions .btn { width: 100%; }
+        }
+        @media (max-width: 480px) {
+            .search-row > .btn, .date-row .action-group > .btn { flex: 1 1 100%; }
+        }
+
+        /* =====================================================================
+           PREMIUM THEME - matches the SCP control panel (navy + brass)
+           ===================================================================== */
+        :root {
+            --ink: #08182a; --navy: #0e2a47; --navy-2: #123d63;
+            --brass: #c8a35a; --brass-soft: #ecdcb4; --brass-dark: #8a6a28;
+            --background: #eef2f6; --accent: #1b6fb5; --text: #13263a; --muted: #5d7084;
+            --line: #dbe3ec; --line-strong: #c4d0dd; --zebra: #f6f9fc;
+        }
+        html { -webkit-text-size-adjust: 100%; }
+        body { font-family: Manrope, 'Segoe UI', 'Noto Sans Bengali', Tahoma, Arial, sans-serif; color: var(--text); padding: 20px 18px 32px; }
+        .container { max-width: 1180px; }
+        button { -webkit-tap-highlight-color: transparent; }
+        button:focus-visible, a:focus-visible { outline: 3px solid rgba(56, 152, 214, .55); outline-offset: 2px; }
+        .ic { width: 1.15em; height: 1.15em; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+        /* ----- Header (same look as the SCP navigation bar) ----- */
+        .app-header {
+            position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 18px;
+            text-align: left; padding: 20px 26px; margin-bottom: 16px; border-radius: 18px;
+            background:
+                radial-gradient(60% 150% at 100% 0%, rgba(200, 163, 90, .24) 0%, rgba(200, 163, 90, 0) 62%),
+                linear-gradient(135deg, #08182a 0%, #0e2a47 55%, #123d63 100%);
+            border: 1px solid rgba(200, 163, 90, .35); border-bottom: 3px solid var(--brass);
+            box-shadow: 0 18px 36px -22px rgba(8, 24, 42, .85);
+        }
+        .ah-brand { display: flex; align-items: center; gap: 16px; min-width: 0; }
+        .ah-logo {
+            flex: 0 0 auto; width: 66px; height: 66px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: var(--brass-soft); border: 2px solid var(--brass); background: linear-gradient(145deg, #12385c, #0a1f36);
+            box-shadow: 0 0 0 4px rgba(200, 163, 90, .13), 0 10px 20px -10px rgba(0, 0, 0, .7);
+        }
+        .ah-logo svg { width: 50%; height: 50%; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+        .ah-text { min-width: 0; }
+        .app-header h1 {
+            margin: 0 0 5px; font-size: 22px; font-weight: 800; letter-spacing: .8px; text-transform: uppercase; line-height: 1.3;
+            background: linear-gradient(to right, #fff 0%, #ecdcb4 12%, #fff 24%, #c8a35a 100%); background-size: 200% auto;
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+            animation: ahShine 6s linear infinite;
+        }
+        .app-header p { margin: 0; color: rgba(255, 255, 255, .86); font-size: 12.5px; font-weight: 500; letter-spacing: 1px; }
+        .ah-badge {
+            flex: 0 0 auto; display: inline-flex; align-items: center; gap: 9px; padding: 9px 18px; border-radius: 50px;
+            color: var(--brass-soft); background: rgba(255, 255, 255, .06); border: 1px solid rgba(200, 163, 90, .55);
+            font-size: 12px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; white-space: nowrap;
+        }
+        .ah-badge i { width: 8px; height: 8px; border-radius: 50%; background: var(--brass); animation: ahPulse 2s infinite; }
+        @keyframes ahShine { to { background-position: 200% center; } }
+        @keyframes ahPulse { 0% { box-shadow: 0 0 0 0 rgba(200, 163, 90, .7); } 70% { box-shadow: 0 0 0 8px rgba(200, 163, 90, 0); } 100% { box-shadow: 0 0 0 0 rgba(200, 163, 90, 0); } }
+        @media (max-width: 720px) {
+            .app-header { flex-direction: column; text-align: center; padding: 18px 16px; }
+            .ah-brand { flex-direction: column; gap: 12px; }
+            .app-header h1 { font-size: 19px; }
+            .ah-badge { white-space: normal; }
+        }
+        @media (prefers-reduced-motion: reduce) { .app-header h1, .ah-badge i { animation: none; } }
+
+        /* ----- Cards ----- */
+        .status-card, .tab-content.active {
+            background: #fff; border: 1px solid var(--line); border-radius: 18px;
+            box-shadow: 0 1px 2px rgba(8, 24, 42, .04), 0 18px 40px -26px rgba(8, 24, 42, .45);
+        }
+        .tab-content.active { animation: tabIn .35s ease; }
+        @keyframes tabIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+        h2, h3 { color: var(--navy); }
+
+        /* ----- Data Safety Center ----- */
+        .status-title { color: var(--navy); letter-spacing: 1.2px; }
+        .status-title .shield {
+            width: 34px; height: 34px; border-radius: 50%; font-size: 16px; color: var(--brass-soft);
+            background: linear-gradient(145deg, #12385c, #0a1f36); border: 1.5px solid var(--brass);
+            box-shadow: 0 6px 14px -6px rgba(8, 24, 42, .6);
+        }
+        .status-note { color: var(--muted); }
+        .st-tile { border-radius: 16px; background: linear-gradient(180deg, #fff 0%, #f7fafd 100%); }
+        .st-icon { color: var(--acc-tx); border-radius: 14px; }
+        .st-icon .ic { width: 21px; height: 21px; }
+        .st-label { color: var(--muted); }
+        .st-line b { color: var(--navy); }
+        .st-act { border-radius: 50px; border-color: var(--line-strong); font-weight: 700; padding: 7px 12px; transition: all .3s ease; }
+        .st-act .ic { width: 14px; height: 14px; }
+        .st-act:hover:not(:disabled) { background: #eef4fa; border-color: var(--navy-2); color: var(--navy); transform: translateY(-2px); box-shadow: 0 5px 12px rgba(8, 24, 42, .15); }
+        .st-drop { border-radius: 12px; border-color: #aab9ca; color: var(--muted); }
+        .st-drop .ic { width: 14px; height: 14px; }
+        .st-drop .dz-idle, .st-drop .dz-over { align-items: center; gap: 6px; }
+        .st-drop .dz-idle { display: inline-flex; }
+        .st-tile.dragover .st-drop .dz-idle { display: none; }
+        .st-tile.dragover .st-drop .dz-over { display: inline-flex; }
+        .st-tile.dragover { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(27, 111, 181, .18); }
+        .st-tile.dragover .st-drop { border-color: var(--accent); background: #e3f0fa; color: var(--navy-2); }
+
+        /* ----- Page tabs (pill navigation) ----- */
+        .tabs.dim .tab-btn.active { background: #eef3f8; color: #4a5f75; box-shadow: none; }
+        .tabs { padding: 5px; gap: 6px; border-radius: 50px; border-color: var(--line); box-shadow: 0 1px 2px rgba(8, 24, 42, .05), 0 12px 28px -22px rgba(8, 24, 42, .5); }
+        .tab-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 9px; border-radius: 50px; padding: 11px 18px;
+            color: #4a5f75; font-weight: 700; transition: all .3s ease;
+        }
+        .tab-btn .ic { width: 17px; height: 17px; }
+        .tab-btn:not(.active):hover { background: #eef3f8; color: var(--navy); transform: translateY(-2px); }
+        .tab-btn.active {
+            color: #fff; background: linear-gradient(180deg, #17497a, #0d2f52);
+            box-shadow: 0 8px 18px -8px rgba(10, 39, 68, .75), inset 0 -3px 0 var(--brass);
+        }
+        @media (max-width: 480px) { .tabs { border-radius: 20px; } }
+
+        /* ----- Headings ----- */
+        .tab-content > h3 { color: var(--navy); font-size: 18px; letter-spacing: .2px; }
+        .tab-content > h3 .ic { width: 21px; height: 21px; color: var(--navy-2); }
+        .tab-content > h3::before { background: linear-gradient(180deg, var(--brass), #a8843f); }
+        h3.sub-title, .tab-content > h3.sub-title { color: var(--brass-dark); letter-spacing: 1px; }
+        #issueForm .sub-title { border-top-color: var(--line-strong); }
+
+        /* ----- Form ----- */
+        label { color: #4a5f75; font-weight: 700; font-size: 11.5px; letter-spacing: .6px; }
+        label .ic { width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px; color: var(--navy-2); }
+        input, select { padding: 10px 13px; border: 1px solid var(--line-strong); border-radius: 10px; color: var(--text); }
+        input:hover, select:hover { border-color: #91a8be; }
+        input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(27, 111, 181, .18); }
+        .item-head { color: var(--muted); letter-spacing: .8px; }
+        .item-row { background: #f7fafd; border-left: 4px solid var(--brass); border-radius: 12px; }
+
+        /* ----- Department blocks (one block = one department + its own receiver + its items) ----- */
+        .dept-block {
+            background: #fff; border: 1px solid var(--line-strong); border-top: 4px solid var(--brass);
+            border-radius: 14px; padding: 16px; margin-bottom: 16px;
+            box-shadow: 0 8px 22px -14px rgba(10, 39, 68, .45);
+        }
+        .dept-title { font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--navy); margin-bottom: 10px; }
+        .dept-head { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.4fr) auto; gap: 12px; align-items: end; margin-bottom: 14px; }
+        .dept-head .btn-danger { height: 40px; padding: 0 18px; }
+        .dept-block > .btn { margin-top: 2px; }
+        #deptAddBtn { margin-bottom: 4px; }
+        #issueForm.editing .dept-remove, #issueForm.editing .item-add, #issueForm.editing #deptAddBtn { display: none; }
+
+        /* ----- Buttons (pill, shine sweep, lift - same as SCP) ----- */
+        .btn {
+            position: relative; overflow: hidden; z-index: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 10px 20px; line-height: 1.5; border-radius: 50px; color: #fff; font-weight: 700; letter-spacing: .2px;
+            border: 1px solid #0a2744; background: linear-gradient(180deg, #17497a, #0d2f52);
+            box-shadow: 0 8px 18px -8px rgba(10, 39, 68, .7), inset 0 1px 0 rgba(255, 255, 255, .2);
+            transition: all .3s ease;
+        }
+        .btn .ic { width: 16px; height: 16px; }
+        .btn::before {
+            content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; z-index: -1; pointer-events: none;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, .38), transparent); transform: skewX(-20deg); transition: .5s;
+        }
+        .btn:hover::before { left: 100%; }
+        .btn:hover { background: linear-gradient(180deg, #1d568d, #103760); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(10, 39, 68, .45), inset 0 1px 0 rgba(255, 255, 255, .25); }
+        .btn:active { transform: translateY(0); box-shadow: inset 0 2px 5px rgba(0, 0, 0, .35); }
+        .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+        .btn-secondary { color: var(--text); border-color: var(--line-strong); background: linear-gradient(180deg, #fff, #f5f8fb); box-shadow: 0 1px 2px rgba(8, 24, 42, .07), inset 0 1px 0 #fff; }
+        .btn-secondary::before { background: linear-gradient(120deg, transparent, rgba(14, 42, 71, .12), transparent); }
+        .btn-secondary:hover { background: linear-gradient(180deg, #fff, #eef3f8); border-color: #91a8be; box-shadow: 0 5px 15px rgba(8, 24, 42, .22), inset 0 1px 0 #fff; }
+        .btn-secondary:active { box-shadow: inset 0 2px 4px rgba(8, 24, 42, .14); }
+        .btn-danger { border-color: #b32227; background: linear-gradient(180deg, #e5484d, #c92a2f); box-shadow: 0 6px 14px -8px rgba(201, 42, 47, .8), inset 0 1px 0 rgba(255, 255, 255, .2); }
+        .btn-danger:hover { background: linear-gradient(180deg, #ea5a5f, #d03035); box-shadow: 0 10px 22px rgba(201, 42, 47, .4); }
+        .btn-warning { color: #08182a; border-color: #a8843f; background: linear-gradient(135deg, #c8a35a, #ecdcb4); box-shadow: 0 6px 14px -8px rgba(168, 132, 63, .9), inset 0 1px 0 rgba(255, 255, 255, .5); }
+        .btn-warning:hover { background: linear-gradient(135deg, #d3b06a, #f3e6c4); box-shadow: 0 10px 22px rgba(200, 163, 90, .5); }
+        .actions .btn { padding: 12px 22px; font-size: 15px; }
+
+        /* ----- Search panel & suggestions ----- */
+        .filter-panel { background: #f7fafd; border-radius: 14px; border-color: var(--line); }
+        .vlookup-suggestions { border-color: var(--line-strong); border-radius: 0 0 12px 12px; }
+        .vlookup-suggestion-item:hover { background: #eef4fa; color: var(--navy); }
+        .records-summary { color: var(--muted); }
+        .records-summary b { color: var(--navy); }
+
+        /* ----- Data grid ----- */
+        .table-wrap { border-color: var(--line-strong); border-radius: 14px; }
+        .grid-table thead th {
+            background: linear-gradient(180deg, #123d63, #0e2a47); letter-spacing: .7px; font-size: 11.5px;
+            border-bottom: 3px solid var(--brass);
+        }
+        .grid-table td { border-bottom-color: #e3eaf1; }
+        .grid-table tbody tr:hover td { background: #eaf1f8; }
+        .grid-table tr.empty-row td { color: var(--muted); }
+
+        /* ----- Report modal & login popup ----- */
+        .modal { background: rgba(8, 24, 42, .66); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+        .modal-content { border-radius: 18px; border-top: 4px solid var(--brass); }
+        #authModal {
+            background:
+                radial-gradient(55% 38% at 14% 24%, rgba(200, 163, 90, .38) 0%, rgba(200, 163, 90, 0) 72%),
+                radial-gradient(60% 30% at 92% 100%, rgba(27, 111, 181, .42) 0%, rgba(27, 111, 181, 0) 75%),
+                linear-gradient(135deg, #08182a 0%, #0e2a47 60%, #123d63 100%);
+            font-family: Manrope, 'DM Sans', 'Segoe UI', Tahoma, Arial, sans-serif;
+        }
+        #authModal .auth-card { border-radius: 26px; border-top: 4px solid var(--brass); background: #fff; box-shadow: 0 30px 70px -28px rgba(0, 0, 0, .75); }
+        #authModal .auth-logo { color: var(--brass-soft); border: 2px solid var(--brass); background: linear-gradient(145deg, #12385c, #0a1f36); }
+        #authModal .auth-logo svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+        #authModal .auth-pill { box-shadow: 0 6px 16px -6px rgba(14, 42, 71, .35), 0 1px 2px rgba(0, 0, 0, .06); }
+        #authModal input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(27, 111, 181, .16); }
+        #authModal .auth-linkbtn, #authModal .auth-link { color: var(--primary); }
+        #authModal .auth-linkbtn:hover, #authModal .auth-link:hover { color: var(--navy); }
+        #authModal #authSubmit { border: 1px solid #0a2744; border-radius: 50px; background: linear-gradient(180deg, #17497a, #0d2f52); box-shadow: 0 14px 24px -14px rgba(10, 39, 68, .8); }
+        #authModal #authSubmit:hover { background: linear-gradient(180deg, #1d568d, #103760); }
+
+        /* ----- Login bar + login button (same as the Receiving project) ----- */
+        /* ----- Admin login bar (always visible) ----- */
+        .auth-bar { display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex-wrap: wrap; margin: -4px 4px 14px; min-height: 0; }
+        .auth-bar:empty { display: none; }
+        @media print { .auth-bar { display: none !important; } }
+
+        /* ----- Create-account button in the login popup ----- */
+        #authModal .auth-links .auth-create-btn { border: 1.5px solid var(--primary, #0f4c81); border-radius: 10px; padding: 9px 18px; font-weight: 700; text-decoration: none; }
+        #authModal .auth-links .auth-create-btn:hover { background: rgba(15, 76, 129, .08); text-decoration: none; }
+        #authBtn { padding: 8px 20px; }
+        .app-toolbar .tb-left { flex: 1 1 auto; justify-content: flex-start; margin: 0; }
+        .safety-btn { margin-left: auto; }
+        @media (max-width: 560px) { .safety-btn { margin-left: 0; width: 100%; } .sb-text { flex: 1; } }
+        #authModal button { cursor: pointer; font-family: inherit; letter-spacing: .2px; -webkit-tap-highlight-color: transparent; }
+
+        /* ===== Auto capital letters (typed text always shows in CAPITALS) ===== */
+        input[type="text"], input[type="search"], input:not([type]), textarea { text-transform: uppercase; }
+        input::placeholder, textarea::placeholder { text-transform: none; }
+
+        /* =====================================================================
+           TOOLBAR + DATA SAFETY CENTER PAGE
+           ===================================================================== */
+        .app-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+        .tb-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; min-width: 0; }
+
+        .safety-btn {
+            --hc: #64748b; --hc-bg: #f1f5f9; --hc-tx: #334155;
+            position: relative; display: inline-flex; align-items: center; gap: 11px; padding: 7px 18px 7px 8px; border-radius: 50px;
+            background: #fff; border: 1px solid var(--line-strong); color: var(--navy); font-family: inherit; cursor: pointer;
+            box-shadow: 0 1px 2px rgba(8, 24, 42, .05), 0 12px 26px -20px rgba(8, 24, 42, .55);
+            transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        }
+        .safety-btn:hover { transform: translateY(-2px); border-color: var(--hc); box-shadow: 0 2px 4px rgba(8, 24, 42, .06), 0 14px 26px -16px rgba(8, 24, 42, .5); }
+        .safety-btn.active { background: linear-gradient(180deg, #17497a, #0d2f52); border-color: #0a2744; color: #fff; box-shadow: 0 8px 18px -8px rgba(10, 39, 68, .75), inset 0 -3px 0 var(--brass); }
+        .safety-btn[data-health="good"] { --hc: #16a34a; --hc-bg: #dcfce7; --hc-tx: #166534; }
+        .safety-btn[data-health="warn"] { --hc: #d97706; --hc-bg: #fef3c7; --hc-tx: #92400e; }
+        .safety-btn[data-health="bad"]  { --hc: #dc2626; --hc-bg: #fee2e2; --hc-tx: #991b1b; }
+        .sb-icon { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--hc-bg); color: var(--hc-tx); }
+        .sb-icon .ic { width: 18px; height: 18px; }
+        .sb-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2; min-width: 0; text-align: left; }
+        .sb-text b { font-size: 13px; font-weight: 800; letter-spacing: .3px; }
+        .sb-text small { font-size: 11.5px; font-weight: 600; color: var(--hc-tx); max-width: 230px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .safety-btn.active .sb-text small { color: var(--brass-soft); }
+        .sb-dot { flex: 0 0 auto; width: 10px; height: 10px; border-radius: 50%; background: var(--hc); }
+        .safety-btn[data-health="good"] .sb-dot { animation: stPulse 2s infinite; }
+        .safety-btn[data-health="warn"] .sb-dot, .safety-btn[data-health="bad"] .sb-dot { animation: stBlink 1s infinite; }
+        @media (max-width: 560px) { .app-toolbar { flex-direction: column; align-items: stretch; } .safety-btn { justify-content: flex-start; } .sb-text small { max-width: none; white-space: normal; } .tb-left { justify-content: center; } }
+
+        #safetyTab > h3 .sp-back { margin-left: auto; padding: 7px 16px; font-size: 13px; }
+        .sp-banner {
+            --hc: #64748b; --hc-bg: #f1f5f9; --hc-tx: #334155;
+            display: flex; align-items: center; gap: 16px; padding: 16px 18px; margin-bottom: 20px; border-radius: 16px;
+            border: 1px solid var(--line); border-left: 6px solid var(--hc); background: linear-gradient(180deg, #fff, var(--hc-bg));
+        }
+        .sp-banner[data-health="good"] { --hc: #16a34a; --hc-bg: #f0fdf4; --hc-tx: #166534; }
+        .sp-banner[data-health="warn"] { --hc: #d97706; --hc-bg: #fffbeb; --hc-tx: #92400e; }
+        .sp-banner[data-health="bad"]  { --hc: #dc2626; --hc-bg: #fef2f2; --hc-tx: #991b1b; }
+        .sp-banner-icon { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--hc-tx); background: #fff; border: 2px solid var(--hc); }
+        .sp-banner-icon .ic { width: 23px; height: 23px; }
+        .sp-banner-body { flex: 1; min-width: 0; }
+        .sp-banner-title { font-size: 16px; font-weight: 800; color: var(--hc-tx); letter-spacing: .2px; }
+        .sp-banner-sub { margin-top: 3px; font-size: 13px; color: #475569; line-height: 1.45; }
+        .sp-banner-time { flex: 0 0 auto; font-size: 11.5px; font-weight: 700; color: var(--muted); text-align: right; }
+        .sp-gap { margin-top: 24px !important; }
+        #safetyTab .status-grid { margin-bottom: 4px; }
+
+        .sp-layers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+        .sp-layer { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border: 1px solid var(--line); border-left: 4px solid var(--brass); border-radius: 12px; background: #f7fafd; }
+        .sp-layer b { font-size: 13px; color: var(--navy); }
+        .sp-layer span { font-size: 12.5px; color: #475569; line-height: 1.45; }
+
+        .sp-access-line { margin-bottom: 12px; padding: 10px 14px; border-radius: 12px; font-size: 13px; font-weight: 600; background: #f1f5f9; color: #334155; border: 1px solid var(--line); }
+        .sp-access[data-mode="admin"] .sp-access-line { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
+        .sp-access[data-mode="editor"] .sp-access-line { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+        .sp-access[data-mode="viewer"] .sp-access-line { background: #e0e7ff; color: #3730a3; border-color: #c7d2fe; }
+        .sp-access[data-mode="offline"] .sp-access-line { background: #e0f2fe; color: #075985; border-color: #bae6fd; }
+        .sp-access[data-mode="locked"] .sp-access-line { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
+        .sp-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .sp-matrix { width: 100%; min-width: 560px; border-collapse: separate; border-spacing: 0; font-size: 13px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+        .sp-matrix th, .sp-matrix td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); }
+        .sp-matrix tr > *:last-child { border-right: none; }
+        .sp-matrix tbody tr:last-child > * { border-bottom: none; }
+        .sp-matrix thead th { background: #eef3f8; color: var(--navy); font-size: 11.5px; text-transform: uppercase; letter-spacing: .6px; }
+        .sp-matrix tbody th { background: #f7fafd; color: var(--navy); font-weight: 700; }
+        .sp-matrix td { color: #166534; font-weight: 600; }
+        .sp-matrix td.no { color: #991b1b; }
+        .sp-matrix .me { box-shadow: inset 0 0 0 2px var(--brass); background: #fdf8ec; }
+        .sp-matrix thead th.me { background: #f3e7c6; color: var(--navy); }
+
+        @media (max-width: 820px) { .sp-layers { grid-template-columns: 1fr; } .sp-banner-time { display: none; } }
+        @media (max-width: 480px) { #safetyTab > h3 { flex-wrap: wrap; } #safetyTab > h3 .sp-back { margin-left: 0; width: 100%; } }
+        @media print { .app-toolbar, #safetyTab { display: none !important; } }
+
+        /* ===== Show only what this account may use (classes are set by updateAccessUI) ===== */
+        body.no-entry .tab-btn[data-tab="entryTab"], body.no-entry #entryTab,
+        body.no-safety #safetyBtn, body.no-safety #safetyTab,
+        body.no-edit .needs-edit, body.no-delete .needs-delete { display: none !important; }
+    </style>
+<style>
+/* ===== Delivery Statement print sheet ===== */
+.stmt-wrap{overflow-x:auto}.stmt-inner{width:max-content;min-width:100%}#historyBody td{white-space:nowrap;text-transform:none}
+#rowsBox input,#slNo,#qInput,#s1,#s2,#s3{text-transform:none !important}
+.stmt-head,.stmt-row{grid-template-columns:34px var(--c-do,88px) var(--c-veh,150px) var(--c-party,190px) var(--c-item,96px) var(--c-gsm,96px) var(--c-reel,70px) var(--c-weight,96px) minmax(140px,1fr) 44px !important}
+.stmt-head{display:grid !important}.stmt-row .rn{line-height:38px;text-align:center;color:var(--muted);font-weight:700}
+.stmt-row input{min-width:0}
+#sheet{font-family:"Times New Roman",Times,serif;color:#000;background:#fff;width:200mm;min-height:140mm;margin:0 auto;padding:5mm 5mm 4mm;display:flex;flex-direction:column;box-sizing:border-box;border:1px solid #cbd5e1}
+#sheet .lh{white-space:nowrap;text-align:center;border-bottom:3px double #000;padding-bottom:2.5mm}
+#sheet .s-co{font:bold 19pt "Times New Roman",serif;letter-spacing:.5px;text-transform:uppercase;line-height:1.15}
+#sheet .s-ad{font-size:10pt;margin-top:1mm}
+#sheet .meta{display:flex;justify-content:space-between;align-items:center;margin:3.2mm 0;font-size:11pt}
+#sheet .meta .mt{font:bold 13pt "Times New Roman",serif;text-transform:uppercase;letter-spacing:1.2px;text-decoration:underline;text-underline-offset:3px}
+#sheet .meta .mb{min-width:42mm;border:1.5px solid #000;padding:1mm 3mm}
+#sheet .meta .mb:last-child{text-align:right}
+#sheet table.g{width:100%;table-layout:auto;border-collapse:collapse;border:1.6px solid #000;font-size:var(--fs,10pt)}
+#sheet .g th,#sheet .g td{border:1px solid #000;padding:0 .55em;height:var(--rh,9mm);text-align:center;vertical-align:middle;white-space:nowrap;overflow:visible;background:none;color:#000;text-transform:none;font-size:inherit;line-height:1.2}
+#sheet .g th{box-sizing:border-box;font-weight:bold;height:8mm;background:#e9e9e9}
+#sheet .g td.l{text-align:left}#sheet .g td.r{text-align:right;padding-right:2.5mm}
+#sheet .g tr.t td{font-weight:bold;background:#f1f1f1}
+#sheet .sig{margin-top:auto;display:flex;justify-content:space-between;padding-top:11mm;font-size:10pt}
+#sheet .sig div{width:29%;text-align:center;border-top:1px solid #000;padding-top:1mm}
+#sheet .sig{margin-top:auto;padding-top:13mm;display:flex;justify-content:space-between}#sheet .sig div{width:28%;text-align:center;border-top:1px solid #000;padding-top:1.2mm;font-size:9.5pt;font-weight:bold;white-space:nowrap}
+#sheet .ft{display:flex;justify-content:space-between;font-size:7.5pt;color:#444;margin-top:3mm}
+#reportModal .modal-content{max-width:230mm}
+@media print{#reportModal .modal-content{max-width:none;border-top:0!important;border-radius:0}#sheet{border:0;border-bottom:1px dashed #777;margin:0}}
+</style>
+<style>
+/* ===== Cloud sign-in gate, account chip, role gating ===== */
+body:not(.authed) .container{display:none!important}
+.acct{display:inline-flex;align-items:center;gap:10px;margin-left:12px;padding:5px 6px 5px 12px;border:1px solid #d5dde8;border-radius:12px;background:#fff;vertical-align:middle}
+.acct[hidden]{display:none}
+.acct .ac-txt{display:flex;flex-direction:column;line-height:1.2;text-align:left}
+.acct .ac-txt b{font-size:12px;color:#0b2545;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acct .ac-txt small{font-size:10.5px;font-weight:700}
+.acct[data-role=admin] small{color:#15803d}.acct[data-role=editor] small{color:#0369a1}.acct[data-role=viewer] small{color:#64748b}
+.acct .ac-out{border:0;border-radius:8px;background:#fee2e2;color:#b91c1c;font-weight:700;font-size:12px;padding:7px 11px;cursor:pointer}
+.acct .ac-out:hover{background:#fecaca}
+body.no-entry .tab-btn[data-tab="entryTab"],body.no-entry #entryTab,body.no-edit .needs-edit,body.no-delete .needs-delete{display:none!important}
+@media print{.acct{display:none!important}}
+/* ===== Login popup + access gate (same login system as the Delivery project) ===== */
+html.ag-locked,html.ag-locked body{overflow:hidden!important}
+#agCover{display:none;position:fixed;inset:0;z-index:99990;align-items:center;justify-content:center;padding:24px;text-align:center;background:radial-gradient(55% 38% at 14% 24%,rgba(200,163,90,.38) 0%,rgba(200,163,90,0) 72%),radial-gradient(60% 30% at 92% 100%,rgba(27,111,181,.42) 0%,rgba(27,111,181,0) 75%),linear-gradient(135deg,#08182a 0%,#0e2a47 60%,#123d63 100%);font-family:Manrope,'DM Sans','Segoe UI',Tahoma,Arial,sans-serif;color:#e8eef6}
+#agCover [hidden]{display:none!important}
+html.ag-locked #agCover{display:flex}
+#agCover .ag-box{max-width:380px}
+#agCover .ag-spin{width:44px;height:44px;margin:0 auto 18px;border:4px solid rgba(255,255,255,.2);border-top-color:#c8a35a;border-radius:50%;animation:agSpin .9s linear infinite}
+#agCover.ag-fail .ag-spin{display:none}
+@keyframes agSpin{to{transform:rotate(360deg)}}
+#agCover .ag-t{font-size:18px;font-weight:700}
+#agCover .ag-s{margin-top:6px;font-size:14px;color:#b9c7d8;line-height:1.5;white-space:pre-line;word-break:break-word}
+#agCover .ag-slow{margin-top:14px;font-size:13px;color:#f3d9a0;line-height:1.5}
+#agCover button{margin:14px 5px 0;padding:10px 24px;border:0;border-radius:50px;background:#c8a35a;color:#08182a;font:700 14px inherit;font-family:inherit;cursor:pointer}
+#agCover button.ag-alt{background:transparent;color:#f3d9a0;border:1px solid rgba(243,217,160,.6)}
+
+#authModal{display:none;position:fixed;inset:0;z-index:100000;overflow-y:auto;padding:20px 16px;align-items:center;justify-content:center;background:radial-gradient(55% 38% at 14% 24%,rgba(200,163,90,.38) 0%,rgba(200,163,90,0) 72%),radial-gradient(60% 30% at 92% 100%,rgba(27,111,181,.42) 0%,rgba(27,111,181,0) 75%),linear-gradient(135deg,#08182a 0%,#0e2a47 60%,#123d63 100%);font-family:Manrope,'DM Sans','Segoe UI',Tahoma,Arial,sans-serif;color:#18181b}
+#authModal *{box-sizing:border-box}
+#authModal .auth-card{position:relative;width:100%;max-width:440px;margin:auto;background:#fff;border-radius:26px;border-top:4px solid #c8a35a;padding:26px 26px 24px;box-shadow:0 30px 70px -28px rgba(0,0,0,.75);animation:authIn .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes authIn{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+#authModal .auth-brand{display:flex;align-items:center;gap:14px}
+#authModal .auth-logo{flex:0 0 auto;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#ecdcb4;border:2px solid #c8a35a;background:linear-gradient(145deg,#12385c,#0a1f36)}
+#authModal .auth-logo svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#authModal .auth-brand-name{font-size:17px;font-weight:700;color:#18181b;line-height:1.2}
+#authModal .auth-brand-sub{font-size:14px;color:#52525b;margin-top:3px}
+#authModal .auth-tabs{position:relative;display:grid;grid-template-columns:1fr 1fr;margin-top:22px;padding:5px;background:#f4f4f5;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.02)}
+#authModal .auth-pill{position:absolute;top:5px;bottom:5px;left:5px;width:calc(50% - 5px);border-radius:999px;background:#fff;box-shadow:0 6px 16px -6px rgba(14,42,71,.35),0 1px 2px rgba(0,0,0,.06);transition:transform .28s cubic-bezier(.3,.8,.3,1),opacity .2s}
+#authModal .auth-tabs[data-active="create"] .auth-pill{transform:translateX(100%)}
+#authModal .auth-tabs[data-active="none"] .auth-pill{opacity:0}
+#authModal .auth-tab{position:relative;z-index:1;background:transparent;border:none;border-radius:999px;min-height:0;margin:0;padding:12px 8px;font:inherit;font-size:15.5px;font-weight:600;color:#52525b;cursor:pointer;box-shadow:none;transition:color .2s}
+#authModal .auth-tab.active{color:#18181b}
+#authModal .auth-tab:hover:not(.active){color:#18181b;background:transparent}
+#authModal #authTitle{margin:26px 0 18px;padding:0;border:none;font-size:30px;font-weight:700;letter-spacing:-.4px;color:#18181b;line-height:1.15}
+#authModal #authTitle::before{display:none}
+#authModal .auth-field{margin-bottom:16px}
+#authModal .auth-labelrow{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:8px}
+#authModal label{display:block;margin:0;font-size:15.5px;font-weight:600;color:#18181b;text-transform:none;letter-spacing:0}
+#authModal input{width:100%;height:52px;margin:0;padding:0 16px;font:inherit;font-size:16px;color:#18181b;background:#fff;border:1.5px solid #d4d4d8;border-radius:16px;outline:none;box-shadow:none;transition:border-color .15s,box-shadow .15s}
+#authModal input::placeholder{color:#a1a1aa}
+#authModal input:hover{border-color:#a1a1aa}
+#authModal input:focus{border-color:#1b6fb5;box-shadow:0 0 0 4px rgba(27,111,181,.16)}
+#authModal .auth-pwwrap{position:relative}
+#authModal .auth-pwwrap input{padding-right:52px}
+#authModal .auth-eye{position:absolute;top:50%;right:8px;transform:translateY(-50%);width:38px;height:38px;min-height:0;margin:0;padding:0;border:none;border-radius:12px;background:transparent;color:#3f3f46;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:none}
+#authModal .auth-eye:hover{background:#f4f4f5}
+#authModal .auth-eye svg{width:22px;height:22px}
+#authModal .auth-eye .eye-off{display:none}
+#authModal .auth-eye.shown .eye-on{display:none}
+#authModal .auth-eye.shown .eye-off{display:block}
+#authModal .auth-hint{margin-top:6px;font-size:12.5px;color:#64748b}
+#authModal .auth-linkbtn,#authModal .auth-link{background:none;border:none;padding:0;min-height:0;margin:0;font:inherit;font-size:15px;font-weight:700;color:#1b6fb5;text-decoration:none;cursor:pointer;box-shadow:none}
+#authModal .auth-linkbtn:hover,#authModal .auth-link:hover{background:none;color:#0e2a47;text-decoration:underline}
+#authModal #authSubmit{display:block;width:100%;height:56px;margin:8px 0 0;padding:0;border:1px solid #0a2744;border-radius:50px;background:linear-gradient(180deg,#17497a,#0d2f52);color:#fff;font:inherit;font-size:17px;font-weight:600;letter-spacing:.1px;cursor:pointer;box-shadow:0 14px 24px -14px rgba(10,39,68,.8);transition:transform .12s,background .15s,opacity .15s}
+#authModal #authSubmit:hover{background:linear-gradient(180deg,#1d568d,#103760)}
+#authModal #authSubmit:active{transform:scale(.985)}
+#authModal #authSubmit:disabled{opacity:.6;cursor:wait}
+#authModal .auth-links{display:flex;justify-content:center;align-items:center;gap:18px;flex-wrap:wrap;margin-top:20px}
+#authModal .auth-links .auth-create-btn{border:1.5px solid #0f4c81;border-radius:10px;padding:9px 18px;font-weight:700;text-decoration:none}
+#authModal .auth-links .auth-create-btn:hover{background:rgba(15,76,129,.08);text-decoration:none}
+#authMsg{display:none;margin:2px 0 12px;padding:11px 14px;border-radius:14px;font-size:14px;line-height:1.45;word-break:break-word}
+#authModal button:focus-visible,#agCover button:focus-visible{outline:3px solid rgba(27,111,181,.45);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){#agCover .ag-spin{animation-duration:3s}#authModal .auth-card{animation:none}}
+@media print{html.ag-locked body>*{display:none!important}#agCover,#authModal{display:none!important}}
+</style><meta name="robots" content="noindex, nofollow">
+<script>
+// Lock the page at once (before anything is drawn). It opens only after a verified, approved login.
+(function () {
+  document.documentElement.classList.add('ag-locked');
+  setTimeout(function () {
+    var m = document.getElementById('authModal');
+    if (!document.documentElement.classList.contains('ag-locked')) return;
+    if (m && m.style.display === 'flex') return;
+    var s = document.getElementById('agSlow'), b = document.getElementById('agReload');
+    if (s) s.hidden = false;
+    if (b) b.hidden = false;
+  }, 12000);
+})();
+</script>
+</head>
+<body>
+<div id="agCover" role="status" aria-live="polite">
+  <div class="ag-box">
+    <div class="ag-spin" aria-hidden="true"></div>
+    <div class="ag-t">Borak Pulp &amp; Paper Mills Limited</div>
+    <div class="ag-s" id="agMsg">Checking secure session…</div>
+    <div class="ag-slow" id="agSlow" hidden>This is taking longer than usual. Check the internet connection, then reload.</div>
+    <button type="button" id="agReload" hidden onclick="location.reload()">Reload page</button>
+    <button type="button" id="agOut" class="ag-alt" hidden>Sign out / use another account</button>
+  </div>
+</div>
+
+<!-- Login popup (Login / Create account / Forgot password) -->
+<div id="authModal">
+  <div class="auth-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div class="auth-brand">
+      <div class="auth-logo"><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg></div>
+      <div>
+        <div class="auth-brand-name">Borak Pulp &amp; Paper Mills Limited</div>
+        <div class="auth-brand-sub">Delivery Statement Register</div>
+      </div>
+    </div>
+    <div class="auth-tabs" id="authTabs" data-active="login" role="tablist">
+      <span class="auth-pill"></span>
+      <button type="button" class="auth-tab active" data-mode="login" role="tab">Login</button>
+      <button type="button" class="auth-tab" data-mode="create" role="tab">Create account</button>
+    </div>
+    <h3 id="authTitle">Login</h3>
+    <form id="authForm" novalidate>
+      <div class="auth-field">
+        <div class="auth-labelrow"><label for="authEmail">Email</label></div>
+        <input type="email" id="authEmail" autocomplete="username" placeholder="email" autocapitalize="off" spellcheck="false" maxlength="254">
+      </div>
+      <div class="auth-field" id="authPwRow">
+        <div class="auth-labelrow">
+          <label for="authPassword">Password</label>
+          <button type="button" class="auth-linkbtn auth-forgot" data-mode="forgot">Forgot password?</button>
+        </div>
+        <div class="auth-pwwrap">
+          <input type="password" id="authPassword" autocomplete="current-password" placeholder="Password" maxlength="128">
+          <button type="button" class="auth-eye" data-target="authPassword" aria-label="Show password" title="Show / hide password"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5.5 4.5 12 4.5 22.5 12 22.5 12 18.5 19.5 12 19.5 1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3.2"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5.5 4.5 12 4.5c2 0 3.8.7 5.3 1.7M22.5 12S18.5 19.5 12 19.5c-2 0-3.8-.7-5.3-1.7"/><path d="M9.9 9.9a3.2 3.2 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg></button>
+        </div>
+        <div class="auth-hint" id="authHint" style="display:none">Use at least 8 characters, with letters and numbers.</div>
+      </div>
+      <div class="auth-field" id="authPw2Row" style="display:none">
+        <div class="auth-labelrow"><label for="authPassword2">Confirm Password</label></div>
+        <div class="auth-pwwrap">
+          <input type="password" id="authPassword2" autocomplete="new-password" placeholder="Confirm password" maxlength="128">
+          <button type="button" class="auth-eye" data-target="authPassword2" aria-label="Show password" title="Show / hide password"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5.5 4.5 12 4.5 22.5 12 22.5 12 18.5 19.5 12 19.5 1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3.2"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5.5 4.5 12 4.5c2 0 3.8.7 5.3 1.7M22.5 12S18.5 19.5 12 19.5c-2 0-3.8-.7-5.3-1.7"/><path d="M9.9 9.9a3.2 3.2 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg></button>
+        </div>
+      </div>
+      <div id="authMsg" role="alert"></div>
+      <button type="submit" id="authSubmit">Login</button>
+    </form>
+    <div class="auth-links">
+      <button type="button" class="auth-link" data-mode="login">Back to Login</button>
+      <button type="button" class="auth-link auth-create-btn" data-mode="create">➕ Create new account</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+    <header class="app-header">
+        <div class="ah-brand">
+            <div class="ah-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg></div>
+            <div class="ah-text"><h1 id="hdCo">Borak Pulp &amp; Paper Mills Limited</h1><p>Delivery Statement Register</p></div>
+        </div>
+        <div class="ah-badge"><i></i>Delivery Statement Management</div>
+    </header>
+
+    <div class="app-toolbar">
+        <div class="tb-left"><button type="button" class="btn btn-secondary" id="setBtn">Header Settings</button><span class="acct" id="userChip" hidden><span class="ac-txt"><b id="acMail"></b><small id="acRole"></small></span><button type="button" class="ac-out" id="acOut" title="Sign out">Sign out</button></span></div>
+        <button type="button" id="safetyBtn" class="safety-btn" data-health="checking" onclick="openSafetyPage()" aria-label="Open Data Safety Center" title="Open Data Safety Center">
+            <span class="sb-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.2 7.8 8 9 4.8-1.2 8-4.5 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <span class="sb-text"><b>Data Safety Center</b><small id="safetyBtnSub">Checking…</small></span>
+            <span class="sb-dot" aria-hidden="true"></span>
+        </button>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="entryTab" onclick="switchTab('entryTab')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Statement Entry</button>
+        <button class="tab-btn" data-tab="historyTab" onclick="switchTab('historyTab')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg> History &amp; Print</button>
+    </div>
+
+    <div id="entryTab" class="tab-content active">
+        <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Delivery Statement Entry</h3>
+        <form id="stmtForm">
+            <input type="hidden" id="editId" value="">
+            <div class="header-section">
+                <div class="form-group">
+                    <label for="issueDay">Date</label>
+                    <input type="hidden" id="issueDate" value="">
+                    <div class="date-parts">
+                        <div>
+                            <input type="text" id="issueDay" inputmode="numeric" maxlength="2" placeholder="DD" autocomplete="off" required oninput="onIssueDayInput(this)" onblur="padIssueDay()">
+                            <span class="dp-cap">Day (type)</span>
+                        </div>
+                        <div>
+                            <select id="issueMonth" aria-label="Month" onchange="syncIssueDate()">
+                                <option value="01">01 - JAN</option><option value="02">02 - FEB</option><option value="03">03 - MAR</option>
+                                <option value="04">04 - APR</option><option value="05">05 - MAY</option><option value="06">06 - JUN</option>
+                                <option value="07">07 - JUL</option><option value="08">08 - AUG</option><option value="09">09 - SEP</option>
+                                <option value="10">10 - OCT</option><option value="11">11 - NOV</option><option value="12">12 - DEC</option>
+                            </select>
+                            <span class="dp-cap">Month (auto)</span>
+                        </div>
+                        <div>
+                            <input type="number" id="issueYear" min="2000" max="2100" aria-label="Year" onchange="syncIssueDate()" oninput="syncIssueDate()">
+                            <span class="dp-cap">Year (auto)</span>
+                        </div>
+                    </div>
+                </div>
+            <div class="form-group"><label for="slNo">SL No</label><input type="text" id="slNo" autocomplete="off" required placeholder="e.g. 519"></div>
+            </div>
+            <h3 class="sub-title">Delivered Items</h3>
+            <div class="stmt-wrap"><div class="stmt-inner">
+                <div class="item-head stmt-head"><div>SL</div><div>D/O</div><div>Veh. No</div><div>Party Name</div><div>Item</div><div>Gsm-Size</div><div>Reel</div><div>Weight</div><div>Remarks</div><div></div></div>
+                <div id="rowsBox"></div>
+            </div></div>
+            <button type="button" class="btn btn-secondary" id="addRowBtn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Add Row</button>
+            <div class="records-summary" id="entryTotals" style="margin-top:14px"></div>
+            <div class="actions">
+                <button type="submit" class="btn" id="saveBtn">Save Statement</button>
+                <button type="button" class="btn btn-warning" id="saveShowBtn" style="padding:10px 16px;font-size:14px">Save &amp; Print</button>
+                <button type="button" class="btn btn-secondary" id="prevBtn">Print Preview</button>
+                <button type="button" class="btn btn-secondary" id="clearBtn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg> Cancel / Clear</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="historyTab" class="tab-content">
+        <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg> Statement History, Search &amp; Print</h3>
+        <div class="filter-panel">
+            <div class="search-row">
+                <div class="form-group search-field"><label for="qInput">Search (SL, D/O, Vehicle, Party, Item)</label><input type="text" id="qInput" placeholder="Type to search..." autocomplete="off"></div>
+                <button type="button" class="btn btn-secondary" id="clearSearchBtn">Clear Search</button>
+            </div>
+            <div class="date-row">
+                <div class="action-group">
+                    <div class="form-group"><label for="fromDate">From Date</label><input type="date" id="fromDate"></div>
+                    <div class="form-group"><label for="toDate">To Date</label><input type="date" id="toDate"></div>
+                    <button type="button" class="btn btn-secondary" id="clearDateBtn">Clear Date</button>
+                </div>
+                <div class="action-group"><button type="button" class="btn" id="exportCsvBtn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg> Export CSV Report</button></div>
+            </div>
+        </div>
+        <div class="records-summary" id="recordsSummary"></div>
+        <div class="table-wrap">
+            <table class="grid-table"><thead><tr><th>Date</th><th>SL No</th><th>D/O</th><th>Vehicle</th><th>Party</th><th class="num">Reel</th><th class="num">Weight (kg)</th><th class="col-act">Actions</th></tr></thead><tbody id="historyBody"></tbody></table>
+        </div>
+    </div>
+
+<div id="safetyTab" class="tab-content">
+        <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.2 7.8 8 9 4.8-1.2 8-4.5 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/></svg> Data Safety Center
+            <button type="button" class="btn btn-secondary sp-back" onclick="closeSafetyPage()"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg> Back to Entry</button>
+        </h3>
+
+        <div class="sp-banner" id="safetyBanner" data-health="checking" role="status" aria-live="polite">
+            <div class="sp-banner-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.2 7.8 8 9 4.8-1.2 8-4.5 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/></svg></div>
+            <div class="sp-banner-body">
+                <div class="sp-banner-title" id="safetyBannerTitle">Checking system status…</div>
+                <div class="sp-banner-sub" id="safetyBannerSub">Every save is written to the cloud database and to your backup file automatically.</div>
+            </div>
+            <div class="sp-banner-time" id="safetyBannerTime"></div>
+        </div>
+
+        <h3 class="sub-title">System Status</h3>
+            <div class="status-grid">
+                <div class="st-tile" id="netTile" data-state="online">
+                    <div class="st-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><path d="M2 9a15 15 0 0 1 20 0"/><circle cx="12" cy="19" r="1"/></svg></div>
+                    <div class="st-body">
+                        <div class="st-label">Internet</div>
+                        <div class="st-value"><span class="st-dot"></span><span id="netValue">Checking…</span></div>
+                        <div class="st-line" id="netSub"></div>
+                    </div>
+                </div>
+                <div class="st-tile" id="syncBar" data-state="checking" onclick="syncBarClick()">
+                    <div class="st-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v5h7V3"/><rect x="8" y="13" width="8" height="8"/></svg></div>
+                    <div class="st-body">
+                        <div class="st-label">Auto-Backup (File)</div>
+                        <div class="st-value"><span class="st-dot"></span><span id="syncValue">Checking…</span></div>
+                        <div class="st-line" id="syncFile"></div>
+                        <div class="st-line" id="syncTime"></div>
+                        <div class="st-hint" id="syncHint"></div>
+                        <div class="st-actions" id="syncActions" onclick="event.stopPropagation()">
+                            <div class="st-btnrow">
+                                <button type="button" class="st-act" onclick="linkExistingFile()" title="Select an existing data file"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg> Select Existing</button>
+                                <button type="button" class="st-act" onclick="linkNewFile()" title="Create a new data file"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M12 11v6M9 14h6"/></svg> Create New</button>
+                                <button type="button" class="st-act" onclick="linkFolderPick()" title="Select the folder that contains the data file (found automatically)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> Select Folder</button>
+                                <button type="button" class="st-act" onclick="downloadCopy()" title="Download a JSON copy of all data"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg> Download Copy</button>
+                            </div>
+                            <div class="st-drop" id="syncDrop">
+                                <span class="dz-idle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg> Drag &amp; drop data file here</span>
+                                <span class="dz-over"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg> Release to link this file</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="st-tile" id="devTile" data-state="checking">
+                    <div class="st-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
+                    <div class="st-body">
+                        <div class="st-label">Cloud Database</div>
+                        <div class="st-value"><span class="st-dot"></span><span id="devValue">Checking…</span></div>
+                        <div class="st-line" id="devSub"></div>
+                        <div class="st-hint" id="devHint"></div>
+                    </div>
+                </div>
+            </div>
+
+        <h3 class="sub-title sp-gap">How your data is protected</h3>
+        <div class="sp-layers">
+            <div class="sp-layer"><b>1 · Cloud database</b><span>Every entry is saved to Firestore (cloud) and kept on this device while offline; it syncs when the internet returns.</span></div>
+            <div class="sp-layer"><b>2 · Backup file</b><span>A copy is written to your chosen data file after every save (desktop Chrome / Edge).</span></div>
+            <div class="sp-layer"><b>3 · Download copy</b><span>Use Download Copy any time to keep an extra JSON copy (works in every browser).</span></div>
+        </div>
+    </div>
+
+</div>
+
+<div id="reportModal" class="modal"><div class="modal-content">
+    <div id="sheet"></div>
+    <div class="no-print modal-actions"><button type="button" class="btn" id="reportPrintBtn">Print</button><button type="button" class="btn btn-secondary" id="reportCloseBtn">Close</button></div>
+</div></div>
+
+<div id="setModal" class="modal"><div class="modal-content" style="max-width:480px">
+    <h3 style="margin-top:0">Header Settings</h3>
+    <div class="form-group"><label for="s1">Company name</label><input type="text" id="s1"></div>
+    <div class="form-group" style="margin-top:10px"><label for="s2">Address</label><input type="text" id="s2"></div>
+    <div class="form-group" style="margin-top:10px"><label for="s3">Statement title</label><input type="text" id="s3"></div>
+    <div class="form-group" style="margin-top:10px"><label for="s4">Minimum rows on print</label><input type="number" id="s4" min="1" max="30"></div>
+    <div class="modal-actions"><button type="button" class="btn btn-secondary" id="s5">Cancel</button><button type="button" class="btn" id="s6">Save Settings</button></div>
+</div></div>
+
+<datalist id="dl-do"></datalist><datalist id="dl-veh"></datalist><datalist id="dl-party"></datalist><datalist id="dl-item"></datalist><datalist id="dl-gsm"></datalist>
+
+<script>
+
+const $ = id => document.getElementById(id);
+const escHtml = v => String(v == null ? '' : v).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fmtDate = d => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || ''); return m ? m[3] + '/' + MON[+m[2] - 1] + '/' + m[1].slice(2) : ''; };
+const fmtN = n => n ? Number(n).toLocaleString('en-US') : '';
+const COLS = ['do','veh','party','item','gsm','reel','weight','remarks'];
+const isFilled = r => COLS.some(c => String(r[c] || '').trim() !== '');
+const sigOf = r => [r.date, r.sl, JSON.stringify(r.rows)].join('|');
+const sumOf = (st, k) => (st.rows || []).reduce((a, r) => a + (parseFloat(r[k]) || 0), 0);
+
+// ---- settings (header of the print sheet) ----
+const SET_KEY = 'PWStmtSettings';
+const DEF_SET = { company: 'Borak Pulp & Paper Mills Limited', address: 'Halimkarchor, Charkanai, Patiya, Chittagong.', title: 'Delivery Statement', minRows: 6 };
+let settings = Object.assign({}, DEF_SET);
+try { Object.assign(settings, JSON.parse(localStorage.getItem(SET_KEY) || '{}')); } catch (e) {}
+function applyHeader() { $('hdCo').textContent = settings.company; document.title = settings.company + ' - Delivery Statement'; }
+
+// ---- Cloud database (Firestore, live) ----
+
+let CLOUD = [], CLOUD_META = { pending: false, fromCache: true }, CLOUD_SYNCED = false, DEV_ERR = '', ME = null, CAN = { read: false, write: false, del: false };
+const cloudErr = what => e => { console.error(what, e); const d = e && e.code === 'permission-denied'; showToast('warn', d ? 'Permission denied' : what + ' failed', d ? 'Your account is not allowed to do this. The change was rolled back.' : ((e && e.message) || 'Unknown error')); };
+const putRec = async r => {
+  if (!CAN.write) throw new Error('This account has view-only access.');
+  const rec = { id: r.id, sl: String(r.sl), date: r.date, rows: r.rows, savedAt: r.savedAt }, i = CLOUD.findIndex(s => s.id === rec.id);
+  if (i < 0) { CLOUD.push({ ...rec, createdBy: ME.email, updatedBy: ME.email }); FB.create(rec).catch(cloudErr('Save')); }
+  else { CLOUD[i] = { ...CLOUD[i], ...rec, updatedBy: ME.email }; FB.update(rec.id, rec).catch(cloudErr('Update')); }
+  return rec.id;
+};
+const delRec = async id => { if (!CAN.del) throw new Error('Only the Admin account can delete.'); CLOUD = CLOUD.filter(s => s.id !== id); FB.remove(id).catch(cloudErr('Delete')); };
+const validForCloud = r => r && Array.isArray(r.rows) && r.rows.length > 0 && r.rows.length <= 200 && /^\d{4}-\d{2}-\d{2}$/.test(String(r.date || '')) && String(r.sl == null ? '' : r.sl).trim() !== '' && String(r.sl).length <= 30;
+async function importRecords(data, asked) {
+  const have = new Set(CLOUD.map(sigOf)), add = [];
+  for (const r of (Array.isArray(data) ? data : [])) {
+    if (!validForCloud(r) || have.has(sigOf(r))) continue;
+    have.add(sigOf(r));
+    add.push({ id: FB.newId(), sl: String(r.sl).trim(), date: String(r.date), rows: r.rows, savedAt: Number(r.savedAt) || Date.now() });
+  }
+  if (!add.length) return 0;
+  if (!CAN.write) { showToast('warn', 'View-only account', 'Only Admin / Editor accounts can upload data to the cloud.'); return 0; }
+  if (!CLOUD_SYNCED) { showToast('warn', 'Wait for cloud sync', 'Connect to the internet and let the first cloud sync finish before importing a file.'); return 0; }
+  if (CLOUD.length && !asked && !confirm(add.length + ' record(s) in this file are not in the cloud database yet.\nUpload them now?')) return 0;
+  add.forEach(r => CLOUD.push({ ...r, createdBy: ME.email, updatedBy: ME.email }));
+  FB.batchCreate(add).catch(cloudErr('Import'));
+  return add.length;
+}
+function legacyAll() {
+  return new Promise(res => {
+    try {
+      const r = indexedDB.open('PaperWorksDeliveryStatementDB', 1);
+      r.onupgradeneeded = e => { e.target.transaction.abort(); };
+      r.onerror = () => res([]);
+      r.onsuccess = e => {
+        const d = e.target.result;
+        try {
+          if (!d.objectStoreNames.contains('statements')) { d.close(); return res([]); }
+          const q = d.transaction(['statements'], 'readonly').objectStore('statements').getAll();
+          q.onsuccess = () => { d.close(); res(q.result || []); };
+          q.onerror = () => { d.close(); res([]); };
+        } catch (x) { d.close(); res([]); }
+      };
+    } catch (x) { res([]); }
+  });
+}
+async function migrateLegacy() {
+  if (!CAN.write) return;
+  const KEY = 'PWStmtLegacyDone';
+  try { if (localStorage.getItem(KEY) === '1') return; } catch (e) {}
+  const old = await legacyAll(), have = new Set(CLOUD.map(sigOf)), fresh = old.filter(r => validForCloud(r) && !have.has(sigOf(r)));
+  try { localStorage.setItem(KEY, '1'); } catch (e) {}
+  if (!fresh.length) return;
+  if (confirm('The old version of this app saved ' + fresh.length + ' statement(s) on this device.\nUpload them to the cloud database now?')) {
+    const n = await importRecords(fresh, true);
+    if (n) showToast('ok', 'Old data uploaded', n + ' statement(s) are now in the cloud database.');
+  } else showToast('warn', 'Old data not uploaded', 'You can load it later from Data Safety Center → Select Existing (JSON backup file).');
+}
+
+function setDevice(state, n) {
+    const t = $('devTile'); if (!t) return;
+    t.dataset.state = state;
+    $('devValue').textContent = state === 'on' ? 'Cloud database (Firestore)' : 'Cloud problem';
+    $('devSub').textContent = state === 'on' ? n + ' statement' + (n === 1 ? '' : 's') + ' in the cloud' + (CLOUD_META.pending ? ' · syncing…' : '') : (DEV_ERR || 'Could not reach the cloud database.');
+    $('devHint').textContent = state === 'on' ? ((CLOUD_META.fromCache && !navigator.onLine) ? 'Offline — showing the last saved copy. Changes sync automatically when the internet returns.' : 'Live sync: changes made by other users appear automatically.') : '';
+}
+
+// ---- date (day typed, month / year automatic) : same logic as the Delivery page ----
+function setIssueDate(str) {
+        const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(str || ''));
+        const now = new Date();
+        const y = m ? m[1] : String(now.getFullYear());
+        const mo = m ? m[2] : String(now.getMonth() + 1).padStart(2, '0');
+        document.getElementById('issueDay').value = m ? m[3] : '';
+        document.getElementById('issueMonth').value = mo;
+        document.getElementById('issueYear').value = y;
+        syncIssueDate();
+    }
+    function onIssueDayInput(inp) {
+        inp.value = inp.value.replace(/\D/g, '').slice(0, 2);
+        syncIssueDate();
+    }
+    function padIssueDay() {
+        const d = document.getElementById('issueDay');
+        if (d.value.length === 1 && d.value !== '0') d.value = '0' + d.value;
+        syncIssueDate();
+    }
+    // builds YYYY-MM-DD into the hidden #issueDate ('' when the day / date is not valid)
+    function syncIssueDate() {
+        const day = document.getElementById('issueDay').value.padStart(2, '0');
+        const mo = document.getElementById('issueMonth').value;
+        const yr = String(document.getElementById('issueYear').value || '').trim();
+        let out = '';
+        if (/^\d{2}$/.test(day) && /^\d{4}$/.test(yr)) {
+            const dt = new Date(Number(yr), Number(mo) - 1, Number(day));
+            if (dt.getFullYear() === Number(yr) && dt.getMonth() === Number(mo) - 1 && dt.getDate() === Number(day)) out = yr + '-' + mo + '-' + day;
+        }
+        document.getElementById('issueDate').value = out;
+        return out;
+    }
+    setIssueDate('');
+// ---- tabs ----
+const TAB_HASH = { entryTab: 'entry', historyTab: 'history', safetyTab: 'safety' };
+let lastMainTab = 'entryTab';
+function switchTab(tabId, opts) {
+    opts = opts || {}; if (!TAB_HASH[tabId]) tabId = 'entryTab'; if (tabId === 'entryTab' && !CAN.write) tabId = 'historyTab';
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.toggle('active', el.id === tabId));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.toggle('active', el.dataset.tab === tabId));
+    const sb = $('safetyBtn'); sb.classList.toggle('active', tabId === 'safetyTab'); sb.setAttribute('aria-pressed', tabId === 'safetyTab');
+    if (tabId !== 'safetyTab') lastMainTab = tabId;
+    document.querySelector('.tabs').classList.toggle('dim', tabId === 'safetyTab');
+    if (!opts.noHash) { try { location.hash = TAB_HASH[tabId]; } catch (e) {} }
+    if (tabId === 'historyTab') loadHistory();
+    if (!opts.keepScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function openSafetyPage() { switchTab('safetyTab'); }
+function closeSafetyPage() { switchTab(lastMainTab !== 'safetyTab' ? lastMainTab : 'entryTab'); }
+const tabFromHash = () => Object.keys(TAB_HASH).find(k => TAB_HASH[k] === location.hash.replace('#', '')) || null;
+window.addEventListener('hashchange', () => { const t = tabFromHash(); if (t) switchTab(t, { noHash: true }); });
+
+// ---- entry rows ----
+const FIELDS = [['do','text','dl-do'],['veh','text','dl-veh'],['party','text','dl-party'],['item','text','dl-item'],['gsm','text','dl-gsm'],['reel','number',''],['weight','number',''],['remarks','text','']];
+function addRow(r) {
+    r = r || {};
+    const d = document.createElement('div'); d.className = 'item-row stmt-row';
+    d.innerHTML = '<div class="rn"></div>' + FIELDS.map(f => '<input data-k="' + f[0] + '" type="' + f[1] + '" autocomplete="off"' + (f[2] ? ' list="' + f[2] + '"' : '') + (f[1] === 'number' ? ' step="any" min="0" inputmode="decimal"' : '') + ' aria-label="' + f[0] + '" value="' + escHtml(r[f[0]]) + '">').join('') +
+        '<button type="button" class="btn btn-danger" title="Remove row">&#10005;</button>';
+    $('rowsBox').appendChild(d); renumber(); return d;
+}
+function renumber() { document.querySelectorAll('#rowsBox .stmt-row .rn').forEach((e, i) => { e.textContent = i + 1; }); }
+function readRows() { return Array.from(document.querySelectorAll('#rowsBox .stmt-row')).map(r => { const o = {}; COLS.forEach(c => { o[c] = r.querySelector('[data-k="' + c + '"]').value.trim(); }); return o; }).filter(isFilled); }
+const CW = { do: 88, veh: 150, party: 190, item: 96, gsm: 96, reel: 70, weight: 96 };
+let _cv;
+function fitCols() {   // entry columns grow with the typed text, so nothing is ever cut off
+    const inner = document.querySelector('.stmt-inner'), first = document.querySelector('#rowsBox input'); if (!inner || !first) return;
+    const cs = getComputedStyle(first), ctx = (_cv = _cv || document.createElement('canvas')).getContext('2d');
+    ctx.font = cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+    const ls = parseFloat(cs.letterSpacing) || 0, up = cs.textTransform === 'uppercase';
+    Object.keys(CW).forEach(k => {
+        let w = CW[k];
+        document.querySelectorAll('#rowsBox [data-k="' + k + '"]').forEach(i => { let t = i.value || ''; if (up) t = t.toUpperCase(); w = Math.max(w, ctx.measureText(t).width + t.length * ls + 44); });
+        inner.style.setProperty('--c-' + k, Math.ceil(w) + 'px');
+    });
+}
+function updateTotals() { fitCols(); const st = { rows: readRows() }; $('entryTotals').innerHTML = 'Total Reel: <b>' + (sumOf(st, 'reel') || 0) + '</b> &nbsp;|&nbsp; Total Weight: <b>' + (fmtN(sumOf(st, 'weight')) || 0) + '</b> kg'; }
+$('rowsBox').addEventListener('input', updateTotals);
+$('rowsBox').addEventListener('click', e => { const b = e.target.closest('.btn-danger'); if (!b) return; if (document.querySelectorAll('#rowsBox .stmt-row').length > 1) { b.closest('.stmt-row').remove(); renumber(); updateTotals(); } });
+$('rowsBox').addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || !e.target.dataset.k) return; e.preventDefault();
+    const row = e.target.closest('.stmt-row'); let nx = row.nextElementSibling; if (!nx) nx = addRow();
+    nx.querySelector('[data-k="' + e.target.dataset.k + '"]').focus();
+});
+$('addRowBtn').addEventListener('click', () => addRow().querySelector('input').focus());
+
+async function nextSl() { const all = await getAllRecords(); return String(all.reduce((a, s) => Math.max(a, parseInt(s.sl) || 0), 0) + 1); }
+async function resetForm() {
+    $('editId').value = ''; $('rowsBox').innerHTML = ''; for (let i = 0; i < 3; i++) addRow();
+    setIssueDate(''); $('slNo').value = await nextSl(); $('saveBtn').textContent = 'Save Statement'; updateTotals();
+}
+async function saveStatement(thenPrint) {
+    if (!CAN.write) { showToast('warn', 'View-only account', 'This account cannot save or edit statements.'); return; }
+    padIssueDay(); const date = syncIssueDate();
+    if (!date) { alert('Please type a valid day (e.g. 05) for the selected month and year.'); $('issueDay').focus(); return; }
+    const sl = $('slNo').value.trim(); if (!sl) { alert('Please enter the SL No.'); $('slNo').focus(); return; }
+    const rows = readRows(); if (!rows.length) { alert('Please enter at least one delivery row.'); return; }
+    const editId = $('editId').value || null;
+    const all = await getAllRecords();
+    if (all.some(s => String(s.sl) === sl && s.id !== editId) && !confirm('SL No ' + sl + ' already exists. Save anyway?')) return;
+    const rec = { id: editId || FB.newId(), sl, date, rows, savedAt: Date.now() };
+    try { await putRec(rec); } catch (e) { alert('Save failed: ' + e.message); return; }
+    updateDatalists(); loadHistory();
+    showToast(editId ? 'edit' : 'success', editId ? 'Statement updated' : 'Statement saved', 'SL No ' + sl + ' | ' + fmtDate(date));
+    if (thenPrint) showSheet(rec);
+    resetForm();
+}
+$('stmtForm').addEventListener('submit', e => { e.preventDefault(); saveStatement(false); });
+$('saveShowBtn').addEventListener('click', () => saveStatement(true));
+$('clearBtn').addEventListener('click', resetForm);
+$('prevBtn').addEventListener('click', () => { padIssueDay(); showSheet({ sl: $('slNo').value, date: syncIssueDate(), rows: readRows() }); });
+document.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 's' && $('entryTab').classList.contains('active')) { e.preventDefault(); saveStatement(false); } });
+
+function updateDatalists() {
+    getAllRecords().then(h => {
+        const u = k => [...new Set(h.flatMap(s => s.rows.map(r => String(r[k] || '').trim())).filter(Boolean))];
+        ['do','veh','party','item','gsm'].forEach(k => { $('dl-' + k).innerHTML = u(k).map(v => '<option value="' + escHtml(v) + '">').join(''); });
+        setDevice('on', h.length);
+        writeToFile(h);   // auto-save copy to the linked backup file
+    }).catch(() => setDevice('error', 0));
+}
+
+// ---- history ----
+async function loadHistory() {
+    const all = await getAllRecords(), q = $('qInput').value.toLowerCase().trim(), f = $('fromDate').value, t = $('toDate').value;
+    const list = all.filter(s => (!f || s.date >= f) && (!t || s.date <= t) && (!q || (s.sl + ' ' + JSON.stringify(s.rows)).toLowerCase().includes(q)))
+        .sort((a, b) => b.date.localeCompare(a.date) || (parseInt(b.sl) || 0) - (parseInt(a.sl) || 0));
+    const j = (s, k) => escHtml([...new Set(s.rows.map(r => r[k]).filter(Boolean))].join(', '));
+    $('historyBody').innerHTML = list.map(s => '<tr><td>' + fmtDate(s.date) + '</td><td><b>' + escHtml(s.sl) + '</b></td><td>' + j(s, 'do') + '</td><td>' + j(s, 'veh') + '</td><td>' + j(s, 'party') + '</td><td class="num">' + (sumOf(s, 'reel') || '') + '</td><td class="num">' + fmtN(sumOf(s, 'weight')) + '</td><td class="col-act"><button class="btn btn-warning" onclick="printId(\'' + s.id + '\')">Print</button> <button class="btn btn-secondary needs-edit" onclick="editId_(\'' + s.id + '\')">Edit</button> <button class="btn btn-danger needs-delete" onclick="deleteId(\'' + s.id + '\')">Delete</button></td></tr>').join('') || '<tr class="empty-row"><td colspan="8">No statements found.</td></tr>';
+    $('recordsSummary').innerHTML = 'Showing <b>' + list.length + '</b> of <b>' + all.length + '</b> statements | Total Reel: <b>' + list.reduce((a, s) => a + sumOf(s, 'reel'), 0) + '</b> | Total Weight: <b>' + fmtN(list.reduce((a, s) => a + sumOf(s, 'weight'), 0)) + '</b> kg';
+    return list;
+}
+const getOne = async id => (await getAllRecords()).find(s => s.id === id);
+async function printId(id) { showSheet(await getOne(id)); }
+async function editId_(id) {
+    if (!CAN.write) return;
+    const s = await getOne(id); if (!s) return;
+    $('editId').value = s.id; $('rowsBox').innerHTML = ''; s.rows.forEach(addRow); addRow();
+    setIssueDate(s.date); $('slNo').value = s.sl; $('saveBtn').textContent = 'Update Statement'; updateTotals(); switchTab('entryTab');
+}
+async function deleteId(id) {
+    if (!CAN.del) return;
+    const s = await getOne(id); if (!s || !confirm('Delete statement SL No ' + s.sl + '? This cannot be undone.')) return;
+    await delRec(id); updateDatalists(); loadHistory(); showToast('delete', 'Statement deleted', 'SL No ' + s.sl);
+}
+['qInput','fromDate','toDate'].forEach(i => $(i).addEventListener('input', loadHistory));
+$('clearSearchBtn').addEventListener('click', () => { $('qInput').value = ''; loadHistory(); });
+$('clearDateBtn').addEventListener('click', () => { $('fromDate').value = ''; $('toDate').value = ''; loadHistory(); });
+$('exportCsvBtn').addEventListener('click', async () => {
+    const list = await loadHistory(), q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+    const lines = [['Date','SL No','D/O','Veh. No','Party Name','Item','Gsm-Size','Reel','Weight','Remarks'].map(q).join(',')];
+    list.forEach(s => s.rows.forEach(r => lines.push([fmtDate(s.date), s.sl, r.do, r.veh, r.party, r.item, r.gsm, r.reel, r.weight, r.remarks].map(q).join(','))));
+    download('delivery-statements-' + new Date().toISOString().slice(0, 10) + '.csv', '\ufeff' + lines.join('\r\n'), 'text/csv;charset=utf-8');
+});
+function download(name, text, type) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1500); }
+async function downloadCopy() { download('delivery_statement_backup-' + new Date().toISOString().slice(0, 10) + '.json', JSON.stringify(await getAllRecords(), null, 2), 'application/json'); showToast('success', 'Copy downloaded', 'Keep this JSON file in a safe place.'); }
+
+// ---- print sheet ----
+const HEADS = [['SL',6],['D/O',14],['Veh. No',27],['Party Name',36],['Item',21],['Gsm-Size',16],['Reel',11],['Weight (kg)',19],['Remarks',20]];
+function fitSheet() {   // keeps every cell on ONE line: columns grow with the text, font shrinks only if the page width is exceeded
+    const box = $('sheet'), t = box.querySelector('table.g'); if (!t) return;
+    const cs = getComputedStyle(box), max = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 6;
+    let fs = 10; t.style.width = 'max-content'; t.style.alignSelf = 'flex-start'; t.style.setProperty('--fs', fs + 'pt');
+    while (t.offsetWidth > max && fs > 5.5) { fs -= 0.25; t.style.setProperty('--fs', fs + 'pt'); }
+    t.style.width = ''; t.style.alignSelf = '';
+}
+function sheetHTML(st) {
+    const rows = (st.rows || []).filter(isFilled), n = Math.max(+settings.minRows || 6, rows.length); let body = '';
+    const rh = n <= 6 ? 9 : n <= 8 ? 8 : n <= 10 ? 7 : 6;
+    for (let i = 0; i < n; i++) { const r = rows[i];
+        body += r ? '<tr><td>' + String(i + 1).padStart(2, '0') + '</td><td>' + escHtml(r.do) + '</td><td>' + escHtml(r.veh) + '</td><td class="l">' + escHtml(r.party) + '</td><td>' + escHtml(r.item) + '</td><td>' + escHtml(r.gsm) + '</td><td>' + escHtml(r.reel) + '</td><td class="r">' + fmtN(r.weight) + '</td><td class="l">' + escHtml(r.remarks) + '</td></tr>' : '<tr>' + '<td></td>'.repeat(9) + '</tr>'; }
+    const w = [5,9,11,22,7,10,8,13,15], d = new Date(), pr = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear() + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+    return '<div class="lh"><div class="s-co">' + escHtml(settings.company) + '</div><div class="s-ad">' + escHtml(settings.address) + '</div></div>' +
+        '<div class="meta"><div class="mb">SL No: <b>' + escHtml(st.sl) + '</b></div><div class="mt">' + escHtml(settings.title) + '</div><div class="mb">Date: <b>' + fmtDate(st.date) + '</b></div></div>' +
+        '<table class="g" style="--rh:' + rh + 'mm"><thead><tr>' + HEADS.map(h => '<th style="min-width:' + (h[1] / 3.527).toFixed(2) + 'em">' + h[0] + '</th>').join('') + '</tr></thead><tbody>' + body +
+        '<tr class="t"><td colspan="6">Total</td><td>' + (sumOf(st, 'reel') || '') + '</td><td class="r">' + fmtN(sumOf(st, 'weight')) + '</td><td>-</td></tr></tbody></table>' +
+        '<div class="sig"><div>Prepared By</div><div>Checked By</div><div>Authorized Signature</div></div>' +
+        '<div class="ft"><span>Printed on ' + pr + '</span></div>';
+}
+function showSheet(st) { if (!st) return; $('sheet').innerHTML = sheetHTML(st); $('reportModal').style.display = 'flex'; document.body.classList.add('report-open'); fitSheet(); }
+function closeSheet() { $('reportModal').style.display = 'none'; document.body.classList.remove('report-open'); }
+$('reportPrintBtn').addEventListener('click', () => window.print());
+$('reportCloseBtn').addEventListener('click', closeSheet);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeSheet(); $('setModal').style.display = 'none'; } });
+
+// ---- header settings ----
+$('setBtn').addEventListener('click', () => { $('s1').value = settings.company; $('s2').value = settings.address; $('s3').value = settings.title; $('s4').value = settings.minRows; $('setModal').style.display = 'flex'; });
+$('s5').addEventListener('click', () => { $('setModal').style.display = 'none'; });
+$('s6').addEventListener('click', () => {
+    settings = { company: $('s1').value.trim() || DEF_SET.company, address: $('s2').value.trim(), title: $('s3').value.trim() || DEF_SET.title, minRows: Math.min(30, Math.max(1, +$('s4').value || 6)) };
+    try { localStorage.setItem(SET_KEY, JSON.stringify(settings)); } catch (e) {}
+    applyHeader(); $('setModal').style.display = 'none'; showToast('success', 'Settings saved', 'The print header is updated.');
+});
+
+function initApp() {
+    applyHeader(); resetForm(); loadHistory(); updateDatalists(); initFileSync();
+    switchTab(tabFromHash() || 'entryTab', { noHash: true, keepScroll: true });
+}
+
+// ---- Data Safety Center : live health (button + banner) ----
+(function () {
+    const T = [['netTile', ['online'], { offline: ['warn', 'Internet is offline — working from this device'] }],
+               ['syncBar', ['on'], { paused: ['warn', 'Backup file paused — open the Data Safety Center and reconnect'], off: ['bad', 'Backup file is not linked'], unsupported: ['warn', 'Backup file needs desktop Chrome / Edge'] }],
+               ['devTile', ['on'], { error: ['bad', 'Cloud database problem'] }]];
+    let raf = null, last = '';
+    function render() {
+        raf = null; const issues = []; let waiting = 0;
+        T.forEach(t => { const n = $(t[0]); if (!n) return; const st = n.dataset.state || ''; if (t[1].includes(st)) return; const m = t[2][st]; if (m) issues.push({ l: m[0], t: m[1] }); else waiting++; });
+        let h = 'good'; if (waiting && !issues.length) h = 'checking'; if (issues.some(i => i.l === 'warn')) h = 'warn'; if (issues.some(i => i.l === 'bad')) h = 'bad';
+        const text = issues.map(i => i.t).join(' · ');
+        const title = h === 'good' ? 'All systems protected' : h === 'checking' ? 'Checking system status…' : h === 'bad' ? 'Action needed' : 'Please check';
+        const sub = h === 'good' ? 'Internet, cloud database and backup file are working. Every save is written to the cloud database and your backup file.' : h === 'checking' ? 'Please wait a moment.' : text;
+        $('safetyBtn').dataset.health = h; $('safetyBtn').title = title;
+        $('safetyBtnSub').textContent = h === 'good' ? 'All protected' : h === 'checking' ? 'Checking…' : issues[0].t + (issues.length > 1 ? ' (+' + (issues.length - 1) + ')' : '');
+        $('safetyBanner').dataset.health = h; $('safetyBannerTitle').textContent = title; $('safetyBannerSub').textContent = sub;
+        $('safetyBannerTime').textContent = 'Updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        if (last === 'good' && h === 'bad') showToast('warn', 'Data Safety: action needed', text);
+        last = h;
+    }
+    const schedule = () => { if (!raf) raf = requestAnimationFrame(render); };
+    new MutationObserver(schedule).observe(document.querySelector('#safetyTab .status-grid'), { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['data-state'] });
+    setInterval(schedule, 30000); render();
+})();
+
+// ===== Auto-save to disk file (File System Access API) =====
+    let fileHandle = null;
+    let syncReady = false;
+    let writeQueue = Promise.resolve();
+    const FH_DB = 'PWStmtFileHandleDB';
+    const FH_STORE = 'h';
+    const fsSupported = ('showSaveFilePicker' in window) && ('showOpenFilePicker' in window);
+    const FILE_TYPES = [{ description: 'JSON data file', accept: { 'application/json': ['.json'] } }];
+
+    function fhOpen() {
+        return new Promise((res, rej) => {
+            const r = indexedDB.open(FH_DB, 1);
+            r.onupgradeneeded = () => r.result.createObjectStore(FH_STORE);
+            r.onsuccess = () => res(r.result);
+            r.onerror = () => rej(r.error);
+        });
+    }
+    async function fhSave(h) {
+        const d = await fhOpen();
+        return new Promise((res, rej) => {
+            const t = d.transaction(FH_STORE, 'readwrite');
+            t.objectStore(FH_STORE).put(h, 'main');
+            t.oncomplete = res;
+            t.onerror = () => rej(t.error);
+        });
+    }
+    async function fhLoad() {
+        const d = await fhOpen();
+        return new Promise((res, rej) => {
+            const q = d.transaction(FH_STORE, 'readonly').objectStore(FH_STORE).get('main');
+            q.onsuccess = () => res(q.result || null);
+            q.onerror = () => rej(q.error);
+        });
+    }
+
+    async function fhClear() {
+        const d = await fhOpen();
+        return new Promise((res, rej) => {
+            const t = d.transaction(FH_STORE, 'readwrite');
+            t.objectStore(FH_STORE).delete('main');
+            t.oncomplete = res;
+            t.onerror = () => rej(t.error);
+        });
+    }
+
+    function getAllRecords() { return Promise.resolve(CLOUD.slice()); }
+
+    // ----- Data Safety Center: backup + internet status -----
+    const LASTBK_KEY = 'PWStmtLastBackup';
+    let lastBackup = null;
+    try { lastBackup = JSON.parse(localStorage.getItem(LASTBK_KEY) || 'null'); } catch (e) { lastBackup = null; }
+    let netSince = Date.now();
+
+    function p2(n) { return String(n).padStart(2, '0'); }
+    function fmtStamp(ms) {
+        const d = new Date(ms); let h = d.getHours(); const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+        return p2(d.getDate()) + '-' + p2(d.getMonth() + 1) + '-' + d.getFullYear() + ' ' + p2(h) + ':' + p2(d.getMinutes()) + ':' + p2(d.getSeconds()) + ' ' + ap;
+    }
+    function fmtClock(ms) {
+        const d = new Date(ms); let h = d.getHours(); const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+        return p2(h) + ':' + p2(d.getMinutes()) + ' ' + ap;
+    }
+    function fmtAgo(ms) {
+        const s = Math.max(0, Math.round((Date.now() - ms) / 1000));
+        if (s < 10) return 'just now';
+        if (s < 60) return s + ' sec ago';
+        const m = Math.floor(s / 60); if (m < 60) return m + ' min ago';
+        const h = Math.floor(m / 60); if (h < 24) return h + ' hr ago';
+        const d = Math.floor(h / 24); return d + ' day' + (d > 1 ? 's' : '') + ' ago';
+    }
+    function fmtSize(b) {
+        if (!b) return '';
+        if (b < 1024) return b + ' B';
+        if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+        return (b / 1048576).toFixed(2) + ' MB';
+    }
+
+    function noteBackup(count, size) {
+        lastBackup = { t: Date.now(), n: count, size: size || 0, name: fileHandle ? fileHandle.name : '' };
+        try { localStorage.setItem(LASTBK_KEY, JSON.stringify(lastBackup)); } catch (e) {}
+    }
+    function flashBackupTile() {
+        const t = document.getElementById('syncBar');
+        if (!t) return;
+        t.classList.remove('flash'); void t.offsetWidth; t.classList.add('flash');
+        setTimeout(() => t.classList.remove('flash'), 1400);
+    }
+
+    const SYNC_TEXT = {
+        on:          ['Active — data is protected', ''],
+        paused:      ['Paused', 'Click here and choose Allow to reconnect the data file'],
+        off:         ['Not linked', 'Select the folder that has your data file (auto-detected), or select / create / drop a file below'],
+        unsupported: ['Not supported', 'Auto-backup file needs desktop Chrome / Edge']
+    };
+
+    function renderBackupInfo() {
+        const f = document.getElementById('syncFile'), t = document.getElementById('syncTime');
+        if (!f || !t) return;
+        if (fileHandle) {
+            const sz = (lastBackup && lastBackup.size && lastBackup.name === fileHandle.name) ? ' · ' + fmtSize(lastBackup.size) : '';
+            f.innerHTML = '📄 <b></b>' + sz;
+            f.querySelector('b').textContent = fileHandle.name;
+        } else {
+            f.textContent = 'No backup file linked';
+        }
+        if (lastBackup && lastBackup.t) {
+            t.innerHTML = 'Last backup: <b></b> (' + fmtAgo(lastBackup.t) + ') · ' + lastBackup.n + ' record' + (lastBackup.n === 1 ? '' : 's');
+            t.querySelector('b').textContent = fmtStamp(lastBackup.t);
+        } else {
+            t.textContent = 'No backup written yet';
+        }
+    }
+
+    function setSync(state) {
+        const bar = document.getElementById('syncBar');
+        const x = SYNC_TEXT[state] || ['Checking…', ''];
+        bar.dataset.state = state;
+        document.getElementById('syncValue').textContent = x[0];
+        document.getElementById('syncHint').textContent = x[1];
+        renderBackupInfo();
+        const off = state === 'unsupported';
+        document.querySelectorAll('#syncActions .st-act').forEach(b => { b.disabled = off; });
+        const dz = document.getElementById('syncDrop');
+        if (dz) dz.classList.toggle('disabled', off);
+    }
+    setInterval(renderBackupInfo, 15000);
+
+    function updateNet() {
+        const tile = document.getElementById('netTile');
+        if (!tile) return;
+        const on = window.cloudNetUp ? cloudNetUp() : navigator.onLine;
+        tile.dataset.state = on ? 'online' : 'offline';
+        document.getElementById('netValue').textContent = on ? 'Online' : 'Offline';
+        document.getElementById('netSub').textContent = on
+            ? 'Connected since ' + fmtClock(netSince) + '.'
+            : 'Offline since ' + fmtClock(netSince) + '. Changes are kept on this device and sync to the cloud when the internet returns.';
+    }
+    window.addEventListener('online', () => {
+        netSince = Date.now(); updateNet();
+        showToast('success', 'Back online', 'Connection restored.');
+    });
+    window.addEventListener('offline', () => {
+        netSince = Date.now(); updateNet();
+        showToast('warn', 'You are offline', 'Entries are kept on this device and sync automatically when you are back online.');
+    });
+    updateNet();
+
+    function syncBarClick() {
+        const st = document.getElementById('syncBar').dataset.state;
+        if (st === 'paused') { reconnectFile(); }
+    }
+
+    function writeToFile(data) {
+        if (!fileHandle || !syncReady) return;
+        const json = JSON.stringify(data, null, 2);
+        writeQueue = writeQueue.then(async () => {
+            try {
+                const w = await fileHandle.createWritable();
+                await w.write(json);
+                await w.close();
+                let size = 0;
+                try { size = (await fileHandle.getFile()).size; } catch (x) {}
+                noteBackup(Array.isArray(data) ? data.length : 0, size);
+                setSync('on');
+                flashBackupTile();
+            } catch (e) {
+                console.error('File write failed', e);
+                syncReady = false;
+                setSync('paused');
+            }
+        });
+    }
+
+    async function readFileRecords(handle) {
+        const text = await (await handle.getFile()).text();
+        if (!text.trim()) return [];
+        const parsed = JSON.parse(text);
+        if (!Array.isArray(parsed)) throw new Error('Not a valid data file');
+        return parsed;
+    }
+
+    async function initFileSync() {
+        if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+        if (!fsSupported) { setSync('unsupported'); return; }
+        try { fileHandle = await fhLoad(); } catch (e) { fileHandle = null; }
+        if (!fileHandle) { setSync('off'); autoLoadFromFolder(); return; }
+        try {
+            const perm = await fileHandle.queryPermission({ mode: 'readwrite' });
+            if (perm === 'granted') { await reconcile(); } else { setSync('paused'); }
+        } catch (e) { setSync('paused'); }
+    }
+
+    async function reconnectFile() {
+        if (!fileHandle) return;
+        try {
+            const p = await fileHandle.requestPermission({ mode: 'readwrite' });
+            if (p === 'granted') { await reconcile(); } else { alert('Permission denied. Auto-save stays paused.'); }
+        } catch (e) { alert('Could not reconnect: ' + e.message); }
+    }
+
+    // Existing linked file: database is the source of truth, except when DB is empty but file has data
+    async function reconcile() {
+        let fileData;
+        try { fileData = await readFileRecords(fileHandle); }
+        catch (e) {
+            if (e && e.name === 'NotFoundError') {
+                // the file was moved or deleted (e.g. project folder copied to another PC): forget it
+                fileHandle = null; syncReady = false;
+                try { await fhClear(); } catch (x) {}
+                setSync('off');
+                const found = await autoLoadFromFolder();
+                if (!found) showToast('warn', 'Data file not found', 'Click "Select Folder" and choose the folder that has your data file.');
+                return;
+            }
+            alert('Data file could not be read, so it was NOT overwritten: ' + e.message); setSync('paused'); return;
+        }
+
+        const local = await getAllRecords();
+        if (local.length === 0 && fileData.length > 0) {
+            if (confirm('The data file has ' + fileData.length + ' records but the database is empty. Load them now?')) {
+                await importRecords(fileData, true);
+            } else { setSync('paused'); return; }
+        }
+        syncReady = true;
+        loadHistory();
+        updateDatalists(); // also writes DB to file
+    }
+
+    async function linkNewFile() {
+        if (!fsSupported) { alert('Please use desktop Chrome or Edge.'); return; }
+        try {
+            const h = await window.showSaveFilePicker({ suggestedName: 'delivery_statement_data.json', types: FILE_TYPES });
+            fileHandle = h;
+            await fhSave(h);
+            syncReady = true;
+            updateDatalists(); // writes current DB to the new file
+            showToast('success', 'Data file created', h.name + ' is now your auto-backup file.');
+        } catch (e) { if (e.name !== 'AbortError') alert('Failed: ' + e.message); }
+    }
+
+    async function linkExistingFile() {
+        if (!fsSupported) { alert('Please use desktop Chrome or Edge.'); return; }
+        try {
+            const [h] = await window.showOpenFilePicker({ types: FILE_TYPES });
+            await linkDataFile(h);
+        } catch (e) { if (e.name !== 'AbortError') alert('Failed: ' + e.message + ' (file must be a valid JSON data file)'); }
+    }
+
+    // ===== Auto-load the data file that sits in the same folder as this page =====
+    const DATA_FILE = 'delivery_statement_data.json';
+
+    // Cloud mode: data comes from Firestore - a JSON file next to the page is never imported automatically.
+    async function autoLoadFromFolder() { return false; }
+
+    // (B) Pick (or drop) the project folder once: the data file inside it is found and linked automatically.
+    async function linkFolder(dir) {
+        if ((await dir.requestPermission({ mode: 'readwrite' })) !== 'granted') { alert('Write permission is required for this folder.'); return; }
+        let h;
+        try { h = await dir.getFileHandle(DATA_FILE); }
+        catch (e) {
+            if (e.name !== 'NotFoundError') throw e;
+            if (!confirm(DATA_FILE + ' was not found in the folder "' + dir.name + '". Create a new data file there?')) return;
+            h = await dir.getFileHandle(DATA_FILE, { create: true });
+        }
+        await linkDataFile(h);
+    }
+
+    async function linkFolderPick() {
+        if (!fsSupported || !window.showDirectoryPicker) { alert('Please use desktop Chrome or Edge.'); return; }
+        try {
+            const d = await window.showDirectoryPicker({ mode: 'readwrite' });
+            await linkFolder(d);
+        } catch (e) {
+            if (e.name === 'AbortError') return;
+            alert('Failed: ' + e.message + '\n(Choose the project folder itself - Chrome does not allow Desktop, Documents or Downloads as a whole.)');
+        }
+    }
+
+    // Shared by "Select Existing" and drag & drop: link a chosen data file, merging its records
+    async function linkDataFile(h) {
+        if (fileHandle && syncReady && h.isSameEntry) {
+            let same = false;
+            try { same = await h.isSameEntry(fileHandle); } catch (x) {}
+            if (same) { showToast('edit', 'Already linked', h.name + ' is already your auto-backup file.'); return; }
+        }
+        if ((await h.requestPermission({ mode: 'readwrite' })) !== 'granted') { alert('Write permission is required.'); return; }
+        const fileData = await readFileRecords(h);
+        const local = await getAllRecords();
+        let note = h.name + ' is now your auto-backup file.';
+
+        if (fileData.length > 0) {
+            if (local.length === 0) {
+                await importRecords(fileData, true);
+                note = fileData.length + ' records restored from ' + h.name + '.';
+            } else {
+                const sig = r => sigOf(r);
+                const have = new Set(local.map(sig));
+                const toAdd = fileData.filter(r => !have.has(sig(r)));
+                if (toAdd.length) await importRecords(toAdd, false);
+                note = toAdd.length + ' new record' + (toAdd.length === 1 ? '' : 's') + ' merged from ' + h.name + '.';
+            }
+        }
+        fileHandle = h;
+        await fhSave(h);
+        syncReady = true;
+        loadHistory();
+        updateDatalists();
+        showToast('success', 'Data file linked', note);
+    }
+
+    // ----- Drag & drop a data file onto the Auto-Backup tile -----
+    (function initFileDrop() {
+        const tile = document.getElementById('syncBar');
+        if (!tile) return;
+        const hasFiles = e => e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types || [], 'Files') !== -1;
+        let depth = 0;
+
+        // stop the browser from opening a file that is dropped outside the tile
+        window.addEventListener('dragover', e => { if (hasFiles(e)) e.preventDefault(); });
+        window.addEventListener('drop', e => { if (hasFiles(e)) e.preventDefault(); });
+
+        tile.addEventListener('dragenter', e => {
+            if (!hasFiles(e)) return;
+            e.preventDefault(); depth++; tile.classList.add('dragover');
+        });
+        tile.addEventListener('dragover', e => {
+            if (!hasFiles(e)) return;
+            e.preventDefault(); e.dataTransfer.dropEffect = 'copy';
+        });
+        tile.addEventListener('dragleave', e => {
+            if (!hasFiles(e)) return;
+            depth = Math.max(0, depth - 1);
+            if (!depth) tile.classList.remove('dragover');
+        });
+        tile.addEventListener('drop', e => {
+            if (!hasFiles(e)) return;
+            e.preventDefault(); e.stopPropagation();
+            depth = 0; tile.classList.remove('dragover');
+
+            const items = Array.prototype.filter.call(e.dataTransfer.items || [], i => i.kind === 'file');
+            if (!fsSupported || !items.length || !items[0].getAsFileSystemHandle) {
+                showToast('warn', 'Not supported', 'Drag & drop needs desktop Chrome or Edge. Use "Select Existing" instead.');
+                return;
+            }
+            if (items.length > 1) { showToast('warn', 'One file at a time', 'Please drop a single .json data file.'); return; }
+
+            const pending = items[0].getAsFileSystemHandle();   // must be requested inside the drop event
+            pending.then(async h => {
+                if (h && h.kind === 'directory') {
+                    try { await linkFolder(h); }
+                    catch (err) {
+                        if (err && (err.name === 'SecurityError' || err.name === 'NotAllowedError')) showToast('warn', 'Permission needed', 'Use "Select Folder" to give access to this folder.');
+                        else alert('Failed: ' + (err && err.message));
+                    }
+                    return;
+                }
+                if (!h || h.kind !== 'file') { showToast('warn', 'Not a file', 'Please drop a .json data file or the data folder.'); return; }
+                if (!/\.json$/i.test(h.name)) { showToast('warn', 'Wrong file type', h.name + ' is not a .json data file.'); return; }
+                try { await linkDataFile(h); }
+                catch (err) {
+                    if (err && (err.name === 'SecurityError' || err.name === 'NotAllowedError')) {
+                        showToast('warn', 'Permission needed', 'Use "Select Existing" to give write access to this file.');
+                    } else { alert('Failed: ' + (err && err.message) + ' (file must be a valid JSON data file)'); }
+                }
+            }).catch(() => showToast('warn', 'Could not read file', 'Try "Select Existing" instead.'));
+        });
+    })();
+
+    // ===== Professional drop-down notifications =====
+    function showToast(type, title, message) {
+        if (!document.getElementById('toastStyle')) {
+            const st = document.createElement('style');
+            st.id = 'toastStyle';
+            st.textContent = `
+                #toastWrap { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); z-index: 99999; display: flex; flex-direction: column; gap: 10px; width: min(420px, 92vw); pointer-events: none; }
+                .toast { pointer-events: auto; position: relative; overflow: hidden; display: flex; align-items: flex-start; gap: 12px; background: #fff; border-radius: 10px; padding: 14px 16px 16px; box-shadow: 0 10px 30px rgba(15,23,42,.22), 0 2px 6px rgba(15,23,42,.10); border-left: 5px solid var(--tc); font-family: 'Segoe UI', Tahoma, Arial, sans-serif; transform: translateY(-140%); opacity: 0; transition: transform .45s cubic-bezier(.2,.9,.3,1.2), opacity .35s ease; }
+                .toast.show { transform: translateY(0); opacity: 1; }
+                .toast.hide { transform: translateY(-140%); opacity: 0; }
+                .toast-icon { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%; background: var(--tc); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; }
+                .toast-body { flex: 1; min-width: 0; }
+                .toast-title { font-size: 14.5px; font-weight: 700; color: #0f172a; margin: 0 0 2px; }
+                .toast-msg { font-size: 13px; color: #475569; margin: 0; word-break: break-word; }
+                .toast-close { flex: 0 0 auto; background: none; border: none; color: #94a3b8; font-size: 20px; line-height: 1; cursor: pointer; padding: 0 2px; }
+                .toast-close:hover { color: #0f172a; }
+                .toast-bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--tc); opacity: .55; transform-origin: left; animation: toastBar 3.6s linear forwards; }
+                @keyframes toastBar { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+                @media print { #toastWrap { display: none !important; } }
+            `;
+            document.head.appendChild(st);
+        }
+        let wrap = document.getElementById('toastWrap');
+        if (!wrap) {
+            wrap = document.createElement('div');
+            wrap.id = 'toastWrap';
+            document.body.appendChild(wrap);
+        }
+
+        const kinds = {
+            success: { color: '#16a34a', icon: '✓' },
+            edit:    { color: '#0284c7', icon: '✎' },
+            warn:    { color: '#d97706', icon: '!' },
+            delete:  { color: '#dc2626', icon: '🗑' }
+        };
+        const k = kinds[type] || kinds.success;
+
+        const el = document.createElement('div');
+        el.className = 'toast';
+        el.style.setProperty('--tc', k.color);
+        el.innerHTML = `
+            <div class="toast-icon">${k.icon}</div>
+            <div class="toast-body"><p class="toast-title"></p><p class="toast-msg"></p></div>
+            <button type="button" class="toast-close" aria-label="Close">&times;</button>
+            <div class="toast-bar"></div>`;
+        el.querySelector('.toast-title').textContent = title;
+        el.querySelector('.toast-msg').textContent = message || '';
+
+        const close = () => { el.classList.remove('show'); el.classList.add('hide'); setTimeout(() => el.remove(), 450); };
+        el.querySelector('.toast-close').addEventListener('click', close);
+        wrap.appendChild(el);
+        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+        setTimeout(close, 3600);
+    }
+
+/* ===== Cloud: sign-in (same login system as the Delivery project), roles, live data ===== */
+let booted = false, legacyChecked = false, rt = null;
+const ROLE_TXT = { admin: 'Admin · full access', editor: 'Editor · view & edit', viewer: 'Viewer · view only' };
+const LEVEL_ROLE = { 1: 'viewer', 2: 'editor', 3: 'admin' };
+const NOT_APPROVED = 'This email is not approved for this system yet. Please contact the system owner.';
+const IDLE_LOGOUT_MIN = 15;                       // logged out after this many idle minutes (0 = never)
+const NOTE_KEY = 'dlvGateNote', LEVEL_KEY = 'dlvRoleCache';
+let authMode = 'login', authBusy = false, gateNote = '', gateFails = 0, gateLockUntil = 0;
+let enterJob = null, enterUid = '', idleTimer = null, idleStamp = 0, LV = 0;
+try { gateNote = sessionStorage.getItem(NOTE_KEY) || ''; sessionStorage.removeItem(NOTE_KEY); } catch (e) {}
+
+const ae = { modal: $('authModal'), title: $('authTitle'), form: $('authForm'), email: $('authEmail'), pw: $('authPassword'), pw2: $('authPassword2'),
+  pwRow: $('authPwRow'), pw2Row: $('authPw2Row'), hint: $('authHint'), msg: $('authMsg'), submit: $('authSubmit') };
+
+/* ----- access gate: the page stays locked until a verified, approved login ----- */
+function lockPage() { document.documentElement.classList.add('ag-locked'); }
+function unlockGate() { document.documentElement.classList.remove('ag-locked'); ae.modal.style.display = 'none'; }
+function cover(msg) {                       // spinner screen
+  lockPage(); ae.modal.style.display = 'none';
+  $('agCover').classList.remove('ag-fail');
+  $('agMsg').textContent = msg; $('agSlow').hidden = true; $('agReload').hidden = true; $('agOut').hidden = true;
+}
+function gateFail(text, canSignOut) {       // problem screen with Reload (+ Sign out)
+  lockPage(); ae.modal.style.display = 'none';
+  $('agCover').classList.add('ag-fail');
+  $('agMsg').textContent = text; $('agSlow').hidden = true; $('agReload').hidden = false; $('agOut').hidden = !canSignOut;
+}
+function authMessage(text, ok) {
+  ae.msg.textContent = text || '';
+  ae.msg.style.display = text ? 'block' : 'none';
+  ae.msg.style.background = ok ? '#dcfce7' : '#fee2e2';
+  ae.msg.style.color = ok ? '#166534' : '#991b1b';
+}
+function authInfo(text) { authMessage(text, true); ae.msg.style.background = '#eef2ff'; ae.msg.style.color = '#3730a3'; }
+function resetEyes() {
+  document.querySelectorAll('#authModal .auth-eye').forEach(b => {
+    b.classList.remove('shown'); b.setAttribute('aria-label', 'Show password');
+    const i = $(b.dataset.target); if (i) i.type = 'password';
+  });
+}
+function setAuthMode(mode) {
+  authMode = mode;
+  const titles = { login: 'Login', create: 'Create Account', forgot: 'Reset Password' };
+  const labels = { login: 'Login', create: 'Create Account', forgot: 'Send Reset Email' };
+  ae.title.textContent = titles[mode]; ae.submit.textContent = labels[mode];
+  ae.pwRow.style.display = mode === 'forgot' ? 'none' : '';
+  ae.pw2Row.style.display = mode === 'create' ? '' : 'none';
+  ae.hint.style.display = mode === 'create' ? '' : 'none';
+  ae.pw.setAttribute('autocomplete', mode === 'create' ? 'new-password' : 'current-password');
+  document.querySelectorAll('#authModal .auth-link').forEach(b => { b.style.display = b.dataset.mode === mode ? 'none' : ''; });
+  const tabs = $('authTabs');
+  tabs.dataset.active = (mode === 'login' || mode === 'create') ? mode : 'none';
+  tabs.querySelectorAll('.auth-tab').forEach(t => { const on = t.dataset.mode === mode; t.classList.toggle('active', on); t.setAttribute('aria-selected', on ? 'true' : 'false'); });
+  const fg = document.querySelector('#authModal .auth-forgot'); if (fg) fg.style.display = mode === 'login' ? '' : 'none';
+  resetEyes(); authMessage('');
+}
+function showLogin(note) {
+  lockPage();
+  $('agCover').classList.remove('ag-fail');
+  if (ae.modal.style.display !== 'flex') {  // first time the popup opens: start clean. An open popup keeps its own message.
+    setAuthMode('login'); ae.pw.value = ''; ae.pw2.value = '';
+    if (note) authMessage(note); else authInfo('Login required. This register opens only for approved users.');
+  }
+  ae.modal.style.display = 'flex';
+  setTimeout(() => (ae.email.value ? ae.pw : ae.email).focus(), 50);
+}
+function authErrMsg(e) {
+  switch ((e && e.code) || '') {
+    case 'auth/wrong-password': case 'auth/invalid-credential': case 'auth/invalid-login-credentials': case 'auth/user-not-found': return 'Wrong email or password.';
+    case 'auth/email-already-in-use': return 'This email already has an account. Use Login, or Forgot password.';
+    case 'auth/weak-password': return 'Password is too weak. Use at least 8 characters with letters and numbers.';
+    case 'auth/network-request-failed': return 'Network error. Check your internet connection and try again.';
+    case 'auth/too-many-requests': return 'Too many attempts. Wait a while, or reset your password.';
+    case 'auth/invalid-email': return 'Invalid email address.';
+    case 'auth/user-disabled': return 'This account has been disabled.';
+    case 'auth/operation-not-allowed': return 'Email/Password sign-in is not enabled on the cloud server. Ask the system owner to enable it.';
+    case 'auth/operation-not-supported-in-this-environment': return 'Login does not work from a file:// page. Open this page over https:// (your Firebase Hosting address) or http://localhost.';
+    default: console.error(e); return 'Something went wrong. Please try again.';
+  }
+}
+
+/* ----- level of the signed-in person: the server decides (see firestore.rules); no e-mail list lives in this page ----- */
+async function loadLevel(user) {
+  let r = { level: 0, net: true };
+  try { r = await FB.probe(); } catch (e) { console.error(e); }
+  if (r.level) { try { sessionStorage.setItem(LEVEL_KEY, JSON.stringify({ u: user.uid, l: r.level })); } catch (e) {} return r.level; }
+  if (r.net) {                              // network trouble (not a refusal): use the last known level of this same login
+    try { const c = JSON.parse(sessionStorage.getItem(LEVEL_KEY) || 'null'); if (c && c.u === user.uid && c.l) return c.l | 0; } catch (e) {}
+    return -1;
+  }
+  try { sessionStorage.setItem(LEVEL_KEY, JSON.stringify({ u: user.uid, l: 0 })); } catch (e) {}
+  return 0;
+}
+function applyLevel(lv, email) {
+  LV = lv;
+  const role = LEVEL_ROLE[lv];
+  ME = { email, role };
+  CAN = { read: true, write: lv >= 2, del: lv >= 3 };
+  document.body.classList.toggle('no-entry', !CAN.write); document.body.classList.toggle('no-edit', !CAN.write); document.body.classList.toggle('no-delete', !CAN.del);
+  $('acMail').textContent = email; $('acRole').textContent = ROLE_TXT[role]; $('userChip').dataset.role = role; $('userChip').hidden = false;
+}
+
+/* ----- sign out (also used by auto-logout); the page reloads so nothing stays on screen ----- */
+async function signOutNow(note, force) {
+  if (!force && CLOUD_META.pending && !confirm('Some changes are still waiting to be saved online. If you sign out now they will be lost.\n\nSign out anyway?')) return;
+  if (note) { try { sessionStorage.setItem(NOTE_KEY, note); } catch (e) {} }
+  try { await FB.signOut(); } catch (e) { console.error(e); }
+  location.reload();
+}
+function idleReset(force) {
+  if (!IDLE_LOGOUT_MIN || !ME) return;
+  const now = Date.now();
+  if (!force && now - idleStamp < 4000) return;
+  idleStamp = now; clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => {
+    if (!ME) return;
+    if (CLOUD_META.pending || !navigator.onLine) { idleReset(true); return; }   // never throw away unsaved changes
+    signOutNow('You were logged out automatically after ' + IDLE_LOGOUT_MIN + ' minutes without activity.', true);
+  }, IDLE_LOGOUT_MIN * 60000);
+}
+async function recheckLevel() {             // an approval change takes effect without a new login
+  const u = ME && FB.user(); if (!u || !navigator.onLine) return;
+  let r; try { r = await FB.probe(); } catch (e) { return; }
+  if (r.net) return;
+  if (!r.level) { signOutNow(NOT_APPROVED, true); return; }
+  if (r.level !== LV) { applyLevel(r.level, u.email); showToast('warn', 'Access changed', ROLE_TXT[LEVEL_ROLE[r.level]]); }
+}
+
+/* ----- login popup actions ----- */
+async function doLogin(email, pw) {
+  if (!pw) { authMessage('Enter your password.'); return; }
+  const cred = await FB.login(email, pw);
+  if (!cred.user.emailVerified) {
+    try { await FB.verify(cred.user); } catch (e) { console.warn('verification mail failed', e); }
+    await FB.authSignOut();
+    authMessage('Email not verified yet. A verification email has been sent again to ' + email + '. Verify it, then log in.');
+    return;
+  }
+  authInfo('Checking access…');
+  await enter(cred.user);                   // approved: the page opens after the first data load; not approved: signed out
+  if (!ME && !$('agCover').classList.contains('ag-fail')) { const n = gateNote || NOT_APPROVED; gateNote = ''; showLogin(n); authMessage(n); }
+}
+async function doCreate(email, pw, pw2) {
+  if (pw.length < 8 || !/[A-Za-z]/.test(pw) || !/\d/.test(pw)) { authMessage('Password must be at least 8 characters with letters and numbers.'); return; }
+  if (pw !== pw2) { authMessage('Passwords do not match.'); return; }
+  const cred = await FB.register(email, pw);
+  let mailErr = null;
+  try { await FB.verify(cred.user); } catch (e) { mailErr = e; }
+  await FB.authSignOut();
+  setAuthMode('login'); ae.pw.value = ''; ae.pw2.value = '';
+  authMessage(mailErr
+    ? 'Account created, but the verification email could not be sent. Try to log in: it will be sent again.'
+    : 'Account created. A verification email was sent to ' + email + '. Verify it, then log in. Access is given only if the system owner has approved this email.', !mailErr);
+}
+async function doForgot(email) {
+  try { await FB.reset(email); }
+  catch (e) { if (!e || e.code !== 'auth/user-not-found') throw e; }
+  authMessage('If an account exists for ' + email + ', a password reset email has been sent. Check the inbox and spam folder.', true);
+}
+ae.form.addEventListener('submit', async e => {
+  e.preventDefault();
+  if (authBusy) return;
+  const email = ae.email.value.trim().toLowerCase();
+  if (!email) { authMessage('Enter your email.'); return; }
+  if (!navigator.onLine) { authMessage('You are offline. Network error.'); return; }
+  if (authMode === 'login' && Date.now() < gateLockUntil) { authMessage('Too many failed attempts. Try again in ' + Math.ceil((gateLockUntil - Date.now()) / 1000) + ' seconds.'); return; }
+  authBusy = true; ae.submit.disabled = true; authMessage('');
+  try {
+    if (authMode === 'login') await doLogin(email, ae.pw.value);
+    else if (authMode === 'create') await doCreate(email, ae.pw.value, ae.pw2.value);
+    else await doForgot(email);
+  } catch (err) {
+    if (authMode === 'login' && /invalid-credential|wrong-password|user-not-found|invalid-login-credentials/.test((err && err.code) || '')) { if (++gateFails >= 5) { gateFails = 0; gateLockUntil = Date.now() + 30000; } }
+    authMessage(authErrMsg(err));
+  } finally { authBusy = false; ae.submit.disabled = false; }
+});
+document.querySelectorAll('#authModal .auth-link, #authModal .auth-tab, #authModal .auth-forgot').forEach(b => b.addEventListener('click', () => setAuthMode(b.dataset.mode)));
+document.querySelectorAll('#authModal .auth-eye').forEach(b => b.addEventListener('click', () => {
+  const i = $(b.dataset.target), show = i.type === 'password';
+  i.type = show ? 'text' : 'password'; b.classList.toggle('shown', show); b.setAttribute('aria-label', show ? 'Hide password' : 'Show password'); i.focus();
+}));
+$('acOut').addEventListener('click', () => signOutNow());
+$('agOut').addEventListener('click', () => signOutNow(null, true));
+
+/* ----- start-up ----- */
+function appBoot(FB_) {
+  if (!FB_ || FB_.error) {
+    gateFail(location.protocol === 'file:'
+      ? 'This page was opened as a local file, so sign-in cannot work. Open it from your Firebase Hosting address (https://…web.app) or from http://localhost.'
+      : 'The login service could not load. Connect to the internet, then reload the page.', false);
+    return;
+  }
+  ['click', 'keydown', 'touchstart', 'mousemove', 'scroll'].forEach(ev => document.addEventListener(ev, () => idleReset(false), { passive: true, capture: true }));
+  setInterval(recheckLevel, 300000);
+  FB.onAuth(async user => {
+    if (!user) { if (booted) { location.reload(); return; } ME = null; const n = gateNote; gateNote = ''; showLogin(n); return; }
+    if (!user.emailVerified) {              // a half-finished login / create-account: those steps sign this user out themselves
+      if (!authBusy) { try { await FB.authSignOut(); } catch (e) {} }
+      return;
+    }
+    await enter(user);
+  });
+}
+function enter(user) {
+  if (ME) return Promise.resolve(LV);
+  if (enterJob && enterUid === user.uid) return enterJob;   // login button + login event share ONE check
+  enterUid = user.uid;
+  const job = (async () => {
+    cover('Checking access…');
+    const lv = await loadLevel(user);
+    if (lv === -1) { gateFail('Could not check your access. Check the internet connection, then reload.', true); return 0; }
+    if (!lv) { gateNote = NOT_APPROVED; try { await FB.authSignOut(); } catch (e) {} return 0; }
+    applyLevel(lv, user.email);
+    idleReset(true);
+    cover('Loading data from the cloud…');
+    FB.subscribe(onCloud, e => {
+      console.error(e); const d = e && e.code === 'permission-denied';
+      DEV_ERR = d ? 'The server refused access. Check the Firestore rules and the approved e-mail list.' : ((e && e.message) || 'Cloud connection problem');
+      if (!booted) gateFail(user.email + '\n' + DEV_ERR, true); else setDevice('error', CLOUD.length);
+    });
+    return lv;
+  })();
+  enterJob = job;
+  const clear = () => { if (enterJob === job) { enterJob = null; enterUid = ''; } };
+  job.then(clear, clear);
+  return job;
+}
+
+function onCloud(list, meta) {
+  CLOUD = list; CLOUD_META = meta; if (!meta.fromCache) CLOUD_SYNCED = true;
+  if (!booted) { booted = true; document.body.classList.add('authed'); unlockGate(); showToast('success', 'Logged in', ME ? ME.email : ''); initApp(); }
+  else { clearTimeout(rt); rt = setTimeout(()=>{loadHistory();updateDatalists()}, 150); }
+  if (CLOUD_SYNCED && !legacyChecked) { legacyChecked = true; migrateLegacy(); }
+}
+</script>
+
+<script type="module">
+/* ================= Firebase (Auth + Firestore) =================
+   Login = e-mail + password (verified e-mail required). The list of approved
+   e-mails and their level lives ONLY in firestore.rules - not in this page.  */
+const firebaseConfig = {
+  apiKey: "AIzaSyDZuSK1RoIyhEbpIgCbDID7S7Y7U5Wu-5U",
+  authDomain: "received-delivery-statement.firebaseapp.com",
+  projectId: "received-delivery-statement",
+  storageBucket: "received-delivery-statement.firebasestorage.app",
+  messagingSenderId: "723071911440",
+  appId: "1:723071911440:web:fa14fb419b8f35d697ac95"
+};
+const COLLECTION = 'delivery_statements';
+const SDK = 'https://www.gstatic.com/firebasejs/10.14.1/';
+const clean = v => JSON.parse(JSON.stringify(v));
+let api;
+try {
+  const [AppM, A, F] = await Promise.all([import(SDK + 'firebase-app.js'), import(SDK + 'firebase-auth.js'), import(SDK + 'firebase-firestore.js')]);
+  const app = AppM.initializeApp(firebaseConfig), auth = A.getAuth(app);
+  try { await A.setPersistence(auth, A.browserSessionPersistence); } catch (e) { console.warn(e); }   // login ends when the tab / browser is closed
+  let fs;
+  try { fs = F.initializeFirestore(app, { localCache: F.persistentLocalCache({ tabManager: F.persistentMultipleTabManager() }) }); }
+  catch (e) { console.warn('Offline cache unavailable, using default Firestore', e); fs = F.getFirestore(app); }
+  const col = F.collection(fs, COLLECTION), me = () => (auth.currentUser && auth.currentUser.email) || '';
+  const body = r => ({ id: r.id, sl: String(r.sl), date: r.date, rows: clean(r.rows), savedAt: Number(r.savedAt) || Date.now() });
+  api = {
+    newId: () => F.doc(col).id,
+    user: () => auth.currentUser,
+    onAuth: cb => A.onAuthStateChanged(auth, cb),
+    login: (e, p) => A.signInWithEmailAndPassword(auth, e, p),
+    register: (e, p) => A.createUserWithEmailAndPassword(auth, e, p),
+    verify: u => A.sendEmailVerification(u),
+    reset: e => A.sendPasswordResetEmail(auth, e),
+    authSignOut: () => A.signOut(auth),
+    /* Asks the server for this login's level. The rules answer "probe" 1 / 2 / 3 only to people of that level
+       (1 = view, 2 = add & edit, 3 = full). Nothing about e-mails or roles is stored in this page. */
+    probe: async () => {
+      const get = n => F.getDoc(F.doc(fs, '_p', String(n))).then(() => n, e => ({ e }));
+      let res;
+      try {
+        res = await Promise.race([Promise.all([3, 2, 1].map(get)),
+          new Promise((_, rej) => setTimeout(() => rej(Object.assign(new Error('Access check timed out'), { code: 'timeout' })), 10000))]);
+      } catch (e) { res = [{ e }]; }
+      const ok = res.filter(r => typeof r === 'number');
+      if (ok.length) return { level: Math.max.apply(null, ok) };
+      if (res.some(r => r && r.e && r.e.code !== 'permission-denied')) return { level: 0, net: true };
+      return { level: 0 };
+    },
+    signOut: async () => { try { await F.terminate(fs); await F.clearIndexedDbPersistence(fs); } catch (e) { console.warn(e); } await A.signOut(auth); },
+    subscribe: (ok, bad) => F.onSnapshot(col, { includeMetadataChanges: true }, s => ok(
+      s.docs.map(d => { const x = d.data({ serverTimestamps: 'estimate' }); return { id: d.id, sl: x.sl, date: x.date, rows: x.rows || [], savedAt: x.savedAt, createdBy: x.createdBy || '', updatedBy: x.updatedBy || '' }; }),
+      { pending: s.metadata.hasPendingWrites, fromCache: s.metadata.fromCache }), bad),
+    create: r => F.setDoc(F.doc(col, r.id), { ...body(r), createdBy: me(), createdAt: F.serverTimestamp(), updatedBy: me(), updatedAt: F.serverTimestamp() }),
+    update: (id, r) => { const b = body({ ...r, id }); delete b.id; return F.updateDoc(F.doc(col, id), { ...b, updatedBy: me(), updatedAt: F.serverTimestamp() }); },
+    remove: id => F.deleteDoc(F.doc(col, id)),
+    batchCreate: async list => {
+      for (let i = 0; i < list.length; i += 400) {
+        const b = F.writeBatch(fs);
+        list.slice(i, i + 400).forEach(r => b.set(F.doc(col, r.id), { ...body(r), createdBy: me(), createdAt: F.serverTimestamp(), updatedBy: me(), updatedAt: F.serverTimestamp() }));
+        await b.commit();
+      }
+    }
+  };
+} catch (e) { console.error(e); api = { error: (e && e.message) || String(e) }; }
+window.FB = api;
+if (window.appBoot) window.appBoot(api);
+</script>
+</body>
+</html>

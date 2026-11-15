@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta name="robots" content="noindex, nofollow, noarchive"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Raw Material Received Statement</title>
+<style>
+:root{--primary:#1b6fb5;--ink:#08182a;--navy:#0e2a47;--navy-2:#123d63;--brass:#c8a35a;--brass-soft:#ecdcb4;--brass-dark:#8a6a28;--bg:#eef2f6;--accent:#1b6fb5;--text:#13263a;--muted:#5d7084;--line:#dbe3ec;--ls:#c4d0dd;--zebra:#f6f9fc}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{font-family:Manrope,'Segoe UI','Noto Sans Bengali',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);margin:0;padding:20px 18px 32px;-webkit-font-smoothing:antialiased}
+.container{max-width:1280px;margin:0 auto}
+.ic{width:1.15em;height:1.15em;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+button:focus-visible{outline:3px solid rgba(56,152,214,.55);outline-offset:2px}
+.app-header{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 26px;margin-bottom:16px;border-radius:18px;background:radial-gradient(60% 150% at 100% 0%,rgba(200,163,90,.24),rgba(200,163,90,0) 62%),linear-gradient(135deg,#08182a,#0e2a47 55%,#123d63);border:1px solid rgba(200,163,90,.35);border-bottom:3px solid var(--brass);box-shadow:0 18px 36px -22px rgba(8,24,42,.85)}
+.ah-brand{display:flex;align-items:center;gap:16px;min-width:0}
+.ah-logo{width:66px;height:66px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--brass-soft);border:2px solid var(--brass);background:linear-gradient(145deg,#12385c,#0a1f36);box-shadow:0 0 0 4px rgba(200,163,90,.13)}
+.ah-logo svg{width:50%;height:50%;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.app-header h1{margin:0 0 5px;font-size:22px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;background:linear-gradient(to right,#fff 0,#ecdcb4 12%,#fff 24%,#c8a35a 100%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 6s linear infinite}
+.app-header p{margin:0;color:rgba(255,255,255,.86);font-size:12.5px;letter-spacing:1px}
+.ah-badge{display:inline-flex;align-items:center;gap:9px;padding:9px 18px;border-radius:50px;color:var(--brass-soft);background:rgba(255,255,255,.06);border:1px solid rgba(200,163,90,.55);font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;white-space:nowrap;cursor:pointer;font-family:inherit}
+.ah-badge i{width:8px;height:8px;border-radius:50%;background:var(--brass);animation:bpulse 2s infinite}@keyframes bpulse{0%{box-shadow:0 0 0 0 rgba(200,163,90,.7)}70%{box-shadow:0 0 0 8px rgba(200,163,90,0)}100%{box-shadow:0 0 0 0 rgba(200,163,90,0)}}
+.ah-badge[data-h=warn] i{background:#f59e0b;animation:blink 1s infinite}.ah-badge[data-h=bad] i{background:#ef4444;animation:blink 1s infinite}
+@keyframes shine{to{background-position:200% center}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}70%{box-shadow:0 0 0 8px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+@keyframes blink{50%{opacity:.35}}
+@media(prefers-reduced-motion:reduce){.app-header h1,.ah-badge i{animation:none}}
+
+select{width:100%;padding:10px 13px;font:14px inherit;font-family:inherit;color:var(--text);background:#fff;border:1px solid var(--ls);border-radius:10px}
+select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(27,111,181,.18)}
+.date-parts{display:grid;grid-template-columns:1fr 1.3fr 1.2fr;gap:8px}.date-parts input,.date-parts select{text-align:center}
+.dp-cap{display:block;font-size:10px;color:var(--muted);text-align:center;margin-top:3px;letter-spacing:.3px;text-transform:uppercase}
+.stmt-wrap{overflow-x:auto}.stmt-inner{min-width:1280px}
+.item-head,.item-row{display:grid;grid-template-columns:34px minmax(0,.8fr) minmax(0,1.7fr) minmax(0,1.05fr) repeat(5,minmax(0,.9fr)) minmax(0,1.3fr) 44px;gap:10px}
+.item-head{padding:0 13px 6px 16px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
+.item-row{align-items:start;background:#f7fafd;padding:12px;margin-bottom:10px;border:1px solid var(--line);border-left:4px solid var(--brass);border-radius:12px}
+.item-row .rn{line-height:38px;text-align:center;color:var(--muted);font-weight:700}.item-row input{min-width:0}
+.item-row .cv{height:40px;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;border:1px dashed var(--ls);border-radius:10px;background:#eef3f8;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
+.item-row .cv.bad{color:#c92a2f;border-color:#e5484d}
+.item-row .btn-danger{height:38px;width:44px;padding:0}
+@media(min-width:769px){.item-row input::placeholder{color:transparent}}
+.filter-panel{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;padding:14px;background:#f7fafd;border:1px solid var(--line);border-radius:14px}
+.search-row{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px}.search-field{flex:1 1 190px;min-width:0;margin:0!important}
+.date-row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:10px;border-top:1px solid var(--line);padding-top:12px}
+.action-group{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px}.action-group .form-group{margin:0}.action-group input[type=date]{width:auto;padding:7px 10px;font-size:13px}
+.search-row>.btn,.date-row .btn{padding:9px 14px;font-size:13.5px}
+.grid-table thead th{text-align:left}.grid-table thead th.num{text-align:right}
+.grid-table td:first-child{white-space:nowrap}.grid-table td:last-child{white-space:nowrap;width:1%}
+.grid-table td .btn{padding:5px 11px;font-size:12px;margin:0 3px 0 0}
+@media(max-width:768px){.stmt-inner{min-width:0}.item-head{display:none}.item-row{grid-template-columns:1fr}.item-row .btn-danger{width:100%}
+.item-row .cv{justify-content:space-between}.item-row .cv::before{content:attr(data-l);font-weight:600;font-size:12px;color:var(--muted)}
+.search-field{flex:1 1 100%}.date-row{flex-direction:column;align-items:stretch}.date-row .action-group{width:100%}.date-row .action-group .form-group{flex:1 1 calc(50% - 8px)}.date-row .action-group input[type=date]{width:100%}.actions{flex-wrap:wrap}}
+#toast{position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast{--tc:#16a34a;pointer-events:auto;position:relative;overflow:hidden;display:flex;align-items:flex-start;gap:12px;min-width:280px;max-width:360px;background:#fff;border-radius:10px;padding:14px 16px 16px;box-shadow:0 10px 30px rgba(15,23,42,.22);border-left:5px solid var(--tc);transform:translateY(-140%);opacity:0;transition:transform .45s cubic-bezier(.2,.9,.3,1.2),opacity .35s}
+.toast.show{transform:none;opacity:1}.toast.hide{transform:translateY(-140%);opacity:0}
+.toast-icon{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--tc);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+.toast-title{font-size:14.5px;font-weight:700;margin:0 0 2px;color:#0f172a}.toast-msg{font-size:13px;color:#475569;margin:0;word-break:break-word}
+.toast-close{background:none;border:none;color:#94a3b8;font-size:20px;line-height:1;cursor:pointer;margin-left:auto}
+.toast-bar{position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--tc);opacity:.55;transform-origin:left;animation:tbar 3.6s linear forwards}@keyframes tbar{to{transform:scaleX(0)}}
+.app-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.safety-btn{--hc:#64748b;--hbg:#f1f5f9;--htx:#334155;display:inline-flex;align-items:center;gap:11px;padding:7px 18px 7px 8px;border-radius:50px;background:#fff;border:1px solid var(--ls);color:var(--navy);font-family:inherit;cursor:pointer;box-shadow:0 12px 26px -20px rgba(8,24,42,.55);transition:all .25s}
+.safety-btn:hover{transform:translateY(-2px);border-color:var(--hc)}
+.safety-btn.active{background:linear-gradient(180deg,#17497a,#0d2f52);border-color:#0a2744;color:#fff;box-shadow:0 8px 18px -8px rgba(10,39,68,.75),inset 0 -3px 0 var(--brass)}
+.safety-btn[data-health=good],.sp-banner[data-health=good]{--hc:#16a34a;--hbg:#dcfce7;--htx:#166534}
+.safety-btn[data-health=warn],.sp-banner[data-health=warn]{--hc:#d97706;--hbg:#fef3c7;--htx:#92400e}
+.safety-btn[data-health=bad],.sp-banner[data-health=bad]{--hc:#dc2626;--hbg:#fee2e2;--htx:#991b1b}
+.sb-icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--hbg);color:var(--htx)}.sb-icon .ic{width:18px;height:18px}
+.sb-text{display:flex;flex-direction:column;align-items:flex-start;line-height:1.2;text-align:left}.sb-text b{font-size:13px;font-weight:800}
+.sb-text small{font-size:11.5px;font-weight:600;color:var(--htx);max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.safety-btn.active .sb-text small{color:var(--brass-soft)}
+.sb-dot{width:10px;height:10px;border-radius:50%;background:var(--hc)}.safety-btn[data-health=good] .sb-dot{animation:pulse 2s infinite}.safety-btn[data-health=warn] .sb-dot,.safety-btn[data-health=bad] .sb-dot{animation:blink 1s infinite}
+.sp-back{margin-left:auto;padding:7px 16px!important;font-size:13px!important}
+.sp-banner{--hc:#64748b;--hbg:#f1f5f9;--htx:#334155;display:flex;align-items:center;gap:16px;padding:16px 18px;margin-bottom:20px;border-radius:16px;border:1px solid var(--line);border-left:6px solid var(--hc);background:linear-gradient(180deg,#fff,var(--hbg))}
+.sp-banner-icon{flex:0 0 auto;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--htx);background:#fff;border:2px solid var(--hc)}.sp-banner-icon .ic{width:23px;height:23px}
+.sp-banner-title{font-size:16px;font-weight:800;color:var(--htx)}.sp-banner-sub{margin-top:3px;font-size:13px;color:#475569}.sp-banner-time{margin-left:auto;font-size:11.5px;font-weight:700;color:var(--muted)}
+@media(max-width:560px){.app-toolbar{flex-direction:column;align-items:stretch}.sp-banner-time{display:none}}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;padding:5px;background:#fff;border:1px solid var(--line);border-radius:50px;box-shadow:0 12px 28px -22px rgba(8,24,42,.5)}
+.tab-btn{flex:1 1 170px;display:inline-flex;align-items:center;justify-content:center;gap:9px;background:transparent;border:none;border-radius:50px;padding:11px 18px;color:#4a5f75;font:700 14px inherit;font-family:inherit;cursor:pointer;transition:all .3s}
+.tab-btn:not(.active):hover{background:#eef3f8;color:var(--navy);transform:translateY(-2px)}
+.tab-btn.active{color:#fff;background:linear-gradient(180deg,#17497a,#0d2f52);box-shadow:0 8px 18px -8px rgba(10,39,68,.75),inset 0 -3px 0 var(--brass)}
+.tab-content{display:none}
+.tab-content.active{display:block;background:#fff;padding:20px;margin-bottom:20px;border:1px solid var(--line);border-radius:18px;box-shadow:0 1px 2px rgba(8,24,42,.04),0 18px 40px -26px rgba(8,24,42,.45);animation:tabIn .35s ease}
+@keyframes tabIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.tab-content>h3{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);padding-bottom:12px;margin:0 0 18px}
+.tab-content>h3::before{content:"";width:5px;height:20px;border-radius:3px;background:linear-gradient(180deg,var(--brass),#a8843f)}
+h3.sub-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--brass-dark);margin:6px 0 12px}
+.header-section{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px}
+.form-group{display:flex;flex-direction:column;margin-bottom:12px}
+label{font-weight:700;font-size:11.5px;color:#4a5f75;text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+input{width:100%;padding:10px 13px;font:14px inherit;font-family:inherit;color:var(--text);background:#fff;border:1px solid var(--ls);border-radius:10px;transition:border-color .15s,box-shadow .15s}
+input::placeholder{color:#94a3b8;text-transform:none}
+input:hover{border-color:#91a8be}input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(27,111,181,.18)}
+input.uc{text-transform:uppercase}
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 20px;line-height:1.5;border-radius:50px;color:#fff;font:700 14px inherit;font-family:inherit;border:1px solid #0a2744;background:linear-gradient(180deg,#17497a,#0d2f52);box-shadow:0 8px 18px -8px rgba(10,39,68,.7),inset 0 1px 0 rgba(255,255,255,.2);cursor:pointer;transition:all .3s}
+.btn .ic{width:16px;height:16px}
+.btn:hover{background:linear-gradient(180deg,#1d568d,#103760);transform:translateY(-3px);box-shadow:0 10px 25px rgba(10,39,68,.45)}
+.btn:active{transform:none}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-secondary{color:var(--text);border-color:var(--ls);background:linear-gradient(180deg,#fff,#f5f8fb);box-shadow:0 1px 2px rgba(8,24,42,.07)}
+.btn-secondary:hover{background:linear-gradient(180deg,#fff,#eef3f8);border-color:#91a8be}
+.btn-danger{border-color:#b32227;background:linear-gradient(180deg,#e5484d,#c92a2f);padding:6px 12px;box-shadow:none}
+.btn-danger:hover{background:linear-gradient(180deg,#ea5a5f,#d03035)}
+.btn-warning{color:#08182a;border-color:#a8843f;background:linear-gradient(135deg,#c8a35a,#ecdcb4);box-shadow:0 6px 14px -8px rgba(168,132,63,.9)}
+.btn-warning:hover{background:linear-gradient(135deg,#d3b06a,#f3e6c4)}
+.actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}.actions .btn{padding:12px 22px;font-size:15px}#saveBtn{flex:2}.actions .btn-secondary,#saveShowBtn{flex:0 0 auto}
+.table-wrap{border:1px solid var(--ls);border-radius:14px;background:#fff;overflow:auto;max-height:68vh}
+.grid-table{border-collapse:separate;border-spacing:0;width:100%}
+.grid-table thead th{position:sticky;top:0;z-index:2;background:linear-gradient(180deg,#123d63,#0e2a47);color:#fff;font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;padding:10px;white-space:nowrap;border-bottom:3px solid var(--brass);border-right:1px solid rgba(255,255,255,.12)}
+.grid-table td{padding:8px 10px;font-size:13px;border-bottom:1px solid #e3eaf1;border-right:1px solid #edf1f6;font-variant-numeric:tabular-nums}
+.grid-table tbody tr:nth-child(even) td{background:var(--zebra)}.grid-table tbody tr:hover td{background:#eaf1f8}
+.grid-table .num{text-align:right;white-space:nowrap}
+.empty-row td{text-align:center;color:var(--muted);font-style:italic;padding:30px 12px!important}
+.records-summary{font-size:12px;color:var(--muted);margin:0 2px 8px}.records-summary b{color:var(--navy)}
+details.set{margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:14px;background:#f7fafd}details.set summary{cursor:pointer;font-weight:700;color:var(--navy)}
+.status-title{display:flex;align-items:center;gap:10px;margin:0 0 14px;font-size:13px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--navy)}
+.status-title .shield{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--brass-soft);background:linear-gradient(145deg,#12385c,#0a1f36);border:1.5px solid var(--brass)}
+.status-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.st-tile{--acc:#64748b;--bgc:#f1f5f9;--tx:#334155;position:relative;display:flex;gap:12px;overflow:hidden;padding:14px 14px 14px 18px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#fff,#f7fafd);box-shadow:0 1px 2px rgba(15,23,42,.05),0 10px 20px -14px rgba(15,23,42,.35);transition:all .2s}
+.st-tile::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--acc)}
+.st-tile[data-state=on],.st-tile[data-state=online]{--acc:#16a34a;--bgc:#dcfce7;--tx:#166534}
+.st-tile[data-state=paused],.st-tile[data-state=error]{--acc:#d97706;--bgc:#fef3c7;--tx:#92400e;cursor:pointer}
+.st-tile[data-state=off],.st-tile[data-state=offline],.st-tile[data-state=unsupported]{--acc:#dc2626;--bgc:#fee2e2;--tx:#991b1b}
+.st-icon{width:40px;height:40px;border-radius:14px;background:var(--bgc);color:var(--tx);display:flex;align-items:center;justify-content:center}.st-icon .ic{width:21px;height:21px}
+.st-body{flex:1;min-width:0}.st-label{font-size:11px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.st-value{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;color:var(--tx)}
+.st-dot{width:10px;height:10px;border-radius:50%;background:var(--acc)}
+.st-tile[data-state=on] .st-dot,.st-tile[data-state=online] .st-dot{animation:pulse 2s infinite}
+.st-line{font-size:12.5px;color:#475569;margin-top:5px;word-break:break-word}.st-line b{color:var(--navy)}
+.st-hint{margin-top:7px;font-size:12px;font-weight:600;color:var(--tx);background:var(--bgc);padding:5px 9px;border-radius:8px;display:inline-block}.st-hint:empty{display:none}
+.st-tile.flash{animation:flash 1.3s}@keyframes flash{0%{background:#bbf7d0}100%{background:#fff}}
+.st-btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.st-act{flex:1 1 auto;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:7px 12px;border:1px solid var(--ls);border-radius:50px;background:#fff;color:#0f172a;font:700 12.5px inherit;font-family:inherit;cursor:pointer;transition:all .3s}
+.st-act .ic{width:14px;height:14px}.st-act:hover:not(:disabled){background:#eef4fa;border-color:var(--navy-2);transform:translateY(-2px)}.st-act:disabled{opacity:.5}
+.st-drop{margin-top:8px;padding:9px 10px;border:1.5px dashed #aab9ca;border-radius:12px;background:rgba(241,245,249,.65);color:var(--muted);font-size:12px;font-weight:600;text-align:center}
+.st-tile.dragover{border-color:var(--accent);box-shadow:0 0 0 3px rgba(27,111,181,.18)}.st-tile.dragover .st-drop{border-style:solid;border-color:var(--accent);background:#e3f0fa;color:var(--navy-2)}
+.sp-layers{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
+.sp-layer{padding:12px 14px;border:1px solid var(--line);border-left:4px solid var(--brass);border-radius:12px;background:#f7fafd;font-size:12.5px;color:#475569}.sp-layer b{display:block;font-size:13px;color:var(--navy)}
+.modal{display:none;position:fixed;inset:0;z-index:9000;overflow:auto;align-items:flex-start;justify-content:center;padding:20px 12px;background:rgba(8,24,42,.66);backdrop-filter:blur(3px)}
+.modal-content{width:100%;max-width:1220px;margin:auto;padding:22px;background:#fff;border-radius:18px;border-top:4px solid var(--brass);box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+.sheetwrap{overflow-x:auto}
+#sheet{width:var(--sw,246mm);margin:0 auto;font-family:"Times New Roman",Times,serif;color:#000;background:#fff;display:flex;flex-direction:column;min-height:var(--sh,157mm)}
+.ph{text-align:center;padding-bottom:6px;border-bottom:2px solid #000}
+.ph .co{font-size:20pt;font-weight:bold;letter-spacing:.5px;text-transform:uppercase;line-height:1.2}.ph .ad{font-size:9pt;margin-top:2px}
+.pr{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0 8px}
+.pr .bx{width:52mm;border:1px solid #000;padding:5px 10px;font-size:10pt;text-align:center}.pr .bx.r{text-align:center}
+.pr .tt{flex:1;text-align:center}.pr h2{display:inline-block;margin:0;font-size:13pt;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px}
+table.pt{width:100%;margin:0 auto;border-collapse:collapse;table-layout:auto;font-size:10pt}
+.pt th,.pt td{border:1px solid #000;padding:1.6mm 2.2mm;height:7.5mm;text-align:center;vertical-align:middle;white-space:nowrap}
+.pt th{background:#e5e5e5;font-weight:bold}.pt td.u{text-transform:uppercase}.pt.wrap th,.pt.wrap td{white-space:normal;word-break:break-word}
+.pt tfoot td{font-weight:bold;background:#e5e5e5}.pt tfoot{display:table-row-group}.pt thead{display:table-header-group}.pt tr{break-inside:avoid}
+.sig{margin-top:auto;display:flex;justify-content:space-between;gap:16mm;padding-top:12mm;break-inside:avoid}.sig div{flex:1;text-align:center;border-top:1px solid #000;padding-top:1.5mm;font-size:10pt;font-weight:bold;letter-spacing:.3px}
+
+@media print{body.report-open{margin:0;padding:0;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body.report-open>*:not(#reportModal){display:none!important}
+body.report-open #reportModal{display:block!important;position:static;padding:0;background:#fff;overflow:visible}
+body.report-open .modal-content{max-width:none;margin:0;padding:0;box-shadow:none;border:none;border-radius:0}
+.no-print{display:none!important}.sheetwrap{overflow:visible}#sheet{width:auto}}
+@media(max-width:820px){.status-grid,.sp-layers{grid-template-columns:1fr}.header-section{grid-template-columns:1fr}}
+@media(max-width:720px){.app-header{flex-direction:column;text-align:center}.ah-brand{flex-direction:column}}
+.item-row select{min-width:0;height:40px;padding:0 10px;cursor:pointer}
+.item-row select.has{border-color:var(--brass);background:#fdf8ec;font-weight:700;color:var(--navy)}
+.item-row select.need{border-color:#d97706;background:#fffbeb;box-shadow:0 0 0 3px rgba(217,119,6,.15)}
+.item-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.it-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 5px 4px 12px;border:1px solid var(--ls);border-radius:50px;background:#f7fafd;font-size:13px;font-weight:600;color:var(--navy)}
+.it-chip button{border:none;background:#e3eaf1;color:var(--muted);width:20px;height:20px;border-radius:50%;cursor:pointer;line-height:1;font-size:14px}.it-chip button:hover{background:#e5484d;color:#fff}
+.it-chip.lock{padding-right:11px}.ro{background:#eef3f8!important;color:var(--navy);font-weight:800;cursor:not-allowed}
+.item-add{display:flex;gap:8px}.item-add .btn{padding:9px 18px}
+.paper-pick{display:flex;align-items:center;gap:8px;margin:0 auto 0 0;font-size:13px;text-transform:none;letter-spacing:0;margin-bottom:0}.paper-pick select{width:auto;padding:8px 12px}
+/* ===== Access Gate: the whole page stays locked until a verified, approved login ===== */
+        #agCover { display: none; position: fixed; inset: 0; z-index: 99990; align-items: center; justify-content: center; padding: 24px; text-align: center;
+            background:
+                radial-gradient(55% 38% at 14% 24%, rgba(200, 163, 90, .38) 0%, rgba(200, 163, 90, 0) 72%),
+                radial-gradient(60% 30% at 92% 100%, rgba(27, 111, 181, .42) 0%, rgba(27, 111, 181, 0) 75%),
+                linear-gradient(135deg, #08182a 0%, #0e2a47 60%, #123d63 100%);
+            font-family: Manrope, 'DM Sans', 'Segoe UI', Tahoma, Arial, sans-serif; color: #e8eef6; }
+        #agCover [hidden] { display: none !important; }
+        html.ag-locked #agCover { display: flex; }
+        #agCover .ag-box { max-width: 380px; }
+        #agCover .ag-spin { width: 44px; height: 44px; margin: 0 auto 18px; border: 4px solid rgba(255, 255, 255, .2); border-top-color: #c8a35a; border-radius: 50%; animation: agSpin .9s linear infinite; }
+        #agCover.ag-fail .ag-spin { display: none; }
+        @keyframes agSpin { to { transform: rotate(360deg); } }
+        @media (prefers-reduced-motion: reduce) { #agCover .ag-spin { animation-duration: 3s; } }
+        #agCover .ag-t { font-size: 18px; font-weight: 700; }
+        #agCover .ag-s { margin-top: 6px; font-size: 14px; color: #b9c7d8; line-height: 1.5; }
+        #agCover .ag-slow { margin-top: 14px; font-size: 13px; color: #f3d9a0; line-height: 1.5; }
+        #agCover button { margin-top: 14px; padding: 10px 24px; border: 0; border-radius: 50px; background: #c8a35a; color: #08182a; font-weight: 700; font-size: 14px; cursor: pointer; }
+        html.ag-locked, html.ag-locked body { overflow: hidden !important; }
+        html.ag-locked body > *:not(#agCover):not(#loginOverlay):not(#authModal):not(#toast):not(script):not(style) { visibility: hidden !important; }
+        html.ag-locked #authModal { z-index: 100000 !important; visibility: visible !important; }
+        html.ag-locked #authCloseBtn { display: none !important; }
+        @media print { html.ag-locked body > * { display: none !important; } }
+
+/* ===== Admin login popup ===== */
+        /* login popup: soft gradient page + floating white card */
+        #authModal {
+            background:
+                radial-gradient(55% 38% at 14% 24%, rgba(190, 172, 255, .80) 0%, rgba(190, 172, 255, 0) 72%),
+                radial-gradient(42% 32% at 96% 20%, rgba(252, 205, 222, .95) 0%, rgba(252, 205, 222, 0) 72%),
+                radial-gradient(60% 26% at 56% 100%, rgba(158, 196, 255, .90) 0%, rgba(158, 196, 255, 0) 75%),
+                #f3effd;
+            overflow-y: auto; padding: 20px 16px; align-items: center; justify-content: center;
+            font-family: 'DM Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #authModal .auth-card {
+            position: relative; width: 100%; max-width: 440px; margin: auto;
+            background: linear-gradient(180deg, #ffffff 0%, #fdfaff 100%);
+            border-radius: 30px; padding: 26px 26px 24px;
+            box-shadow: 0 1px 2px rgba(60, 40, 120, .05), 0 30px 60px -28px rgba(76, 52, 160, .35);
+            animation: authIn .35s cubic-bezier(.2, .8, .2, 1);
+        }
+        @keyframes authIn { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: none; } }
+        @media (prefers-reduced-motion: reduce) { #authModal .auth-card { animation: none; } }
+
+        #authModal .auth-x {
+            position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; min-height: 0 !important; padding: 0;
+            border-radius: 50%; border: none; background: #f4f4f5; color: #52525b; font-size: 14px; line-height: 1; cursor: pointer;
+        }
+        #authModal .auth-x:hover { background: #e4e4e7; color: #18181b; }
+
+        #authModal .auth-brand { display: flex; align-items: center; gap: 14px; padding-right: 30px; }
+        #authModal .auth-logo { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%; background: #17151f; display: flex; align-items: center; justify-content: center; }
+        #authModal .auth-logo svg { width: 46px; height: 46px; display: block; }
+        #authModal .auth-brand-name { font-size: 17px; font-weight: 700; color: #18181b; line-height: 1.2; }
+        #authModal .auth-brand-sub { font-size: 14px; color: #52525b; margin-top: 3px; }
+
+        #authModal .auth-tabs {
+            position: relative; display: grid; grid-template-columns: 1fr 1fr; margin-top: 22px; padding: 5px;
+            background: #f4f4f5; border-radius: 999px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .02);
+        }
+        #authModal .auth-pill {
+            position: absolute; top: 5px; bottom: 5px; left: 5px; width: calc(50% - 5px); border-radius: 999px; background: #fff;
+            box-shadow: 0 6px 16px -6px rgba(76, 52, 160, .35), 0 1px 2px rgba(0, 0, 0, .06);
+            transition: transform .28s cubic-bezier(.3, .8, .3, 1), opacity .2s;
+        }
+        #authModal .auth-tabs[data-active="create"] .auth-pill { transform: translateX(100%); }
+        #authModal .auth-tabs[data-active="none"] .auth-pill { opacity: 0; }
+        #authModal .auth-tab {
+            position: relative; z-index: 1; background: transparent; border: none; border-radius: 999px; min-height: 0 !important;
+            padding: 12px 8px; font: inherit; font-size: 15.5px; font-weight: 600; color: #52525b; cursor: pointer; transition: color .2s;
+        }
+        #authModal .auth-tab.active { color: #18181b; }
+        #authModal .auth-tab:hover:not(.active) { color: #18181b; background: transparent; }
+
+        #authModal #authTitle { margin: 26px 0 18px; padding: 0; border: none; font-size: 30px; font-weight: 700; letter-spacing: -.4px; color: #18181b; line-height: 1.15; }
+        #authModal #authTitle::before { display: none; }
+
+        #authModal .auth-field { margin-bottom: 16px; }
+        #authModal .auth-labelrow { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+        #authModal label { display: block; margin: 0; font-size: 15.5px; font-weight: 600; color: #18181b; text-transform: none; letter-spacing: 0; }
+        #authModal input {
+            width: 100%; box-sizing: border-box; height: 52px; padding: 0 16px; font: inherit; font-size: 16px; color: #18181b;
+            background: #fff; border: 1.5px solid #d4d4d8; border-radius: 16px; outline: none;
+            transition: border-color .15s, box-shadow .15s;
+        }
+        #authModal input::placeholder { color: #a1a1aa; }
+        #authModal input:hover { border-color: #a1a1aa; }
+        #authModal input:focus { border-color: #6d3df0; box-shadow: 0 0 0 4px rgba(109, 61, 240, .14); }
+        #authModal .auth-pwwrap { position: relative; }
+        #authModal .auth-pwwrap input { padding-right: 52px; }
+        #authModal .auth-eye {
+            position: absolute; top: 50%; right: 8px; transform: translateY(-50%); width: 38px; height: 38px; min-height: 0 !important;
+            padding: 0; border: none; border-radius: 12px; background: transparent; color: #3f3f46; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        #authModal .auth-eye:hover { background: #f4f4f5; }
+        #authModal .auth-eye svg { width: 22px; height: 22px; }
+        #authModal .auth-eye .eye-off { display: none; }
+        #authModal .auth-eye.shown .eye-on { display: none; }
+        #authModal .auth-eye.shown .eye-off { display: block; }
+
+        #authModal .auth-linkbtn, #authModal .auth-link {
+            background: none; border: none; padding: 0; min-height: 0 !important; font: inherit; font-size: 15px !important; font-weight: 700;
+            color: #5b2bd1; text-decoration: none; cursor: pointer; box-shadow: none;
+        }
+        #authModal .auth-linkbtn:hover, #authModal .auth-link:hover { background: none; color: #3f1a9b; text-decoration: underline; }
+
+        #authModal #authSubmit {
+            display: block; width: 100%; height: 56px; margin-top: 8px; padding: 0; border: none; border-radius: 18px;
+            background: #18181b; color: #fff; font: inherit; font-size: 17px; font-weight: 600; letter-spacing: .1px; cursor: pointer;
+            box-shadow: 0 14px 24px -14px rgba(24, 24, 27, .7); transition: transform .12s, background .15s, opacity .15s;
+        }
+        #authModal #authSubmit:hover { background: #000; }
+        #authModal #authSubmit:active { transform: scale(.985); }
+        #authModal #authSubmit:disabled { opacity: .6; cursor: wait; }
+
+        #authModal .auth-links { display: flex; justify-content: center; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 20px; }
+        #authMsg { display: none; margin: 2px 0 12px; padding: 11px 14px; border-radius: 14px; font-size: 14px; line-height: 1.45; }
+        #authInfo { font-size: 12px; color: #475569; }
+        @media print { #authModal { display: none !important; } }
+        #authModal {
+            background:
+                radial-gradient(55% 38% at 14% 24%, rgba(200, 163, 90, .38) 0%, rgba(200, 163, 90, 0) 72%),
+                radial-gradient(60% 30% at 92% 100%, rgba(27, 111, 181, .42) 0%, rgba(27, 111, 181, 0) 75%),
+                linear-gradient(135deg, #08182a 0%, #0e2a47 60%, #123d63 100%);
+            font-family: Manrope, 'DM Sans', 'Segoe UI', Tahoma, Arial, sans-serif;
+        }
+        #authModal .auth-card { border-radius: 26px; border-top: 4px solid var(--brass); background: #fff; box-shadow: 0 30px 70px -28px rgba(0, 0, 0, .75); }
+        #authModal .auth-logo { color: var(--brass-soft); border: 2px solid var(--brass); background: linear-gradient(145deg, #12385c, #0a1f36); }
+        #authModal .auth-logo svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+        #authModal .auth-pill { box-shadow: 0 6px 16px -6px rgba(14, 42, 71, .35), 0 1px 2px rgba(0, 0, 0, .06); }
+        #authModal input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(27, 111, 181, .16); }
+        #authModal .auth-linkbtn, #authModal .auth-link { color: var(--primary); }
+        #authModal .auth-linkbtn:hover, #authModal .auth-link:hover { color: var(--navy); }
+        #authModal #authSubmit { border: 1px solid #0a2744; border-radius: 50px; background: linear-gradient(180deg, #17497a, #0d2f52); box-shadow: 0 14px 24px -14px rgba(10, 39, 68, .8); }
+        #authModal #authSubmit:hover { background: linear-gradient(180deg, #1d568d, #103760); }
+
+        /* ----- Login bar + login button (same as the Receiving project) ----- */
+        /* ----- Admin login bar (always visible) ----- */
+        .auth-bar { display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex-wrap: wrap; margin: -4px 4px 14px; min-height: 0; }
+        .auth-bar:empty { display: none; }
+        @media print { .auth-bar { display: none !important; } }
+
+        /* ----- Create-account button in the login popup ----- */
+        #authModal .auth-links .auth-create-btn { border: 1.5px solid var(--primary, #0f4c81); border-radius: 10px; padding: 9px 18px; font-weight: 700; text-decoration: none; }
+        #authModal .auth-links .auth-create-btn:hover { background: rgba(15, 76, 129, .08); text-decoration: none; }
+        #authBtn { padding: 8px 20px; }
+body.no-entry .tab-btn[data-tab="entryTab"],body.no-entry #entryTab,body.no-safety #safetyBtn,body.no-safety #safetyTab,body.no-edit [data-a="edit"],body.no-delete [data-a="del"]{display:none!important}
+.st-tile[data-state=synced]{--acc:#16a34a;--bgc:#dcfce7;--tx:#166534}.st-tile[data-state=pending]{--acc:#d97706;--bgc:#fef3c7;--tx:#92400e}
+.st-tile[data-state=synced] .st-dot{animation:pulse 2s infinite}.st-tile[data-state=pending] .st-dot,.st-tile[data-state=error] .st-dot{animation:stBlink 1s infinite}
+@keyframes stBlink{50%{opacity:.25}}.st-hint{font-size:12px;font-weight:700;color:var(--tx);margin-top:4px}.st-hint:empty{display:none}
+.app-toolbar .auth-bar{margin:0}.tb-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+</style><style id="pageStyle"></style>
+<script>
+        // Lock the page at once (before anything is drawn). It is unlocked only after a verified, approved login.
+        (function () {
+            document.documentElement.classList.add('ag-locked');
+            setTimeout(function () {
+                var m = document.getElementById('authModal');
+                if (!document.documentElement.classList.contains('ag-locked')) return;
+                if (document.getElementById('loginOverlay') || (m && m.style.display === 'flex')) return;
+                var s = document.getElementById('agSlow'), b = document.getElementById('agReload');
+                if (s) s.hidden = false;
+                if (b) b.hidden = false;
+            }, 12000);
+        })();
+    </script>
+</head><body>
+<div id="agCover" role="status" aria-live="polite">
+    <div class="ag-box">
+        <div class="ag-spin" aria-hidden="true"></div>
+        <div class="ag-t">Borak Pulp &amp; Paper Mills Limited</div>
+        <div class="ag-s" id="agMsg">Checking secure session…</div>
+        <div class="ag-slow" id="agSlow" hidden>This is taking longer than usual. Check the internet connection, then reload.</div>
+        <button type="button" id="agReload" hidden onclick="location.reload()">Reload page</button>
+    </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.2 7.8 8 9 4.8-1.2 8-4.5 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V3h12v6"/><rect x="4" y="9" width="16" height="9" rx="2"/><path d="M7 14h10v7H7z"/></symbol>
+<symbol id="i-wifi" viewBox="0 0 24 24"><path d="M5 12a10 10 0 0 1 14 0M8.5 15.5a5 5 0 0 1 7 0"/><circle cx="12" cy="19" r="1"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></symbol>
+<symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+<symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 21h16"/></symbol>
+</defs></svg>
+<div class="container">
+<header class="app-header">
+ <div class="ah-brand"><div class="ah-logo"><svg viewBox="0 0 24 24"><path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h8M8 8h4"/></svg></div>
+ <div class="ah-text"><h1 id="hdCo">Borak Pulp &amp; Paper Mills Limited</h1><p>Raw Material Received Register</p></div></div>
+ <div class="ah-badge"><i></i>Raw Material Received Management</div>
+</header>
+<div class="app-toolbar"><div class="tb-left"><button class="btn btn-secondary" onclick="openSet()"><svg class="ic"><use href="#i-edit"/></svg> Header Settings</button><div class="auth-bar" id="authBar"><span id="authInfo"></span><button type="button" class="btn" id="authBtn" style="display:none">🔐 Login</button></div></div>
+ <button class="safety-btn" id="safetyBtn" data-health="checking" onclick="switchTab('safetyTab')" title="Open Data Safety Center"><span class="sb-icon"><svg class="ic"><use href="#i-shield"/></svg></span><span class="sb-text"><b>Data Safety Center</b><small id="sbBtnSub">Checking…</small></span><span class="sb-dot"></span></button></div>
+<div class="tabs">
+ <button class="tab-btn active" data-tab="entryTab" onclick="switchTab('entryTab')"><svg class="ic"><use href="#i-edit"/></svg>Statement Entry</button>
+ <button class="tab-btn" data-tab="historyTab" onclick="switchTab('historyTab')"><svg class="ic"><use href="#i-list"/></svg>History &amp; Print</button>
+</div>
+
+<div id="entryTab" class="tab-content active">
+ <h3><svg class="ic"><use href="#i-edit"/></svg> <span id="entryTitle">Received Statement Entry</span></h3>
+ <form id="stmtForm" novalidate>
+  <div class="header-section">
+   <div class="form-group"><label for="issueDay">Date</label><input type="hidden" id="issueDate">
+    <div class="date-parts"><div><input type="text" id="issueDay" inputmode="numeric" maxlength="2" placeholder="DD" autocomplete="off" oninput="onIssueDayInput(this)" onblur="padIssueDay()"><span class="dp-cap">Day (type)</span></div>
+    <div><select id="issueMonth" aria-label="Month" onchange="syncIssueDate()"></select><span class="dp-cap">Month (auto)</span></div>
+    <div><input type="number" id="issueYear" min="2000" max="2100" aria-label="Year" oninput="syncIssueDate()" onchange="syncIssueDate()"><span class="dp-cap">Year (auto)</span></div></div></div>
+   <div class="form-group"><label for="slNo">SL No (auto)</label><input id="slNo" class="ro" readonly tabindex="-1" aria-readonly="true" autocomplete="off" title="SL No is generated automatically and cannot be edited"></div>
+  </div>
+  <h3 class="sub-title">Received Items</h3>
+  <p class="records-summary" style="margin:-4px 0 10px">Enter the weights, then pick the <b>Item Name</b> on each row. The Net WT goes into that item's own column on the printed sheet.</p>
+  <div class="stmt-wrap"><div class="stmt-inner"><div class="item-head"><div>SL</div><div>Challan No</div><div>Party Name</div><div>Truck No</div><div>Gross WT</div><div>Truck WT</div><div>Goods WT</div><div>Less WT</div><div>Net WT</div><div>Item Name</div><div></div></div><div id="rowsBox"></div></div></div>
+  <button type="button" class="btn btn-secondary" id="addRowBtn"><svg class="ic"><use href="#i-plus"/></svg> Add Row</button>
+  <div class="records-summary" id="entryTotals" style="margin-top:14px"></div>
+  <div class="actions"><button type="submit" class="btn" id="saveBtn">Save Statement</button><button type="button" class="btn btn-warning" id="saveShowBtn" style="padding:10px 16px;font-size:14px">Save &amp; Print</button><button type="button" class="btn btn-secondary" id="prevBtn">Print Preview</button><button type="button" class="btn btn-secondary" id="clearBtn">Cancel / Clear</button></div>
+ </form>
+</div>
+
+<div id="historyTab" class="tab-content">
+ <h3><svg class="ic"><use href="#i-list"/></svg> Statement History, Search &amp; Print</h3>
+ <div class="filter-panel">
+  <div class="search-row"><div class="form-group search-field"><label for="qInput">Search (SL, Challan, Truck, Party)</label><input type="text" id="qInput" placeholder="Type to search..." autocomplete="off"></div><button type="button" class="btn btn-secondary" id="clearSearchBtn">Clear Search</button></div>
+  <div class="date-row"><div class="action-group"><div class="form-group"><label for="fromDate">From Date</label><input type="date" id="fromDate"></div><div class="form-group"><label for="toDate">To Date</label><input type="date" id="toDate"></div><button type="button" class="btn btn-secondary" id="clearDateBtn">Clear Date</button></div>
+  <div class="action-group"><button type="button" class="btn" id="exportCsvBtn"><svg class="ic"><use href="#i-down"/></svg> Export CSV Report</button></div></div>
+ </div>
+ <div class="records-summary" id="recordsSummary"></div>
+ <div class="table-wrap"><table class="grid-table"><thead><tr><th>Date</th><th>SL No</th><th>Challan No</th><th>Truck No</th><th>Party</th><th>Items</th><th class="num">Net WT (kg)</th><th class="num">Total (kg)</th><th class="col-act">Actions</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+</div>
+
+<div id="safetyTab" class="tab-content">
+ <h3><svg class="ic"><use href="#i-shield"/></svg> Data Safety Center<button class="btn btn-secondary sp-back" onclick="switchTab(lastMain)">← Back</button></h3>
+ <div class="sp-banner" id="safetyBanner" data-health="checking" role="status"><div class="sp-banner-icon"><svg class="ic"><use href="#i-shield"/></svg></div><div><div class="sp-banner-title" id="sbTitle">Checking system status…</div><div class="sp-banner-sub" id="sbSub">Every save is written to this device and to your backup file automatically.</div></div><div class="sp-banner-time" id="sbTime"></div></div>
+ <h3 class="sub-title">System Status</h3>
+ <div class="status-grid">
+  <div class="st-tile" id="netTile" data-state="online"><div class="st-icon"><svg class="ic"><use href="#i-wifi"/></svg></div><div class="st-body"><div class="st-label">Internet</div><div class="st-value"><span class="st-dot"></span><span id="netValue">Online</span></div><div class="st-line" id="netSub"></div></div></div>
+  <div class="st-tile" id="syncBar" data-state="checking" onclick="if(this.dataset.state==='paused')reconnectFile()"><div class="st-icon"><svg class="ic"><use href="#i-file"/></svg></div><div class="st-body"><div class="st-label">Auto-backup file</div><div class="st-value"><span class="st-dot"></span><span id="syncValue">Checking…</span></div><div class="st-line" id="syncFile"></div><div class="st-line" id="syncTime"></div><div class="st-hint" id="syncHint"></div>
+   <div class="st-btnrow" id="syncActions" onclick="event.stopPropagation()"><button class="st-act" onclick="linkExistingFile()"><svg class="ic"><use href="#i-file"/></svg>Select Existing</button><button class="st-act" onclick="linkNewFile()"><svg class="ic"><use href="#i-plus"/></svg>Create New</button><button class="st-act" onclick="linkFolderPick()"><svg class="ic"><use href="#i-folder"/></svg>Select Folder</button><button class="st-act" onclick="downloadCopy()"><svg class="ic"><use href="#i-down"/></svg>Download Copy</button></div>
+   <div class="st-drop">Drop a JSON data file or the project folder here</div></div></div>
+  <div class="st-tile" id="devTile" data-state="on"><div class="st-icon"><svg class="ic"><use href="#i-db"/></svg></div><div class="st-body"><div class="st-label">This device</div><div class="st-value"><span class="st-dot"></span><span id="devValue">Browser database</span></div><div class="st-line" id="devSub"></div></div></div>
+  <div class="st-tile" id="cloudBar" data-state="local" onclick="if(window.cloudRetryNow&&this.dataset.state==='error')cloudRetryNow()"><div class="st-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M7 18a4.5 4.5 0 0 1-.5-9A6 6 0 0 1 18 8.5 4 4 0 0 1 17.5 18z"/></svg></div><div class="st-body"><div class="st-label">Cloud Sync</div><div class="st-value"><span class="st-dot"></span><span id="cloudValue">Checking…</span></div><div class="st-line" id="cloudSub"></div><div class="st-hint" id="cloudHint"></div></div></div>
+ </div>
+ <h3 class="sub-title" style="margin-top:26px">How your data is protected</h3><div class="sp-layers" style="margin-top:0"><div class="sp-layer"><b>1 · Browser database</b>Every save is written to IndexedDB on this device first.</div><div class="sp-layer"><b>2 · JSON data file</b>The same data is mirrored to your linked .json file automatically.</div><div class="sp-layer"><b>3 · Download copy</b>Keep a manual copy of the JSON file in a safe place.</div></div>
+</div>
+</div>
+
+<div class="modal" id="reportModal"><div class="modal-content"><div class="sheetwrap"><div id="sheet"></div></div>
+ <div class="modal-actions no-print"><label class="paper-pick">Paper size <select id="paperSel"><option value="a4">A4</option><option value="letter">Letter</option></select></label><button class="btn btn-secondary" onclick="closeSheet()">Close</button><button class="btn" onclick="window.print()"><svg class="ic"><use href="#i-print"/></svg> Print</button></div></div></div>
+<div class="modal" id="setModal"><div class="modal-content" style="max-width:640px"><h3 style="margin:0 0 16px;color:var(--navy)">Settings</h3>
+ <div class="form-group"><label>Company name</label><input data-set="company"></div><div class="form-group"><label>Address</label><input data-set="address"></div><div class="form-group"><label>Report title</label><input data-set="title"></div><div class="form-group"><label>Minimum rows on print</label><input data-set="minRows" type="number" min="1"></div>
+ <div class="form-group"><label>Item names <span style="font-weight:400;text-transform:none;letter-spacing:0">— saved in the database and the JSON backup file</span></label><div id="itemList" class="item-list"></div><div class="item-add"><input id="itemNew" placeholder="New item name" maxlength="30" autocomplete="off"><button type="button" class="btn btn-secondary" id="itemAddBtn">Add</button></div></div>
+ <div class="modal-actions"><button class="btn" onclick="closeSet()">Done</button></div></div></div>
+<div id="toast"></div><datalist id="pl"></datalist>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<!-- Login Popup -->
+<div id="authModal" class="modal">
+    <div class="auth-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+        <button type="button" id="authCloseBtn" class="auth-x" aria-label="Close" title="Close">&#10005;</button>
+        <div class="auth-brand">
+            <div class="auth-logo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V11l5 3.5V11l5 3.5V4h5v17"/><path d="M17.5 8h.01M17.5 12h.01M17.5 16h.01"/></svg></div>
+            <div>
+                <div class="auth-brand-name">Borak Pulp &amp; Paper Mills Limited</div>
+                <div class="auth-brand-sub">Raw Material Received Statement</div>
+            </div>
+        </div>
+        <div class="auth-tabs" id="authTabs" data-active="login" role="tablist">
+            <span class="auth-pill"></span>
+            <button type="button" class="auth-tab active" data-mode="login" role="tab">Login</button>
+            <button type="button" class="auth-tab" data-mode="create" role="tab">Create account</button>
+        </div>
+        <h3 id="authTitle">Login</h3>
+        <form id="authForm" novalidate>
+            <div class="auth-field">
+                <div class="auth-labelrow"><label for="authEmail">Email</label></div>
+                <input type="email" id="authEmail" autocomplete="username" placeholder="email" autocapitalize="off" spellcheck="false">
+            </div>
+            <div class="auth-field" id="authPwRow">
+                <div class="auth-labelrow">
+                    <label for="authPassword">Password</label>
+                    <button type="button" class="auth-linkbtn auth-forgot" data-mode="forgot">Forgot password?</button>
+                </div>
+                <div class="auth-pwwrap">
+                    <input type="password" id="authPassword" autocomplete="current-password" placeholder="Password">
+                    <button type="button" class="auth-eye" data-target="authPassword" aria-label="Show password" title="Show / hide password"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5.5 4.5 12 4.5 22.5 12 22.5 12 18.5 19.5 12 19.5 1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3.2"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5.5 4.5 12 4.5c2 0 3.8.7 5.3 1.7M22.5 12S18.5 19.5 12 19.5c-2 0-3.8-.7-5.3-1.7"/><path d="M9.9 9.9a3.2 3.2 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg></button>
+                </div>
+            </div>
+            <div class="auth-field" id="authPw2Row" style="display: none;">
+                <div class="auth-labelrow"><label for="authPassword2">Confirm Password</label></div>
+                <div class="auth-pwwrap">
+                    <input type="password" id="authPassword2" autocomplete="new-password" placeholder="Confirm password">
+                    <button type="button" class="auth-eye" data-target="authPassword2" aria-label="Show password" title="Show / hide password"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5.5 4.5 12 4.5 22.5 12 22.5 12 18.5 19.5 12 19.5 1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3.2"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5.5 4.5 12 4.5c2 0 3.8.7 5.3 1.7M22.5 12S18.5 19.5 12 19.5c-2 0-3.8-.7-5.3-1.7"/><path d="M9.9 9.9a3.2 3.2 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg></button>
+                </div>
+            </div>
+            <div id="authMsg" role="alert"></div>
+            <button type="submit" class="btn" id="authSubmit">Login</button>
+        </form>
+        <div class="auth-links">
+            <button type="button" class="auth-link" data-mode="login">Back to Login</button>
+            <button type="button" class="auth-link auth-create-btn" data-mode="create">➕ Create new account</button>
+        </div>
+    </div>
+</div>
+<script>
+// =====================================================================
+// ===== Cloud: config, access rules, login, smart cloud sync =====
+// =====================================================================
+// Same login + cloud system as the Receiving project.
+// Local IndexedDB works exactly as before. Every change is also saved to the cloud when online and logged in.
+(function () {
+    const showToast = (t, a, b) => toast(t, a, b);
+    // Cloud web-app settings
+    const CLOUD_CONFIG = {
+        apiKey: "AIzaSyDZuSK1RoIyhEbpIgCbDID7S7Y7U5Wu-5U",
+        authDomain: "received-delivery-statement.firebaseapp.com",
+        projectId: "received-delivery-statement",
+        storageBucket: "received-delivery-statement.firebasestorage.app",
+        messagingSenderId: "723071911440",
+        appId: "1:723071911440:web:fa14fb419b8f35d697ac95"
+    };
+    // No e-mail address or role is stored in this page. The list of approved e-mails (and their level) lives only in
+    // the cloud rules (firestore.rules). To learn its own level, a login asks the server three harmless questions
+    // ("probe" 1, 2, 3): the rules answer "yes" only up to the level that e-mail has been given
+    // (1 = view only, 2 = add & edit, 3 = full access).
+    const PROBE_COLLECTION = '_p';
+    const ROLE_KEY = 'RecvStmtRoleCache';
+    const COLLECTION = 'received_statements';
+    const ITEM_COLLECTION = 'received_items';
+    const clashSeen = new Set();
+    const KNOWN_KEY = 'RecvStmtCloudKnown';
+    const DEL_KEY = 'RecvStmtPendingDelete';        // cloud ids deleted on this PC, not yet deleted online
+    const LASTSYNC_KEY = 'RecvStmtLastCloudSync';
+    const LEVEL_INFO = {
+        0: { name: 'No access', rights: 'nothing' },
+        1: { name: 'View only', rights: 'can view data' },
+        2: { name: 'Add & edit', rights: 'can view, add & edit' },
+        3: { name: 'Full access', rights: 'can view, add, edit & delete' }
+    };
+
+    let tomb = new Set();
+    try { const a = JSON.parse(localStorage.getItem(DEL_KEY) || '[]'); if (Array.isArray(a)) tomb = new Set(a.map(String)); } catch (e) {}
+    try { localStorage.removeItem('RecvStmtPendingWipe'); } catch (e) {}   // leftover flag from the removed "Reset All Data"
+    function saveTomb() { try { localStorage.setItem(DEL_KEY, JSON.stringify(Array.from(tomb))); } catch (e) {} }
+    function waitingDeletes() { return tomb.size; }
+
+    let fdb = null, col = null, colI = null, auth = null, fbTried = false;
+    const configured = !!CLOUD_CONFIG.apiKey && !/^(PASTE|YOUR_)/i.test(CLOUD_CONFIG.apiKey);
+    let myRole = 0;                                   // 0 = no access, 1 = view, 2 = add & edit, 3 = full
+    let roleSeq = 0, authReady = false;
+    let ready = false, running = false, again = false, againPull = false, pulled = false;
+    let lastCount = 0, lastError = '', cloudWhy = '', lastLocal = [];
+    let authMode = 'login', authAfter = null, authBusy = false;
+    let gateNote = '', gateFailed = false, gateFails = 0, gateLockUntil = 0;   // access gate state
+
+    // ----- smart cloud sync state -----
+    let lastSync = null;                       // { t: time of last good sync, n: records on this PC }
+    try { lastSync = JSON.parse(localStorage.getItem(LASTSYNC_KEY) || 'null'); } catch (e) { lastSync = null; }
+    let retryTimer = null, retryCount = 0;
+    const p2 = n => String(n).padStart(2, '0');
+    function cStamp(ms) {
+        const d = new Date(ms); let h = d.getHours(); const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+        return p2(d.getDate()) + '-' + p2(d.getMonth() + 1) + '-' + d.getFullYear() + ' ' + p2(h) + ':' + p2(d.getMinutes()) + ':' + p2(d.getSeconds()) + ' ' + ap;
+    }
+    function cAgo(ms) {
+        const s = Math.max(0, Math.round((Date.now() - ms) / 1000));
+        if (s < 10) return 'just now';
+        if (s < 60) return s + ' sec ago';
+        const m = Math.floor(s / 60); if (m < 60) return m + ' min ago';
+        const h = Math.floor(m / 60); if (h < 24) return h + ' hr ago';
+        const d = Math.floor(h / 24); return d + ' day' + (d > 1 ? 's' : '') + ' ago';
+    }
+    function noteSynced() {
+        lastSync = { t: Date.now(), n: lastCount };
+        try { localStorage.setItem(LASTSYNC_KEY, JSON.stringify(lastSync)); } catch (e) {}
+        lastError = ''; cloudWhy = ''; retryCount = 0; clearTimeout(retryTimer); retryTimer = null;
+    }
+    // after a failure: try again by itself (8 s, 16 s, 32 s ... up to 5 min)
+    function scheduleRetry() {
+        if (retryTimer || !navigator.onLine || !ready) return;
+        const delay = Math.min(300000, 8000 * Math.pow(2, retryCount));
+        retryCount++;
+        retryTimer = setTimeout(() => { retryTimer = null; if (navigator.onLine && ready) schedule(myRole >= 1); }, delay);
+    }
+    let known = {};
+    try { known = JSON.parse(localStorage.getItem(KNOWN_KEY) || '{}') || {}; } catch (e) { known = {}; }
+
+    // ----- cloud helpers -----
+    function withTimeout(p, ms, label) {
+        return new Promise((resolve, reject) => {
+            const t = setTimeout(() => { const e = new Error(label || 'Timed out'); e.code = 'timeout'; reject(e); }, ms);
+            p.then(v => { clearTimeout(t); resolve(v); }, er => { clearTimeout(t); reject(er); });
+        });
+    }
+    function describeCloudError(e, prefix) {
+        const code = (e && e.code) || '';
+        let why;
+        if (code === 'permission-denied') why = 'permission denied (log in with an account that has this permission; if it still fails, the cloud rules must be published)';
+        else if (code === 'unauthenticated') why = 'you are not logged in';
+        else if (code === 'timeout' || code === 'deadline-exceeded') why = 'the server did not respond in time';
+        else if (code === 'unavailable') why = 'the cloud server is unreachable (check the internet connection)';
+        else if (code === 'resource-exhausted') why = 'the cloud usage limit was reached (will try again later)';
+        else why = (e && e.message) ? e.message : 'unknown error';
+        return prefix ? prefix + ': ' + why : why;
+    }
+    function validDocId(id) { return !!id && String(id).indexOf('/') === -1 && id !== '.' && id !== '..'; }
+
+    // ----- level of the person logged in -----
+    function myLevel() {
+        const u = auth && auth.currentUser;
+        return (u && u.emailVerified) ? myRole : 0;
+    }
+    function loggedIn() { return myLevel() >= 1; }
+    // Ask the server: the rules answer probe 1 / 2 / 3 only to people of that level (the rules decide, not this page).
+    let roleJob = null, roleJobUid = '';
+    function loadRole(user, silent) {
+        if (!user || !fdb) { if (!silent) myRole = 0; return Promise.resolve(0); }
+        // login can ask twice at the same moment (login button + login event): share ONE check, never cancel it
+        if (!silent && roleJob && roleJobUid === user.uid) return roleJob;
+        const seq = ++roleSeq;
+        if (!silent) myRole = 0;
+        const job = (async () => {
+            let res = [];
+            try {
+                res = await withTimeout(Promise.all([3, 2, 1].map(n =>
+                    fdb.collection(PROBE_COLLECTION).doc(String(n)).get().then(() => n, e => ({ e })))), 10000, 'Access check timed out');
+            } catch (e) { res = [{ e }]; }
+            if (silent && seq !== roleSeq) return myRole;   // a newer login check exists: ignore this background check
+            const ok = res.filter(r => typeof r === 'number');
+            let lv = 0;
+            if (ok.length) {
+                lv = Math.max.apply(null, ok);
+                try { localStorage.setItem(ROLE_KEY, JSON.stringify({ u: user.uid, l: lv })); } catch (e) {}
+            } else if (res.some(r => r && r.e && r.e.code !== 'permission-denied')) {
+                // network problem (not a refusal): use the last known level of this same login
+                if (silent) return myRole;
+                try { const c = JSON.parse(localStorage.getItem(ROLE_KEY) || 'null'); if (c && c.u === user.uid) lv = (c.l | 0); } catch (x) {}
+            } else {
+                try { localStorage.setItem(ROLE_KEY, JSON.stringify({ u: user.uid, l: 0 })); } catch (e) {}
+            }
+            myRole = lv;
+            return myRole;
+        })();
+        if (!silent) {
+            roleJob = job; roleJobUid = user.uid;
+            const clear = () => { if (roleJob === job) { roleJob = null; roleJobUid = ''; } };
+            job.then(clear, clear);
+        }
+        return job;
+    }
+
+    /* ===================================================================
+       SECURE ACCESS POLICY
+       - Offline : data saved on this device can be viewed, and NEW entries can be added.
+                   Editing and deleting are NOT possible offline.
+       - Online  : a login is required: view-only, add & edit, or full access (set per account in the cloud).
+       The cloud data itself is protected by the Firestore rules (server side) - see firestore.rules.
+       =================================================================== */
+    const IDLE_LOGOUT_MIN = 15;                       // a logged-in user is logged out after this many idle minutes (0 = never)
+    const NET_PROBE_URL = 'https://firestore.googleapis.com/';
+    var netFails = 0, netProbing = false, netProbeTimer = null, accessMonitorOn = false;   // var: safe even if read before this line runs
+    function securityOn() { return configured; }
+    function netUp() { return navigator.onLine && !(netFails >= 2); }
+    function canView()   { return !securityOn() || !netUp() || myLevel() >= 1; }            // read
+    function canAdd()    { return !securityOn() || !netUp() || myLevel() >= 2; }            // new entry (offline: saved on this device)
+    function canEdit()   { return !securityOn() || (netUp() && myLevel() >= 2); }           // edit existing data
+    function canDelete() { return !securityOn() || (netUp() && myLevel() >= 3); }           // delete
+    function accessMode() {
+        if (!securityOn()) return 'local';
+        if (!netUp()) return 'offline';
+        const r = myLevel();
+        return r >= 3 ? 'admin' : r === 2 ? 'editor' : r === 1 ? 'viewer' : 'locked';
+    }
+    function localMode() { return !netUp(); }
+
+    // Real internet check: "online" only counts when the cloud server can really be reached.
+    async function probeNet() {
+        if (netProbing) return;
+        if (!navigator.onLine) { netFails = 2; return; }
+        netProbing = true;
+        const before = netUp();
+        let ctl = null, to = null;
+        try {
+            ctl = window.AbortController ? new AbortController() : null;
+            to = setTimeout(() => { if (ctl) ctl.abort(); }, 7000);
+            await fetch(NET_PROBE_URL + '?t=' + Date.now(), { mode: 'no-cors', cache: 'no-store', signal: ctl ? ctl.signal : undefined });
+            netFails = 0;
+        } catch (e) { netFails = Math.min(2, netFails + 1); }
+        clearTimeout(to);
+        netProbing = false;
+        if (netFails > 0 && netFails < 2) { clearTimeout(netProbeTimer); netProbeTimer = setTimeout(probeNet, 2500); }
+        if (before !== netUp()) accessChanged();
+    }
+
+    // Auto logout after a period without any activity
+    let idleTimer = null, idleStamp = 0;
+    function idleReset(force) {
+        if (!IDLE_LOGOUT_MIN) return;
+        const now = Date.now();
+        if (!force && now - idleStamp < 4000) return;
+        idleStamp = now;
+        clearTimeout(idleTimer);
+        if (!(auth && auth.currentUser)) return;
+        idleTimer = setTimeout(() => {
+            if (!(auth && auth.currentUser)) return;
+            if (!netUp()) { idleReset(true); return; }   // offline: nobody could log in again, so the open session is kept
+            gateNote = 'You were logged out automatically after ' + IDLE_LOGOUT_MIN + ' minutes without activity.';
+            try { auth.signOut(); } catch (e) {}
+            showToast('warn', 'Logged out', 'Logged out automatically after ' + IDLE_LOGOUT_MIN + ' minutes without activity.');
+        }, IDLE_LOGOUT_MIN * 60000);
+    }
+
+    function startAccessMonitor() {
+        if (accessMonitorOn) return;
+        accessMonitorOn = true;
+        window.addEventListener('online', () => { netFails = 0; accessChanged(); probeNet(); });
+        window.addEventListener('offline', () => accessChanged());
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) probeNet(); });
+        ['click', 'keydown', 'touchstart', 'mousemove', 'scroll'].forEach(ev => document.addEventListener(ev, () => idleReset(false), { passive: true, capture: true }));
+        setInterval(probeNet, 20000);
+        probeNet();
+        updateAccessUI();
+    }
+
+    function updateAccessUI() {
+        if (!document.getElementById('accessStyle')) {
+            const st = document.createElement('style');
+            st.id = 'accessStyle';
+            st.textContent =
+                '#accessBadge { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:.2px; border:1px solid transparent; white-space:nowrap; }' +
+                '#accessBadge[data-mode="admin"] { background:#dcfce7; color:#166534; border-color:#bbf7d0; }' +
+                '#accessBadge[data-mode="offline"] { background:#e0f2fe; color:#075985; border-color:#bae6fd; }' +
+                '#accessBadge[data-mode="locked"] { background:#fee2e2; color:#991b1b; border-color:#fecaca; }' +
+                '#accessBadge[data-mode="local"] { background:#f1f5f9; color:#475569; border-color:#e2e8f0; }' +
+                '#accessBadge[data-mode="editor"] { background:#e0e7ff; color:#3730a3; border-color:#c7d2fe; }' +
+                '#accessBadge[data-mode="viewer"] { background:#f1f5f9; color:#334155; border-color:#cbd5e1; }' +
+                'body[data-access="offline"] .needs-edit, body[data-access="locked"] .needs-edit, body[data-access="viewer"] .needs-edit,' +
+                'body[data-access="offline"] .needs-delete, body[data-access="locked"] .needs-delete, body[data-access="viewer"] .needs-delete, body[data-access="editor"] .needs-delete,' +
+                'body[data-access="locked"] .needs-add, body[data-access="viewer"] .needs-add { opacity:.45; cursor:not-allowed; filter:grayscale(.6); }' +
+                '@media print { #accessBadge { display:none !important; } }';
+            document.head.appendChild(st);
+        }
+        const mode = accessMode();
+        document.body.dataset.access = mode;
+        document.body.dataset.role = String(securityOn() ? myLevel() : 0);
+        // show only the pages / buttons this account can really use
+        const viewOnly = securityOn() && myLevel() === 1;
+        document.body.classList.toggle('no-entry', viewOnly);      // New entry page
+        document.body.classList.toggle('no-safety', viewOnly);     // Data Safety Center button + page
+        document.body.classList.toggle('no-edit', !canEdit());     // Edit buttons
+        document.body.classList.toggle('no-delete', !canDelete()); // Delete buttons
+        let el = document.getElementById('accessBadge');
+        const anchor = document.getElementById('authInfo') || document.getElementById('authBtn');
+        if (!el && anchor && anchor.parentNode) {
+            el = document.createElement('span');
+            el.id = 'accessBadge';
+            anchor.parentNode.insertBefore(el, anchor);
+        }
+        if (!el) return;
+        el.dataset.mode = mode;
+        if (window.onSafetyRefresh) { try { window.onSafetyRefresh(); } catch (e) {} }
+        if (mode === 'admin') { el.textContent = '🛡 Full access'; el.title = 'View, add, edit and delete are allowed.'; }
+        else if (mode === 'editor') { el.textContent = '✏️ Add & edit'; el.title = 'You can view, add and edit data. Deleting needs full access.'; }
+        else if (mode === 'viewer') { el.textContent = '👁 View only'; el.title = 'You can view data and reports. Adding, editing and deleting are not allowed.'; }
+        else if (mode === 'offline') { el.textContent = '📴 Offline · view & add only'; el.title = 'Offline: you can view data saved on this device and add new entries. Editing and deleting need internet + login.'; }
+        else if (mode === 'locked') {
+            el.textContent = auth ? '🔒 Locked · login required' : '🔒 Locked · cloud login unavailable';
+            el.title = 'Online: login is required to view, edit or delete data.';
+        }
+        else { el.textContent = '💾 Local mode'; el.title = 'Cloud is not connected.'; }
+    }
+
+    // One gate for every action.  action = 'read' | 'add' | 'edit' | 'delete'
+    //   returns true  -> allowed, go on
+    //   returns false -> a clear message is shown (and the login box opens when a login can help)
+    const ACTION_INFO = {
+        read:   { can: canView,   words: 'view data' },
+        add:    { can: canAdd,    words: 'add new entries' },
+        edit:   { can: canEdit,   words: 'edit data' },
+        delete: { can: canDelete, words: 'delete data' }
+    };
+    function needAccess(action, cb) {
+        const a = ACTION_INFO[action];
+        if (!a || a.can()) return true;
+        if (!netUp()) {
+            showToast('warn', 'Internet + login needed', 'Editing and deleting work only online after login. Offline you can view saved data and add new entries.');
+        } else if (auth && auth.currentUser) {
+            showToast('warn', 'Permission needed', 'Your account is not allowed to ' + a.words + '.');
+        } else if (auth) {
+            showToast('warn', 'Login required', 'Please log in to ' + a.words + '.');
+            openAuthModal('login', cb);
+        } else {
+            showToast('warn', 'Cloud login unavailable', 'Reload the page when the internet connection is stable, then log in.');
+        }
+        return false;
+    }
+    // Gate for viewing data / reports / exports
+    function needView(cb) {
+        if (canView()) return true;
+        if (auth) { showToast('warn', 'Login required', 'Please log in to view data.'); openAuthModal('login', cb); }
+        else showToast('warn', 'Cloud login unavailable', 'Reload the page when the internet connection is stable, then log in.');
+        return false;
+    }
+
+    /* ===== ACCESS GATE =====
+       The whole page stays locked (see #agCover) until a verified, approved login exists.
+       A login session lasts for this browser tab only. Offline: a session that is already open keeps working. */
+    const authEls = {
+        modal: document.getElementById('authModal'), title: document.getElementById('authTitle'),
+        form: document.getElementById('authForm'), email: document.getElementById('authEmail'),
+        pw: document.getElementById('authPassword'), pw2: document.getElementById('authPassword2'),
+        pwRow: document.getElementById('authPwRow'), pw2Row: document.getElementById('authPw2Row'),
+        msg: document.getElementById('authMsg'), submit: document.getElementById('authSubmit')
+    };
+    function gateLocked() { return securityOn() && !(auth && auth.currentUser && auth.currentUser.emailVerified && myRole >= 1); }
+    function gateInfo(text) {
+        authMessage(text, true);
+        authEls.msg.style.background = '#eef2ff'; authEls.msg.style.color = '#3730a3';
+    }
+    function gateUpdate() {
+        const m = authEls.modal;
+        if (gateFailed || !m) return;
+        if (gateLocked()) {
+            document.documentElement.classList.add('ag-locked');
+            if (authReady && m.style.display !== 'flex') {
+                try {
+                    setAuthMode('login');
+                    authEls.pw.value = ''; authEls.pw2.value = '';
+                    m.style.display = 'flex';
+                    gateInfo(gateNote || (netUp() ? 'Login required. This page opens only for approved staff.' : 'No internet connection. Login needs the internet.'));
+                    setTimeout(() => authEls.email.focus(), 50);
+                } catch (e) {}
+            }
+        } else {
+            document.documentElement.classList.remove('ag-locked');
+            gateNote = ''; gateFails = 0;
+            if (m.style.display === 'flex') {
+                m.style.display = 'none';
+                try { authEls.pw.value = ''; authEls.pw2.value = ''; resetEyes(); } catch (e) {}
+            }
+        }
+    }
+    function gateFail(text) {
+        gateFailed = true;
+        document.documentElement.classList.add('ag-locked');
+        const c = document.getElementById('agCover'); if (c) c.classList.add('ag-fail');
+        const m = document.getElementById('agMsg'); if (m) m.textContent = text;
+        const s = document.getElementById('agSlow'); if (s) s.hidden = true;
+        const b = document.getElementById('agReload'); if (b) b.hidden = false;
+    }
+
+    // called whenever login state or real internet state changes
+    function accessChanged() {
+        gateUpdate();
+        updateAccessUI();
+        refresh();
+        if (window.onAdminState) window.onAdminState();
+    }
+
+    async function onAuthChanged(user) {
+        if (user) {
+            if (!user.emailVerified) { myRole = 0; authReady = true; accessChanged(); return; }
+            await loadRole(user);
+            if (!myRole) {   // an e-mail that is not on the approved list has no access at all
+                gateNote = 'This email is not approved for this system yet. Please contact the system owner.';
+                try { await auth.signOut(); } catch (e) {}
+                showToast('warn', 'Not approved', 'This email is not approved for this system yet. Please contact the system owner.');
+                return;
+            }
+        } else { myRole = 0; }
+        idleReset(true);
+        authReady = true;
+        accessChanged();
+        if (navigator.onLine) schedule(myRole >= 1);
+    }
+
+    // ----- record <-> cloud document (every field is a string) -----
+    function newId() {
+        return (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+            : 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+    }
+    function clean(r) {
+        const s = v => (v == null ? '' : String(v));
+        return {
+            sl: s(r.sl), date: s(r.date), savedAt: Number(r.savedAt) || 0,
+            rows: (r.rows || []).map(x => ({ challan: s(x.challan), party: s(x.party), truck: s(x.truck), gross: s(x.gross), truckWt: s(x.truckWt), less: s(x.less), item: s(x.item) }))
+        };
+    }
+    function sig(r) { return JSON.stringify(clean(r)); }
+    function saveKnown() { try { localStorage.setItem(KNOWN_KEY, JSON.stringify(known)); } catch (e) {} }
+
+    // ----- Cloud Sync tile in the Data Safety Center (last sync time, plain-language problems, auto retry) -----
+    function unsentLocal() {
+        const o = {};
+        (lastLocal || []).forEach(r => { if (r.id && known[r.id] !== sig(r)) o[r.id] = 1; });
+        return o;
+    }
+    function mayPush() { return netUp() && myLevel() >= 2; }
+    function refresh() {
+        updateAuthUI();
+        const tile = document.getElementById('cloudBar');
+        if (!tile) return;
+        const unsent = Object.keys(unsentLocal()).length;
+        const n = unsent + waitingDeletes();
+        const last = lastSync ? 'Last synced: ' + cStamp(lastSync.t) + ' (' + cAgo(lastSync.t) + ') · ' + lastSync.n + ' record' + (lastSync.n === 1 ? '' : 's') : '';
+        const user = auth && auth.currentUser;
+        let st, v, sb, h = '';
+        if (!configured) { st = 'off'; v = 'Local mode'; sb = 'Cloud is not connected. Data is kept on this device and in the backup file.'; }
+        else if (!fbTried) { st = 'checking'; v = 'Starting…'; sb = ''; }
+        else if (!fdb) { st = 'off'; v = 'Local mode'; sb = 'Cloud is not connected. Data is kept on this device and in the backup file.'; }
+        else if (!navigator.onLine || !netUp()) { st = 'pending'; v = n ? n + ' waiting for internet' : 'Waiting for internet'; sb = 'Entries sync automatically when you are back online.' + (last ? ' ' + last : ''); }
+        else if (lastError) {
+            st = 'error'; v = 'Sync problem — retrying automatically';
+            sb = (cloudWhy ? cloudWhy.charAt(0).toUpperCase() + cloudWhy.slice(1) + '. ' : '') + (n ? n + ' not synced yet.' : '');
+            h = 'Click to retry now';
+        }
+        else if (waitingDeletes() && myLevel() < 3) { st = 'pending'; v = 'Waiting for login'; sb = waitingDeletes() + ' offline deletion(s) will be applied to the cloud after a full-access login.' + (last ? ' ' + last : ''); }
+        else if (unsent && myLevel() < 2) { st = 'pending'; v = 'Waiting for login'; sb = 'Entries saved on this device are uploaded after an add & edit or full-access login.' + (last ? ' ' + last : ''); }
+        else if (n || running) { st = 'pending'; v = n ? 'Syncing… ' + n + ' waiting' : 'Syncing…'; sb = 'Saved on this device. Syncing to the cloud.'; }
+        else { st = 'synced'; v = 'All data synced'; sb = last || 'Everything on this device is in the cloud.'; }
+        if (user && sb && st !== 'off') sb += ' Signed in: ' + user.email;
+        tile.dataset.state = st;
+        const cv = document.getElementById('cloudValue'); if (cv) cv.textContent = v;
+        const cs = document.getElementById('cloudSub'); if (cs) cs.textContent = sb;
+        const ch = document.getElementById('cloudHint'); if (ch) ch.textContent = h;
+    }
+    // login info + login/logout button on the toolbar
+    function updateAuthUI() {
+        updateAccessUI();
+        const info = document.getElementById('authInfo');
+        const btn = document.getElementById('authBtn');
+        if (!info || !btn) return;
+        const user = auth && auth.currentUser;
+        btn.style.display = auth ? '' : 'none';
+        btn.textContent = user ? '🚪 Logout' : '🔐 Login';
+        let t = '';
+        if (!auth) t = '💾 Local mode (cloud not connected)';
+        else if (localMode()) t = '';
+        else if (user) t = user.email;
+        const n = Object.keys(unsentLocal()).length;
+        if (auth && n) t += ' · ' + n + ' not uploaded yet';
+        if (auth && lastError) t += ' · sync failed';
+        info.textContent = t.replace(/^ · /, '');
+    }
+
+    // ----- local database helpers -----
+    function idbAll() { return getAll(); }
+    function idbWrite(fn) {
+        return new Promise((res, rej) => {
+            const t = db.transaction([ST], 'readwrite');
+            fn(t.objectStore(ST));
+            t.oncomplete = res;
+            t.onerror = () => rej(t.error);
+        });
+    }
+
+    // can we really reach the cloud? (6 s timeout)
+    async function cloudReachable() {
+        if (!fdb) throw new Error('Cloud is not available (cloud not connected).');
+        try {
+            await withTimeout(col.limit(1).get({ source: 'server' }), 6000, 'Cloud check timed out');
+        } catch (e) {
+            throw new Error(describeCloudError(e, 'Cannot reach the cloud'));
+        }
+    }
+    // delete from the cloud in batches of 200 (15 s timeout per batch)
+    async function deleteBatches(ids) {
+        let done = 0;
+        for (let i = 0; i < ids.length; i += 200) {
+            const chunk = ids.slice(i, i + 200);
+            const batch = fdb.batch();
+            chunk.forEach(id => batch.delete(col.doc(String(id))));
+            try {
+                await withTimeout(batch.commit(), 15000, 'Cloud delete timed out');
+            } catch (e) {
+                throw new Error(describeCloudError(e, 'Cloud delete failed') +
+                    (done ? ' (' + done + ' of ' + ids.length + ' already deleted from the cloud; this device was not changed.)' : ' Nothing was deleted.'));
+            }
+            done += chunk.length;
+        }
+    }
+    // ===== Cloud delete: ONLY by an explicit delete action while ONLINE + FULL ACCESS login =====
+    async function cloudDeleteIds(ids) {
+        if (!netUp()) return { ok: false, msg: 'Deleting needs an internet connection and a full-access login. Nothing was deleted.' };
+        if (myLevel() < 3) return { ok: false, msg: 'Only full access can delete data' + (myLevel() ? ' (you are: ' + LEVEL_INFO[myLevel()].name + ')' : ' - please log in') + '. Nothing was deleted.' };
+        try {
+            await cloudReachable();
+            const valid = ids.filter(validDocId);
+            if (valid.length) await deleteBatches(valid);
+            ids.forEach(id => { delete known[id]; tomb.delete(String(id)); }); saveKnown(); saveTomb();
+            lastError = ''; cloudWhy = ''; refresh();
+            return { ok: true };
+        } catch (err) {
+            lastError = (err && err.code) || 'delete failed'; cloudWhy = (err && err.message) || ''; console.error('Cloud delete failed', err); refresh();
+            return { ok: false, msg: ((err && err.message) || 'Online delete failed') + (/Nothing was deleted|this device was not changed/.test((err && err.message) || '') ? '' : ' Nothing was deleted.') };
+        }
+    }
+    window.cloudDeleteRecords = function (ids) { return cloudDeleteIds(ids); };
+
+    // apply deletes made while offline (needs internet + full-access login)
+    async function flushDeletes(local) {
+        if (!navigator.onLine || myLevel() < 3 || !waitingDeletes()) return;
+        const here = new Set(local.map(r => r.id));
+        const queued = Array.from(tomb);
+        const ids = queued.filter(id => !here.has(id) && validDocId(id));   // a record that is back on this PC is kept
+        if (ids.length) await deleteBatches(ids);
+        ids.forEach(id => { delete known[id]; });
+        tomb.clear(); saveTomb(); saveKnown();
+    }
+
+    // upload local changes in batches of 400 (needs add & edit or full access)
+    async function pushPending(local) {
+        const ids = local.filter(r => r.id && validDocId(r.id) && known[r.id] !== sig(r));
+        for (let i = 0; i < ids.length; i += 400) {
+            const chunk = ids.slice(i, i + 400);
+            const batch = fdb.batch();
+            chunk.forEach(r => batch.set(col.doc(String(r.id)), clean(r)));
+            await withTimeout(batch.commit(), 15000, 'Cloud save timed out');
+            chunk.forEach(r => { known[r.id] = sig(r); });
+            saveKnown();
+        }
+        await pushItems();
+    }
+
+    // download: records that are in the cloud but not on this device come back,
+    // except ones deleted on this device while offline.
+    async function pullCloud(local) {
+        const snap = await withTimeout(col.get({ source: 'server' }), 15000, 'Cloud read timed out');
+        const byId = {};
+        local.forEach(r => { byId[r.id] = r; });
+        const toImport = [];
+        snap.forEach(d => {
+            const data = clean(d.data());
+            if (byId[d.id]) {
+                if (sig(byId[d.id]) === JSON.stringify(data)) known[d.id] = JSON.stringify(data);
+            } else if (!tomb.has(d.id)) {
+                if (local.some(r => slKey(r.sl) === slKey(data.sl))) {
+                    if (!clashSeen.has(d.id)) { clashSeen.add(d.id); showToast('warn', 'Duplicate SL No', 'SL No ' + data.sl + ' exists here and in the cloud as different statements. The cloud copy was not loaded.'); }
+                    return;
+                }   // exists online but not on this PC -> bring it back (not if it was deleted here offline)
+                toImport.push(Object.assign({ id: d.id }, data));
+                known[d.id] = JSON.stringify(data);
+            }
+        });
+        saveKnown();
+        if (toImport.length) {
+            await idbWrite(s => toImport.forEach(r => s.add(r)));
+            setTimeout(() => { refreshAll(); }, 0);
+        }
+        pulled = !(snap.metadata && snap.metadata.fromCache);
+        await pullItems();
+    }
+
+    // ----- item names: one cloud document per item -----
+    const iid = k => 'i_' + encodeURIComponent(k).replace(/\./g, '%2E');
+    const isig = r => JSON.stringify({ name: r.name, order: r.order });
+    async function pushItems() {
+        const todo = (await itGetAll()).filter(r => known['i:' + r.key] !== isig(r));
+        for (let i = 0; i < todo.length; i += 400) {
+            const chunk = todo.slice(i, i + 400), batch = fdb.batch();
+            chunk.forEach(r => batch.set(colI.doc(iid(r.key)), { name: r.name, order: r.order }));
+            await withTimeout(batch.commit(), 15000, 'Cloud save timed out');
+            chunk.forEach(r => { known['i:' + r.key] = isig(r); });
+            saveKnown();
+        }
+    }
+    async function pullItems() {
+        const snap = await withTimeout(colI.get({ source: 'server' }), 15000, 'Cloud read timed out');
+        const have = new Set((await itGetAll()).map(r => r.key));
+        let changed = false;
+        for (const d of snap.docs) {
+            const x = d.data(), name = String(x.name || '').trim().slice(0, 30), key = name.toLowerCase();
+            if (!name) continue;
+            const rec = { key: key, name: name, order: Number(x.order) || Date.now() };
+            known['i:' + key] = isig(rec);
+            if (!have.has(key)) { await itPut(rec); changed = true; }
+        }
+        saveKnown();
+        if (changed) { await loadItems(); refreshItems(); }
+    }
+    window.cloudDeleteItem = async function (key) {
+        if (!netUp()) return { ok: false, msg: 'Deleting needs an internet connection and a full-access login. Nothing was deleted.' };
+        if (myLevel() < 3) return { ok: false, msg: 'Only full access can delete data' + (myLevel() ? ' (you are: ' + LEVEL_INFO[myLevel()].name + ')' : ' - please log in') + '. Nothing was deleted.' };
+        try {
+            await cloudReachable();
+            await withTimeout(colI.doc(iid(key)).delete(), 15000, 'Cloud delete timed out');
+            delete known['i:' + key]; saveKnown();
+            return { ok: true };
+        } catch (e) { return { ok: false, msg: describeCloudError(e, 'Cloud delete failed') + '. Nothing was deleted.' }; }
+    };
+    // is this SL No already used by a statement saved from another computer?
+    window.cloudSlTaken = async function (sl, exceptId) {
+        if (!fdb || !netUp() || myLevel() < 1) return false;
+        try {
+            const q = await withTimeout(col.where('sl', '==', String(sl)).limit(5).get({ source: 'server' }), 8000, 'timeout');
+            let taken = false; q.forEach(d => { if (d.id !== exceptId) taken = true; });
+            return taken;
+        } catch (e) { return false; }
+    };
+
+    // one sync cycle: apply offline deletes, upload pending, then pull (when a login allows reading)
+    async function runSync(isPull) {
+        let local = await idbAll();
+        // give every record a id (old records too) and fix duplicates
+        const seen = new Set(), fix = [];
+        local.forEach(r => {
+            if (!r.id || seen.has(r.id)) { r.id = newId(); fix.push(r); }
+            seen.add(r.id);
+        });
+        if (fix.length) await idbWrite(s => fix.forEach(r => s.put(r)));
+        lastCount = local.length;
+        lastLocal = local;
+        if (!fdb || !netUp()) { refresh(); return; }
+        let failed = false;
+        try {
+            await flushDeletes(local);
+            if (myLevel() >= 2) await pushPending(local);
+            if (isPull && myLevel() >= 1) {
+                await pullCloud(local);
+                local = await idbAll(); lastCount = local.length; lastLocal = local;
+            }
+        } catch (e) {
+            failed = true;
+            console.error('Cloud sync failed', e);
+            lastError = (e && e.code) || 'sync failed';
+            cloudWhy = describeCloudError(e);
+            scheduleRetry();
+        }
+        if (!failed) {
+            lastError = ''; cloudWhy = '';
+            if (!Object.keys(unsentLocal()).length && !waitingDeletes() && myLevel() >= 1) noteSynced();
+        }
+        refresh();
+    }
+
+    function schedule(isPull) {
+        if (!ready || !col) return;
+        if (running) { again = true; if (isPull) againPull = true; return; }
+        running = true;
+        runSync(!!isPull).catch(e => console.error('Cloud sync error', e)).finally(() => {
+            running = false;
+            if (again) { const p = againPull; again = false; againPull = false; schedule(p); }
+            else refresh();
+        });
+    }
+
+    // ----- login popup (Login / Create account / Forgot password) -----
+    function authMessage(text, ok) {
+        authEls.msg.textContent = text || '';
+        authEls.msg.style.display = text ? 'block' : 'none';
+        authEls.msg.style.background = ok ? '#dcfce7' : '#fee2e2';
+        authEls.msg.style.color = ok ? '#166534' : '#991b1b';
+    }
+    function setAuthMode(mode) {
+        authMode = mode;
+        const titles = { login: 'Login', create: 'Create Account', forgot: 'Reset Password' };
+        const labels = { login: 'Login', create: 'Create Account', forgot: 'Send Reset Email' };
+        authEls.title.textContent = titles[mode];
+        authEls.submit.textContent = labels[mode];
+        authEls.pwRow.style.display = mode === 'forgot' ? 'none' : '';
+        authEls.pw2Row.style.display = mode === 'create' ? '' : 'none';
+        authEls.pw.setAttribute('autocomplete', mode === 'create' ? 'new-password' : 'current-password');
+        document.querySelectorAll('#authModal .auth-link').forEach(b => {
+            b.style.display = b.dataset.mode === mode ? 'none' : '';
+        });
+        const tabs = document.getElementById('authTabs');
+        tabs.dataset.active = (mode === 'login' || mode === 'create') ? mode : 'none';
+        tabs.querySelectorAll('.auth-tab').forEach(t => {
+            const on = t.dataset.mode === mode;
+            t.classList.toggle('active', on);
+            t.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        const fg = document.querySelector('#authModal .auth-forgot');
+        if (fg) fg.style.display = mode === 'login' ? '' : 'none';
+        resetEyes();
+        authMessage('');
+    }
+    // show / hide password (eye button)
+    function resetEyes() {
+        document.querySelectorAll('#authModal .auth-eye').forEach(b => {
+            b.classList.remove('shown');
+            b.setAttribute('aria-label', 'Show password');
+            const inp = document.getElementById(b.dataset.target);
+            if (inp) inp.type = 'password';
+        });
+    }
+    function openAuthModal(mode, after) {
+        if (!auth) { alert('Cloud login is not available (cloud sync is not set up or could not load). Everything works locally.'); return; }
+        if (!netUp()) { alert('You are offline. Saved data is open on this device and new entries can be added. Editing and deleting need internet and login.'); return; }
+        authAfter = (typeof after === 'function') ? after : null;
+        setAuthMode(mode || 'login');
+        authEls.pw.value = ''; authEls.pw2.value = '';
+        authEls.modal.style.display = 'flex';
+        setTimeout(() => authEls.email.focus(), 50);
+    }
+    function closeAuthModal() {
+        // the login page cannot be closed while the page is locked; it closes by itself after a successful login
+        if (document.documentElement.classList.contains('ag-locked')) { authEls.pw.value = ''; authEls.pw2.value = ''; resetEyes(); return; }
+        authEls.modal.style.display = 'none';
+        authEls.pw.value = ''; authEls.pw2.value = '';
+        resetEyes();
+        authAfter = null;
+    }
+    function authErrMsg(e) {
+        const code = (e && e.code) || '';
+        switch (code) {
+            case 'auth/wrong-password':
+            case 'auth/invalid-credential':
+            case 'auth/invalid-login-credentials':
+            case 'auth/user-not-found': return 'Wrong email or password.';
+            case 'auth/email-already-in-use': return 'This email already has an account. Use Login, or Forgot password.';
+            case 'auth/weak-password': return 'Password is too weak. Use at least 6 characters.';
+            case 'auth/network-request-failed': return 'Network error. Check your internet connection and try again.';
+            case 'auth/too-many-requests': return 'Too many attempts. Wait a while, or reset your password.';
+            case 'auth/invalid-email': return 'Invalid email address.';
+            case 'auth/user-disabled': return 'This account has been disabled.';
+            case 'auth/operation-not-allowed': return 'Email/Password sign-in is not enabled on the cloud server. Ask the system owner to enable it.';
+            case 'auth/operation-not-supported-in-this-environment': return 'Login does not work from a file:// page. Open this page over https:// (e.g. a web host) or http://localhost.';
+            default: return (e && e.message) ? e.message : 'Something went wrong. Please try again.';
+        }
+    }
+    async function doLogin(email, pw) {
+        if (!pw) { authMessage('Enter your password.'); return; }
+        const cred = await auth.signInWithEmailAndPassword(email, pw);
+        if (!cred.user.emailVerified) {
+            try { await cred.user.sendEmailVerification(); } catch (e) { console.warn('verification mail failed', e); }
+            await auth.signOut();
+            authMessage('Email not verified yet. A verification email has been sent again to ' + email + '. Verify it, then log in.');
+            return;
+        }
+        if (!(await loadRole(cred.user))) {
+            await auth.signOut();
+            authMessage('This email is not approved for this system yet. Please contact the system owner.');
+            return;
+        }
+        const after = authAfter; authAfter = null;
+        authReady = true;
+        closeAuthModal();
+        accessChanged();
+        if (after) { try { after(); } catch (e) {} }
+        schedule(true);
+        showToast('success', 'Logged in', email);
+    }
+    async function doCreate(email, pw, pw2) {
+        if (pw.length < 6) { authMessage('Password must be at least 6 characters.'); return; }
+        if (pw !== pw2) { authMessage('Passwords do not match.'); return; }
+        const cred = await auth.createUserWithEmailAndPassword(email, pw);
+        let mailErr = null;
+        try { await cred.user.sendEmailVerification(); } catch (e) { mailErr = e; }
+        await auth.signOut();
+        setAuthMode('login');
+        authEls.pw.value = ''; authEls.pw2.value = '';
+        authMessage(mailErr
+            ? 'Account created, but the verification email could not be sent. Try to log in: it will be sent again.'
+            : 'Account created. A verification email was sent to ' + email + '. Verify it, then log in. Access is given only if the system owner has approved this email.', !mailErr);
+    }
+    async function doForgot(email) {
+        await auth.sendPasswordResetEmail(email);
+        authMessage('Password reset email sent to ' + email + '.', true);
+    }
+
+    authEls.form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (authBusy) return;
+        const email = authEls.email.value.trim().toLowerCase();
+        if (!email) { authMessage('Enter your email.'); return; }
+        if (!navigator.onLine) { authMessage('You are offline. Network error.'); return; }
+        if (!auth) { authMessage('The login service is not available. Reload the page.'); return; }
+        if (authMode === 'login' && Date.now() < gateLockUntil) { authMessage('Too many failed attempts. Try again in ' + Math.ceil((gateLockUntil - Date.now()) / 1000) + ' seconds.'); return; }
+        authBusy = true; authEls.submit.disabled = true; authMessage('');
+        try {
+            if (authMode === 'login') await doLogin(email, authEls.pw.value);
+            else if (authMode === 'create') await doCreate(email, authEls.pw.value, authEls.pw2.value);
+            else await doForgot(email);
+        } catch (err) {
+            if (authMode === 'login' && /invalid-credential|wrong-password|user-not-found|invalid-login-credentials/.test((err && err.code) || '')) { if (++gateFails >= 5) { gateFails = 0; gateLockUntil = Date.now() + 30000; } }
+            authMessage(authErrMsg(err));
+        } finally {
+            authBusy = false; authEls.submit.disabled = false;
+        }
+    });
+    document.querySelectorAll('#authModal .auth-link, #authModal .auth-tab, #authModal .auth-forgot').forEach(b => {
+        b.addEventListener('click', () => setAuthMode(b.dataset.mode));
+    });
+    document.querySelectorAll('#authModal .auth-eye').forEach(b => {
+        b.addEventListener('click', () => {
+            const inp = document.getElementById(b.dataset.target);
+            const show = inp.type === 'password';
+            inp.type = show ? 'text' : 'password';
+            b.classList.toggle('shown', show);
+            b.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+            inp.focus();
+        });
+    });
+    document.getElementById('authCloseBtn').addEventListener('click', closeAuthModal);
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && authEls.modal.style.display === 'flex') closeAuthModal();
+    });
+    document.getElementById('authBtn').addEventListener('click', async () => {
+        if (auth && auth.currentUser) {
+            try { await auth.signOut(); } catch (e) { alert('Logout failed: ' + e.message); return; }
+            accessChanged();
+            showToast('success', 'Logged out', 'Data is locked again while online.');
+        } else {
+            openAuthModal('login', null);
+        }
+    });
+
+    // ----- public API used by the rest of the page -----
+    window.cloudCanView = canView;
+    window.cloudCanAdd = canAdd;
+    window.cloudCanEdit = canEdit;
+    window.cloudCanDelete = canDelete;
+    window.cloudNetUp = netUp;
+    window.cloudIsLocalMode = localMode;
+    window.cloudAccessInfo = function () {
+        const u = auth && auth.currentUser;
+        const lv = myLevel();
+        return { mode: accessMode(), level: lv, email: u ? (u.email || '') : '', verified: !!(u && u.emailVerified),
+                 name: LEVEL_INFO[lv].name, rights: LEVEL_INFO[lv].rights };
+    };
+    window.cloudAccess = needAccess;       // cloudAccess('read' | 'add' | 'edit' | 'delete', retryCallback)
+    // used by Edit / Delete / Add: waits for the login check, then applies the level rules
+    window.cloudAccessRequired = function (action, cb) {
+        if (netUp() && auth && !authReady && !(ACTION_INFO[action] && ACTION_INFO[action].can())) { alert('Checking login status... please try again in a moment.'); return false; }
+        return needAccess(action, cb);
+    };
+    // used for viewing protected tabs (History): offline -> open; online -> login needed
+    window.cloudViewRequired = function (cb) { return needView(cb); };
+    window.cloudAuthClick = function () { const b = document.getElementById('authBtn'); if (b) b.click(); };
+
+    window.cloudInit = function () {
+        fbTried = true;
+        startAccessMonitor();
+        if (!configured || !window.firebase) {
+            fdb = null; refresh();
+            if (configured) gateFail('The login service could not load. Connect to the internet, then reload the page.'); else gateUpdate();
+            return;
+        }
+        try {
+            firebase.initializeApp(CLOUD_CONFIG);
+            fdb = firebase.firestore();
+            col = fdb.collection(COLLECTION);
+            colI = fdb.collection(ITEM_COLLECTION);
+            if (!firebase.auth) { gateFail('The login service is not available. Reload the page.'); return; }
+            auth = firebase.auth();
+            try { auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(() => {}); } catch (e) {}   // login ends when the tab/browser is closed
+            auth.onAuthStateChanged(onAuthChanged);
+        } catch (e) { console.error(e); fdb = null; refresh(); gateFail('The login service could not start. Reload the page.'); return; }
+        window.addEventListener('online', () => { refresh(); schedule(!pulled && myLevel() >= 1); if (window.onAdminState) window.onAdminState(); });
+        window.addEventListener('offline', () => { refresh(); if (window.onAdminState) window.onAdminState(); });
+        ready = true;
+        // coming back to this tab: sync again if something is waiting, failed, or the last sync is old
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden || !ready || !navigator.onLine) return;
+            const stale = !lastSync || (Date.now() - lastSync.t > 180000);
+            if (Object.keys(unsentLocal()).length || waitingDeletes() || lastError || stale) schedule(myLevel() >= 1 && stale);
+        });
+        setInterval(refresh, 20000);   // keeps "x min ago" fresh
+        // re-check the level now and then, so a changed approval list takes effect without a new login
+        setInterval(async () => {
+            const u = auth && auth.currentUser;
+            if (!u || !u.emailVerified || !netUp()) return;
+            const before = myRole;
+            await loadRole(u, true);
+            if (!myRole) {
+                gateNote = 'This email is not approved for this system yet. Please contact the system owner.';
+                try { await auth.signOut(); } catch (e) {}
+            } else if (myRole !== before) { accessChanged(); schedule(true); }
+        }, 300000);
+        schedule(true);
+    };
+    // click the Cloud Sync tile when it shows a problem: retry right now
+    window.cloudRetryNow = function () {
+        if (!ready || !navigator.onLine) return;
+        retryCount = 0; clearTimeout(retryTimer); retryTimer = null; lastError = ''; cloudWhy = '';
+        refresh(); schedule(myLevel() >= 1);
+        showToast('edit', 'Syncing…', 'Checking the cloud now.');
+    };
+    window.cloudSync = function () { schedule(false); };
+})();
+</script>
+<script>
+const $=id=>document.getElementById(id);
+const esc=v=>String(v==null?'':v).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],p2=n=>String(n).padStart(2,'0'),uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const dm=(d,s)=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(d||'');return m?m[3]+s+MON[+m[2]-1]+s+m[1].slice(2):''};
+const num=v=>parseFloat(v)||0,fN=v=>v?Number(v).toLocaleString('en-US'):'-';
+const AL=['wBook','nBook','wKhata','wCutting','mPacket'],TXT=['challan','party','truck','item'],KEYS=[...TXT,'gross','truckWt','less'];
+const calc=e=>{const g=num(e.gross)-num(e.truckWt),n=g-num(e.less);return{g,n,t:n}};
+const sumOf=rows=>rows.reduce((a,e)=>{const c=calc(e);['gross','truckWt','less'].forEach(k=>a[k]+=num(e[k]));a.g+=c.g;a.n+=c.n;a.t+=c.t;return a},{gross:0,truckWt:0,less:0,g:0,n:0,t:0});
+const sigOf=r=>[r.date,r.sl,JSON.stringify(r.rows)].join('|');
+function toast(type,title,msg){
+ const K={ok:['#16a34a','✓'],success:['#16a34a','✓'],edit:['#0284c7','✎'],warn:['#d97706','!'],delete:['#dc2626','🗑']},k=K[type]||K.ok,el=document.createElement('div');
+ el.className='toast';el.style.setProperty('--tc',k[0]);
+ el.innerHTML=`<div class="toast-icon">${k[1]}</div><div><p class="toast-title"></p><p class="toast-msg"></p></div><button type="button" class="toast-close" aria-label="Close">&times;</button><div class="toast-bar"></div>`;
+ el.querySelector('.toast-title').textContent=title;el.querySelector('.toast-msg').textContent=msg||'';$('toast').appendChild(el);
+ requestAnimationFrame(()=>el.classList.add('show'));const close=()=>{el.classList.add('hide');setTimeout(()=>el.remove(),400)};el.querySelector('.toast-close').onclick=close;setTimeout(close,3600)}
+let lastMain='entryTab';
+function switchTab(id){const bc=document.body.classList;if((id==='entryTab'&&bc.contains('no-entry'))||(id==='safetyTab'&&bc.contains('no-safety')))id='historyTab';if(id!=='safetyTab')lastMain=id;if(id==='historyTab')loadHistory();document.querySelectorAll('.tab-content').forEach(t=>t.classList.toggle('active',t.id===id));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));$('safetyBtn').classList.toggle('active',id==='safetyTab');scrollTo(0,0)}
+const openSet=()=>$('setModal').style.display='flex',closeSet=()=>$('setModal').style.display='none';
+$('setModal').addEventListener('click',e=>{if(e.target.id==='setModal')closeSet()});
+
+/* settings (print header) */
+const SET_KEY='PWRecvSettings',settings=Object.assign({company:'Borak Pulp & Paper Mills Limited',address:'Halimkarchor, Charkanai, Patiya, Chittagong.',title:'Raw Material Received Statement',minRows:12,paper:'a4'},JSON.parse(localStorage.getItem(SET_KEY)||'{}'));
+document.querySelectorAll('[data-set]').forEach(i=>{i.value=settings[i.dataset.set];i.oninput=()=>{settings[i.dataset.set]=i.dataset.set==='minRows'?(+i.value||12):i.value;localStorage.setItem(SET_KEY,JSON.stringify(settings));applyHeader()}});
+function applyHeader(){$('hdCo').textContent=settings.company;document.title=settings.company+' - Received Statement'}
+
+/* IndexedDB (this device) */
+let db,editId=null;const DB_NAME='PWReceivedStatementDB',ST='statements';
+const rq=r=>new Promise((ok,no)=>{r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)});
+const os=m=>db.transaction([ST],m).objectStore(ST),getAll=async()=>(await rq(os('readonly').getAll())).map(fixRec),putRec=r=>rq(os('readwrite').put(r)),delRec=id=>rq(os('readwrite').delete(id)),getOne=async id=>fixRec(await rq(os('readonly').get(id)));
+const IT='items',itx=m=>db.transaction([IT],m).objectStore(IT),itGetAll=()=>rq(itx('readonly').getAll()),itPut=r=>rq(itx('readwrite').put(r)),itDel=k=>rq(itx('readwrite').delete(k));
+const req=indexedDB.open(DB_NAME,2);req.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains(ST))d.createObjectStore(ST,{keyPath:'id'});if(!d.objectStoreNames.contains(IT))d.createObjectStore(IT,{keyPath:'key'})};req.onblocked=()=>alert('Please close the other tabs of this app and reload this page.');
+req.onsuccess=e=>{db=e.target.result;db.onversionchange=()=>db.close();init()};req.onerror=()=>{setDev('error');alert('Failed to open local database storage.')};
+function setDev(s,n){const t=$('devTile');t.dataset.state=s;$('devValue').textContent=s==='on'?'Browser database':'Database error';$('devSub').innerHTML=s==='on'?'<b>'+n+'</b> statement'+(n===1?'':'s')+' stored on this device.':'Could not open the browser database.';health()}
+
+/* linked JSON file (File System Access) */
+let fileHandle=null,syncReady=false,wq=Promise.resolve(),lastBackup=JSON.parse(localStorage.getItem('PWRecvLastBackup')||'null');
+const FH_DB='PWRecvFileHandleDB',DATA_FILE='received_statement_data.json',FT=[{description:'JSON data file',accept:{'application/json':['.json']}}];
+const fsOK=('showSaveFilePicker' in window)&&('showOpenFilePicker' in window);
+const fhOpen=()=>new Promise((ok,no)=>{const r=indexedDB.open(FH_DB,1);r.onupgradeneeded=()=>r.result.createObjectStore('h');r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)});
+const fhDo=async(m,v)=>{const d=await fhOpen(),s=d.transaction('h',m==='get'?'readonly':'readwrite').objectStore('h');return rq(m==='get'?s.get('main'):m==='put'?s.put(v,'main'):s.delete('main'))};
+const stamp=ms=>{const d=new Date(ms);let h=d.getHours();const a=h>=12?'PM':'AM';h=h%12||12;return p2(d.getDate())+'-'+p2(d.getMonth()+1)+'-'+d.getFullYear()+' '+p2(h)+':'+p2(d.getMinutes())+':'+p2(d.getSeconds())+' '+a};
+const ago=ms=>{const s=Math.max(0,Math.round((Date.now()-ms)/1000));return s<10?'just now':s<60?s+' sec ago':s<3600?Math.floor(s/60)+' min ago':s<86400?Math.floor(s/3600)+' hr ago':Math.floor(s/86400)+' day(s) ago'};
+const SYNC={on:['Active — data is protected',''],paused:['Paused','Click here and choose Allow to reconnect the data file'],off:['Not linked','Select the folder with your data file, or select / create / drop a file'],unsupported:['Not supported','Auto-backup file needs desktop Chrome / Edge']};
+function renderBackup(){
+ $('syncFile').innerHTML=fileHandle?'📄 <b>'+esc(fileHandle.name)+'</b>':'No backup file linked';
+ $('syncTime').innerHTML=lastBackup?'Last backup: <b>'+stamp(lastBackup.t)+'</b> ('+ago(lastBackup.t)+') · '+lastBackup.n+' record'+(lastBackup.n===1?'':'s'):'No backup written yet'}
+function setSync(s){const b=$('syncBar'),x=SYNC[s]||['Checking…',''];b.dataset.state=s;$('syncValue').textContent=x[0];$('syncHint').textContent=x[1];renderBackup();$('syncActions').querySelectorAll('button').forEach(k=>k.disabled=s==='unsupported');health()}
+setInterval(renderBackup,15000);
+function writeToFile(data){
+ if(!fileHandle||!syncReady)return;const json=JSON.stringify(data,null,2);
+ wq=wq.then(async()=>{try{const w=await fileHandle.createWritable();await w.write(json);await w.close();lastBackup={t:Date.now(),n:data.statements.length};localStorage.setItem('PWRecvLastBackup',JSON.stringify(lastBackup));setSync('on');const t=$('syncBar');t.classList.remove('flash');void t.offsetWidth;t.classList.add('flash')}catch(e){console.error(e);syncReady=false;setSync('paused')}})}
+const snapshot=async()=>({app:'Received Statement',version:2,savedAt:new Date().toISOString(),items:[...items],statements:await getAll()});
+const mirror=async()=>{writeToFile(await snapshot());if(window.cloudSync)cloudSync()};
+async function readFile(h){const t=await(await h.getFile()).text();if(!t.trim())return{statements:[],items:null};const p=JSON.parse(t);if(Array.isArray(p))return{statements:p,items:null};if(p&&Array.isArray(p.statements))return{statements:p.statements,items:Array.isArray(p.items)?p.items:null};throw new Error('Not a valid data file')}
+let skipSl=0;
+async function importRecords(d){const data=Array.isArray(d)?d:(d&&d.statements)||[];
+ const local=await getAll(),have=new Set(local.map(sigOf)),sls=new Map(local.map(x=>[slKey(x.sl),x.id]));let n=0;skipSl=0;
+ for(let r of data){if(!r||!r.rows)continue;r=fixRec({...r});if(have.has(sigOf(r)))continue;const id=r.id||uid(),ex=sls.get(slKey(r.sl));if(ex&&ex!==id){skipSl++;continue}await putRec({...r,id});sls.set(slKey(r.sl),id);n++}
+ if(d&&!Array.isArray(d)&&Array.isArray(d.items)){let ch=false;for(const x of d.items){const v=cleanName(x);if(v&&v.length<=30&&!items.some(y=>y.toLowerCase()===v.toLowerCase())){await itPut(mkItem(v));items.push(v);ch=true}}if(ch)refreshItems()}
+ return n}
+async function initFileSync(){
+ if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{});
+ if(!fsOK){setSync('unsupported');return}
+ try{fileHandle=await fhDo('get')}catch(e){fileHandle=null}
+ if(!fileHandle){setSync('off');return}
+ try{(await fileHandle.queryPermission({mode:'readwrite'}))==='granted'?await reconcile():setSync('paused')}catch(e){setSync('paused')}}
+async function reconnectFile(){if(!fileHandle)return;try{(await fileHandle.requestPermission({mode:'readwrite'}))==='granted'?await reconcile():alert('Permission denied. Auto-save stays paused.')}catch(e){alert('Could not reconnect: '+e.message)}}
+async function reconcile(){
+ let fd;try{fd=await readFile(fileHandle)}catch(e){
+  if(e&&e.name==='NotFoundError'){fileHandle=null;syncReady=false;try{await fhDo('del')}catch(x){}setSync('off');toast('warn','Data file not found','Use Select Folder / Select Existing to link it again.');return}
+  alert('Data file could not be read, so it was NOT overwritten: '+e.message);setSync('paused');return}
+ const local=await getAll();
+ if(!local.length&&fd.statements.length){if(confirm('The data file has '+fd.statements.length+' records but the database is empty. Load them now?'))await importRecords(fd);else{setSync('paused');return}}
+ syncReady=true;await refreshAll();mirror()}
+async function linkDataFile(h){
+ if(fileHandle&&syncReady&&h.isSameEntry){try{if(await h.isSameEntry(fileHandle)){toast('ok','Already linked',h.name+' is already your backup file.');return}}catch(x){}}
+ let fd;try{fd=await readFile(h)}catch(e){alert('This file is not a valid data file: '+e.message);return}
+ if((await h.requestPermission({mode:'readwrite'}))!=='granted'){alert('Write permission is required.');return}
+ fileHandle=h;await fhDo('put',h);const n=await importRecords(fd);syncReady=true;await refreshAll();mirror();
+ toast('ok','Data file linked',h.name+(n?' · '+n+' record(s) loaded.':' is now your backup file.')+(skipSl?' · '+skipSl+' skipped: SL No already exists.':''))}
+async function linkNewFile(){if(!fsOK)return alert('Please use desktop Chrome or Edge.');
+ try{const h=await showSaveFilePicker({suggestedName:DATA_FILE,types:FT});fileHandle=h;await fhDo('put',h);syncReady=true;await mirror();toast('ok','Data file created',h.name+' is now your auto-backup file.')}catch(e){if(e.name!=='AbortError')alert('Failed: '+e.message)}}
+async function linkExistingFile(){if(!fsOK)return alert('Please use desktop Chrome or Edge.');
+ try{const[h]=await showOpenFilePicker({types:FT});await linkDataFile(h)}catch(e){if(e.name!=='AbortError')alert('Failed: '+e.message)}}
+async function linkFolder(dir){
+ if((await dir.requestPermission({mode:'readwrite'}))!=='granted')return alert('Write permission is required for this folder.');
+ let h;try{h=await dir.getFileHandle(DATA_FILE)}catch(e){if(e.name!=='NotFoundError')throw e;if(!confirm(DATA_FILE+' was not found in "'+dir.name+'". Create a new data file there?'))return;h=await dir.getFileHandle(DATA_FILE,{create:true})}
+ await linkDataFile(h)}
+async function linkFolderPick(){if(!window.showDirectoryPicker)return alert('Please use desktop Chrome or Edge.');
+ try{await linkFolder(await showDirectoryPicker({mode:'readwrite'}))}catch(e){if(e.name!=='AbortError')alert('Failed: '+e.message+'\n(Choose the project folder itself — Chrome does not allow Desktop/Documents/Downloads as a whole.)')}}
+async function downloadCopy(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(await snapshot(),null,2)],{type:'application/json'}));a.download='received_statement_backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500);toast('ok','Copy downloaded','Keep this JSON file in a safe place.')}
+const tile=$('syncBar');
+tile.addEventListener('dragover',e=>{e.preventDefault();tile.classList.add('dragover')});
+tile.addEventListener('dragleave',e=>{if(!tile.contains(e.relatedTarget))tile.classList.remove('dragover')});
+tile.addEventListener('drop',async e=>{e.preventDefault();tile.classList.remove('dragover');const it=e.dataTransfer.items&&e.dataTransfer.items[0];if(!it)return;
+ try{if(it.getAsFileSystemHandle){const h=await it.getAsFileSystemHandle();return h.kind==='directory'?linkFolder(h):linkDataFile(h)}
+  const n=await importRecords(JSON.parse(await e.dataTransfer.files[0].text()));await refreshAll();toast(skipSl?'warn':'ok','Imported',n+' record(s) added.'+(skipSl?' '+skipSl+' skipped: SL No already exists.':''))}catch(x){alert('Failed: '+x.message)}});
+addEventListener('dragover',e=>e.preventDefault());addEventListener('drop',e=>e.preventDefault());
+
+/* net + health */
+let netSince=Date.now();
+const clock=ms=>{const d=new Date(ms);let h=d.getHours();const a=h>=12?'PM':'AM';return p2(h%12||12)+':'+p2(d.getMinutes())+' '+a};
+function updateNet(){const on=navigator.onLine;$('netTile').dataset.state=on?'online':'offline';$('netValue').textContent=on?'Online':'Offline';$('netSub').textContent=on?'Connected since '+clock(netSince)+'.':'Offline since '+clock(netSince)+'. Everything keeps saving on this device and in the backup file.';health()}
+addEventListener('online',()=>{netSince=Date.now();updateNet();toast('ok','Back online','Connection restored.')});
+addEventListener('offline',()=>{netSince=Date.now();updateNet();toast('warn','You are offline','Entries keep saving on this device.')});
+function health(){
+ const s=$('syncBar').dataset.state,d=$('devTile').dataset.state,n=$('netTile').dataset.state,c=$('cloudBar').dataset.state,I=[];
+ if(n==='offline')I.push(['warn','Internet is offline — working from this device']);
+ if(s==='paused')I.push(['warn','Backup file paused — reconnect in Data Safety Center']);
+ if(s==='off')I.push(['warn','Backup file is not linked']);
+ if(s==='unsupported')I.push(['warn','Backup file needs desktop Chrome / Edge']);
+ if(d==='error')I.push(['bad','Browser database problem']);
+ if(c==='error')I.push(['bad','Cloud sync problem — retrying']);if(c==='pending')I.push(['warn','Cloud sync is waiting']);if(c==='off')I.push(['warn','Cloud is not connected']);
+ const h=I.some(i=>i[0]==='bad')?'bad':I.length?'warn':s==='checking'?'checking':'good';
+ const ti=h==='good'?'All systems protected':h==='checking'?'Checking system status…':h==='bad'?'Action needed':'Please check';
+ $('safetyBtn').dataset.health=h;$('safetyBanner').dataset.health=h;$('sbTitle').textContent=ti;
+ $('sbBtnSub').textContent=h==='good'?'All protected':h==='checking'?'Checking…':I[0][1]+(I.length>1?' (+'+(I.length-1)+')':'');
+ $('sbSub').textContent=h==='good'?'Internet, backup file and this device are working. Every save is written to the browser database and your backup file.':h==='checking'?'Please wait a moment.':I.map(i=>i[1]).join(' · ');
+ $('sbTime').textContent='Updated '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}
+
+/* date: day typed, month / year automatic (same as Delivery Statement) */
+$('issueMonth').innerHTML=MON.map((m,i)=>`<option value="${p2(i+1)}">${p2(i+1)} - ${m.toUpperCase()}</option>`).join('');
+function setIssueDate(str){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(str||'')),now=new Date();$('issueDay').value=m?m[3]:'';$('issueMonth').value=m?m[2]:p2(now.getMonth()+1);$('issueYear').value=m?m[1]:String(now.getFullYear());syncIssueDate()}
+function onIssueDayInput(i){i.value=i.value.replace(/\D/g,'').slice(0,2);syncIssueDate()}
+function padIssueDay(){const d=$('issueDay');if(d.value.length===1&&d.value!=='0')d.value='0'+d.value;syncIssueDate()}
+function syncIssueDate(){const day=$('issueDay').value.padStart(2,'0'),mo=$('issueMonth').value,yr=String($('issueYear').value||'').trim();let out='';
+ if(/^\d{2}$/.test(day)&&/^\d{4}$/.test(yr)){const dt=new Date(+yr,+mo-1,+day);if(dt.getFullYear()===+yr&&dt.getMonth()===+mo-1&&dt.getDate()===+day)out=yr+'-'+mo+'-'+day}
+ $('issueDate').value=out;return out}
+
+/* entry rows (card rows, same as Delivery Statement) */
+const rb=$('rowsBox'),BASE='Mix Primary',LEGN={wBook:'W. Book',nBook:'N. Book',wKhata:'W. Khata',wCutting:'W. Cutting',mPacket:'M. Packet'};
+const lsGet=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}};
+let items=[BASE];
+const cleanName=v=>String(v||'').replace(/\s+/g,' ').trim(),mkItem=(n,o)=>({key:n.toLowerCase(),name:n,order:o==null?Date.now():o}),slKey=x=>{x=String(x==null?'':x).trim();return/^\d+$/.test(x)?String(parseInt(x,10)):x.toLowerCase()};
+/* item names are stored in the database (IndexedDB "items") and written into the linked JSON file */
+async function loadItems(){let rows=await itGetAll();
+ if(!rows.length){const gone=['W. Cutting','W. Khata','W. Book','N. Book','M. Packet'],old=[];
+  try{(JSON.parse(localStorage.getItem('PWRecvItems'))||[]).forEach(x=>{x=cleanName(x);if(x&&x!==BASE&&!gone.includes(x))old.push(x)})}catch(e){}
+  await itPut(mkItem(BASE,0));let o=Date.now();for(const x of old)await itPut(mkItem(x,o++));localStorage.removeItem('PWRecvItems');rows=await itGetAll()}
+ if(!rows.some(r=>r.key===BASE.toLowerCase())){await itPut(mkItem(BASE,0));rows=await itGetAll()}
+ items=rows.sort((a,b)=>a.order-b.order).map(r=>r.name)}
+async function addItem(v){v=cleanName(v);if(!v)return'';if(window.cloudAccessRequired&&!cloudAccessRequired('add'))return'';if(v.length>30){alert('An item name can have at most 30 characters.');return''}
+ const f=items.find(x=>x.toLowerCase()===v.toLowerCase());if(f)return f;
+ try{await itPut(mkItem(v))}catch(e){alert('Could not save the item: '+e.message);return''}
+ items.push(v);refreshItems();mirror();return v}
+async function removeItem(name){if(name===BASE)return;if(window.cloudAccessRequired&&!cloudAccessRequired('delete'))return;const used=(await getAll()).filter(x=>x.rows.some(r=>r.item===name)).length;
+ if(!confirm('Delete the item "'+name+'"?'+(used?'\n\nIt is used in '+used+' saved statement(s). Those statements keep the name, but it will no longer be offered in the Item Name list.':'')))return;
+ if(window.cloudDeleteItem){const r=await cloudDeleteItem(name.toLowerCase());if(!r.ok){alert(r.msg);return}}
+ try{await itDel(name.toLowerCase())}catch(e){alert('Delete failed: '+e.message);return}
+ items=items.filter(x=>x!==name);refreshItems();mirror();toast('delete','Item deleted',name)}
+/* older records kept weights in fixed columns: map them to an item name */
+const fixRec=s=>{if(!s||!s.rows)return s;const c=Object.assign({},LEGN,s.cols||{});s.rows=s.rows.map(r=>{if(r.item!==undefined)return r;const k=AL.find(a=>num(r[a])!==0);return Object.assign({},r,{item:k?String(c[k]||LEGN[k]).trim():''})});return s};
+const optHtml=cur=>{const l=[...items];if(cur&&!l.includes(cur))l.push(cur);return'<option value="">Select item…</option>'+l.map(x=>`<option value="${esc(x)}"${x===cur?' selected':''}>${esc(x)}</option>`).join('')+'<option value="__new">＋ Add new item…</option>'};
+function renderItemMgr(){$('itemList').innerHTML=items.map(x=>x===BASE?`<span class="it-chip lock" title="Default item">${esc(x)}<span aria-hidden="true">🔒</span></span>`:`<span class="it-chip">${esc(x)}<button type="button" data-name="${esc(x)}" aria-label="Delete ${esc(x)}">&times;</button></span>`).join('')}
+function refreshItems(){rb.querySelectorAll('select[data-k=item]').forEach(sel=>{const v=sel.value==='__new'?'':sel.value;sel.innerHTML=optHtml(v);sel.classList.toggle('has',!!v)});renderItemMgr()}
+const itemCols=rows=>{const ix=x=>{const i=items.indexOf(x);return i<0?1e6:i},u=[...new Set(rows.filter(r=>r.item&&calc(r).n!==0).map(r=>r.item))];return u.map((x,i)=>[x,i]).sort((a,b)=>ix(a[0])-ix(b[0])||a[1]-b[1]).map(a=>a[0])};
+const itemSum=rows=>{const by={};rows.forEach(r=>{if(!r.item&&!calc(r).n)return;const k=r.item||'No item';by[k]=(by[k]||0)+calc(r).n});const e=Object.entries(by);return e.length?'<div style="margin-top:6px">'+e.map(([k,v])=>esc(k)+': <b>'+fN(v)+'</b> kg').join(' &nbsp;|&nbsp; ')+'</div>':''};
+$('itemList').addEventListener('click',e=>{const b=e.target.closest('[data-name]');if(b)removeItem(b.dataset.name)});
+$('itemAddBtn').onclick=async()=>{const i=$('itemNew'),c=items.length,v=await addItem(i.value);if(v){i.value='';items.length>c?toast('ok','Item added',v):toast('warn','Already in the list',v)}i.focus()};
+$('itemNew').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('itemAddBtn').click()}});
+rb.addEventListener('change',async e=>{const t=e.target;if(t.dataset.k!=='item')return;if(t.value==='__new'){t.value='';const v=await addItem(prompt('New item name:'));t.value=v}updateTotals()});
+renderItemMgr();
+function addRow(r={}){
+ const d=document.createElement('div');d.className='item-row stmt-row';
+ const I=(k,t,ph,l)=>`<input data-k="${k}" type="${t}" autocomplete="off"${TXT.includes(k)?' class="uc"':''}${l?` list="${l}"`:''}${k==='less'?' inputmode="decimal"':''}${t==='number'?' step="any" min="0" inputmode="decimal"':''} placeholder="${ph}" aria-label="${ph}" value="${esc(r[k]??'')}">`,C=(c,l)=>`<div class="cv" data-c="${c}" data-l="${l}"></div>`;
+ d.innerHTML=`<div class="rn"></div>${I('challan','text','NIL')}${I('party','text','Party Name','pl')}${I('truck','text','Truck No')}${I('gross','number','Gross WT')}${I('truckWt','number','Truck WT')}${C('g','Goods WT')}${I('less','text','Less WT (kg or %)')}${C('n','Net WT')}<select data-k="item" aria-label="Item Name" class="${r.item?'has':''}">${optHtml(r.item||'')}</select><button type="button" class="btn btn-danger" title="Remove row">&#10005;</button>`;
+ rb.appendChild(d);renumber();return d}
+const renumber=()=>document.querySelectorAll('#rowsBox .stmt-row .rn').forEach((e,i)=>e.textContent=i+1);
+const rowObj=d=>{const o={};KEYS.forEach(k=>{const v=d.querySelector(`[data-k="${k}"]`).value.trim();o[k]=TXT.includes(k)?v:(v===''?'':num(v))});
+ const l=d.querySelector('[data-k=less]').value;if(l.includes('%'))o.less=Math.round((num(o.gross)-num(o.truckWt))*num(l)/100);return o};
+const filled=o=>KEYS.some(k=>k!=='item'&&o[k]!=='');
+const readRows=()=>[...rb.children].map(rowObj).filter(filled);
+function updateTotals(){
+ rb.querySelectorAll('.stmt-row').forEach(d=>{const c=calc(rowObj(d));d.querySelector('[data-c=g]').textContent=fN(c.g);d.querySelector('[data-c=n]').textContent=fN(c.n);const sel=d.querySelector('[data-k=item]');sel.classList.toggle('has',!!sel.value&&sel.value!=='__new');sel.classList.toggle('need',!sel.value&&c.n>0)});
+ const x=sumOf(readRows());$('entryTotals').innerHTML='Total Gross: <b>'+fN(x.gross)+'</b> &nbsp;|&nbsp; Total Net: <b>'+fN(x.n)+'</b> &nbsp;|&nbsp; Total (Kgs): <b>'+fN(x.t)+'</b> kg'+itemSum(readRows())}
+function cleanLess(i){let v=i.value;const pct=v.includes('%');v=v.replace(/[^0-9.]/g,'');const d=v.indexOf('.');if(d>-1)v=v.slice(0,d+1)+v.slice(d+1).replace(/\./g,'');if(pct&&v)v+='%';if(i.value!==v)i.value=v}
+rb.addEventListener('input',e=>{if(e.target.dataset.k==='less')cleanLess(e.target);updateTotals()});
+rb.addEventListener('change',e=>{if(e.target.dataset.k==='less'&&e.target.value.includes('%')){e.target.value=rowObj(e.target.closest('.stmt-row')).less;updateTotals()}});
+rb.addEventListener('click',e=>{const b=e.target.closest('.btn-danger');if(!b)return;if(rb.children.length>1){b.closest('.stmt-row').remove();renumber();updateTotals()}});
+rb.addEventListener('keydown',e=>{if(e.key!=='Enter'||!e.target.dataset.k)return;e.preventDefault();const row=e.target.closest('.stmt-row');let nx=row.nextElementSibling;if(!nx)nx=addRow();const n=nx.querySelector(`[data-k="${e.target.dataset.k}"]`);n.focus();n.select&&n.select()});
+$('addRowBtn').onclick=()=>addRow().querySelector('input').focus();
+const nextSl=async()=>String((await getAll()).reduce((a,s)=>Math.max(a,parseInt(s.sl)||0),0)+1);
+async function resetForm(){editId=null;rb.innerHTML='';for(let i=0;i<3;i++)addRow();setIssueDate('');$('slNo').value=await nextSl();$('entryTitle').textContent='Received Statement Entry';$('saveBtn').textContent='Save Statement';updateTotals()}
+async function saveStatement(pr){if(window.cloudAccessRequired&&!cloudAccessRequired(editId?'edit':'add',()=>saveStatement(pr)))return;
+ padIssueDay();const date=syncIssueDate();
+ if(!date){alert('Please type a valid day (e.g. 05) for the selected month and year.');$('issueDay').focus();return}
+ const sl=$('slNo').value.trim();if(!sl){alert('Please enter the SL No.');$('slNo').focus();return}
+ const rows=readRows();if(!rows.length){alert('Please enter at least one received row.');return}
+ const bad=[...rb.children].find(d=>{const o=rowObj(d);return filled(o)&&!o.item&&calc(o).n>0});if(bad){alert('Please select an Item Name for every row that has a Net WT.');bad.querySelector('[data-k=item]').focus();return}
+ const wasEdit=!!editId;
+ if(!wasEdit&&(await getAll()).some(s=>slKey(s.sl)===slKey(sl))){const nx=await nextSl();$('slNo').value=nx;alert('SL No '+sl+' already exists, so this statement was NOT saved.\n\nThe next free SL No ('+nx+') has been set. Please check and save again.');return}
+ if(!wasEdit&&window.cloudSlTaken&&await cloudSlTaken(sl)){alert('SL No '+sl+' already exists in the cloud (saved from another computer), so this statement was NOT saved.\n\nThe app is syncing now - the next free SL No will be set in a moment.');if(window.cloudRetryNow)cloudRetryNow();setTimeout(async()=>{if(!editId)$('slNo').value=await nextSl()},3000);return}
+ const rec={id:editId||uid(),sl,date,rows,savedAt:Date.now()};
+ try{await putRec(rec)}catch(e){alert('Save failed: '+e.message);return}
+ mirror();loadHistory();toast(wasEdit?'edit':'success',wasEdit?'Statement updated':'Statement saved','SL No '+sl+' | '+dm(date,'/'));
+ if(pr)showSheet(rec);resetForm()}
+$('stmtForm').addEventListener('submit',e=>{e.preventDefault();saveStatement(false)});
+$('saveShowBtn').onclick=()=>saveStatement(true);$('clearBtn').onclick=resetForm;
+$('prevBtn').onclick=()=>{padIssueDay();showSheet({sl:$('slNo').value,date:syncIssueDate(),rows:readRows()})};
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='s'&&$('entryTab').classList.contains('active')){e.preventDefault();saveStatement(false)}
+ if(e.key==='Escape'){closeSheet();closeSet()}});
+
+/* history */
+async function loadHistory(){
+ const all=await getAll(),q=$('qInput').value.toLowerCase().trim(),f=$('fromDate').value,t=$('toDate').value;
+ const list=all.filter(s=>(!f||s.date>=f)&&(!t||s.date<=t)&&(!q||(s.sl+' '+JSON.stringify(s.rows)).toLowerCase().includes(q))).sort((a,b)=>b.date.localeCompare(a.date)||(parseInt(b.sl)||0)-(parseInt(a.sl)||0));
+ const j=(s,k)=>esc([...new Set(s.rows.map(r=>String(r[k]||'').trim()).filter(Boolean))].join(', '));
+ $('historyBody').innerHTML=list.length?list.map(s=>{const x=sumOf(s.rows);return `<tr><td>${dm(s.date,'/')}</td><td><b>${esc(s.sl)}</b></td><td>${j(s,'challan')}</td><td>${j(s,'truck')}</td><td>${j(s,'party')}</td><td>${j(s,'item')}</td><td class="num">${fN(x.n)}</td><td class="num">${fN(x.t)}</td><td class="col-act"><button class="btn btn-warning" data-a="print" data-id="${s.id}">Print</button><button class="btn btn-secondary" data-a="edit" data-id="${s.id}">Edit</button><button class="btn btn-danger" data-a="del" data-id="${s.id}">Delete</button></td></tr>`}).join(''):'<tr class="empty-row"><td colspan="9">No statements found.</td></tr>';
+ const tot=list.reduce((a,s)=>{const x=sumOf(s.rows);a.n+=x.n;a.t+=x.t;return a},{n:0,t:0});
+ $('recordsSummary').innerHTML='Showing <b>'+list.length+'</b> of <b>'+all.length+'</b> statements | Total Net: <b>'+fN(tot.n)+'</b> | Total (Kgs): <b>'+fN(tot.t)+'</b> kg';
+ $('pl').innerHTML=[...new Set(all.flatMap(s=>s.rows.map(r=>r.party.trim())).filter(Boolean))].map(p=>`<option value="${esc(p)}">`).join('');
+ setDev('on',all.length);return list}
+const refreshAll=async()=>{await loadHistory();if(!editId&&!readRows().length)await resetForm()};
+$('historyBody').addEventListener('click',async e=>{const b=e.target.closest('[data-a]');if(!b)return;const id=b.dataset.id,st=await getOne(id);if(!st)return;
+ if(b.dataset.a==='print')showSheet(st);
+ else if(b.dataset.a==='del'){if(window.cloudAccessRequired&&!cloudAccessRequired('delete'))return;if(confirm('Delete statement SL No '+st.sl+'? This cannot be undone.')){if(window.cloudDeleteRecords){const r=await cloudDeleteRecords([id]);if(!r.ok){alert(r.msg);return}}await delRec(id);mirror();loadHistory();toast('delete','Statement deleted','SL No '+st.sl)}}
+ else{if(window.cloudAccessRequired&&!cloudAccessRequired('edit'))return;editId=id;rb.innerHTML='';st.rows.forEach(addRow);addRow();setIssueDate(st.date);$('slNo').value=st.sl;$('entryTitle').textContent='Editing Statement SL No '+st.sl;$('saveBtn').textContent='Update Statement';updateTotals();switchTab('entryTab')}});
+['qInput','fromDate','toDate'].forEach(i=>$(i).addEventListener('input',loadHistory));
+$('clearSearchBtn').onclick=()=>{$('qInput').value='';loadHistory()};
+$('clearDateBtn').onclick=()=>{$('fromDate').value='';$('toDate').value='';loadHistory()};
+$('exportCsvBtn').onclick=async()=>{const list=await loadHistory(),q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+ const lines=[['Date','SL No','Challan No','Party Name','Truck No','Gross WT','Truck WT','Goods WT','Less WT','Net WT','Item Name','Total (Kgs)'].map(q).join(',')];
+ list.forEach(s=>s.rows.forEach(r=>{const c=calc(r);lines.push([dm(s.date,'/'),s.sl,r.challan,r.party,r.truck,r.gross,r.truckWt,c.g,r.less,c.n,r.item||'',c.t].map(q).join(','))}));
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}));a.download='received-statements-'+new Date().toISOString().slice(0,10)+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)};
+
+/* print sheet */
+function showSheet(s){curSheet=s;applyPaper();
+ const V=itemCols(s.rows),t=sumOf(s.rows),n=Math.max(+settings.minRows||12,s.rows.length),d=dm(s.date,'-'),now=new Date();let r='';
+ for(let i=0;i<n;i++){const e=s.rows[i];if(!e){r+=`<tr class="f">${'<td></td>'.repeat(10+V.length)}</tr>`;continue}const k=calc(e);
+  r+=`<tr><td>${p2(i+1)}</td><td class="u">${esc(e.challan)||'NIL'}</td><td class="u l">${esc(e.party)}</td><td class="u">${esc(e.truck)}</td><td class="n">${fN(num(e.gross))}</td><td class="n">${fN(num(e.truckWt))}</td><td class="n">${fN(k.g)}</td><td class="n">${fN(num(e.less))}</td><td class="n">${fN(k.n)}</td>${V.map(a=>`<td class="n">${e.item===a?fN(k.n):''}</td>`).join('')}<td class="n">${fN(k.t)}</td></tr>`}
+ const H=['SL','Challan No','Party Name','Truck No','Gross WT','Truck WT','Goods WT','Less WT','Net WT',...V,'Total (Kgs)'];
+ $('sheet').innerHTML=`<div class="ph"><div class="co">${esc(settings.company)}</div><div class="ad">${esc(settings.address)}</div></div>
+ <div class="pr"><div class="bx">SL No: <b>${esc(s.sl)}</b></div><div class="tt"><h2>${esc(settings.title)}</h2></div><div class="bx r">Date: <b>${dm(s.date,'/')}</b></div></div>
+ <table class="pt"><thead><tr>${H.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${r}</tbody>
+ <tfoot><tr><td colspan="4">Total</td><td class="n">${fN(t.gross)}</td><td class="n">${fN(t.truckWt)}</td><td class="n">${fN(t.g)}</td><td class="n">${fN(t.less)}</td><td class="n">${fN(t.n)}</td>${V.map(a=>`<td class="n">${fN(s.rows.reduce((z,e)=>z+(e.item===a?calc(e).n:0),0))}</td>`).join('')}<td class="n">${fN(t.t)}</td></tr></tfoot></table>
+ <div class="sig"><div>Prepared By</div><div>Checked By</div><div>Authorized Signature</div></div>`;
+ $('reportModal').style.display='flex';document.body.classList.add('report-open');fitSheet()}
+function closeSheet(){$('reportModal').style.display='none';document.body.classList.remove('report-open')}
+$('reportModal').addEventListener('click',e=>{if(e.target.id==='reportModal')closeSheet()});
+/* paper size (A4 / Letter, landscape, 1 inch margin) + auto fit */
+const PAPER={a4:{n:'A4',w:297,h:210},letter:{n:'Letter',w:279.4,h:215.9}};let curSheet=null;
+function applyPaper(){const k=PAPER[settings.paper]?settings.paper:'a4',p=PAPER[k],sh=$('sheet');
+ $('pageStyle').textContent='@page{size:'+p.n+' landscape;margin:1in;@top-left{content:""}@top-center{content:""}@top-right{content:""}@bottom-left{content:""}@bottom-center{content:""}@bottom-right{content:""}}';
+ sh.style.setProperty('--sw',(p.w-50.8)+'mm');sh.style.setProperty('--sh',(p.h-52.8)+'mm');$('paperSel').value=k}
+function fitSheet(){const sh=$('sheet'),tb=sh.querySelector('table.pt');if(!tb)return;
+ tb.classList.remove('wrap');let fs=10;tb.style.fontSize=fs+'pt';const wide=()=>tb.offsetWidth>sh.clientWidth+1;
+ while(wide()&&fs>6){fs-=.25;tb.style.fontSize=fs+'pt'}if(wide())tb.classList.add('wrap');
+ const max=((PAPER[settings.paper]||PAPER.a4).h-52.8)*96/25.4,f=[...tb.querySelectorAll('tr.f')];
+ while(sh.offsetHeight>max+1&&f.length)f.pop().remove()}
+$('paperSel').onchange=()=>{settings.paper=$('paperSel').value;localStorage.setItem(SET_KEY,JSON.stringify(settings));applyPaper();if(curSheet)showSheet(curSheet)};
+
+async function init(){applyHeader();applyPaper();try{await loadItems()}catch(e){console.error(e)}refreshItems();await resetForm();await loadHistory();updateNet();initFileSync();if(window.cloudInit)cloudInit()}
+window.onSafetyRefresh=()=>health();
+window.onAdminState=()=>{const bc=document.body.classList,a=document.querySelector('.tab-content.active');if(a&&((a.id==='entryTab'&&bc.contains('no-entry'))||(a.id==='safetyTab'&&bc.contains('no-safety'))))switchTab('historyTab')};
+</script></body></html>

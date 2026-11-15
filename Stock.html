@@ -1,0 +1,2878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <style id="agStyle">
+        /* ===== Access Gate: the whole page stays locked until a verified, approved login ===== */
+        #agCover { display: none; position: fixed; inset: 0; z-index: 99990; align-items: center; justify-content: center; padding: 24px; text-align: center;
+            background:
+                radial-gradient(55% 38% at 14% 24%, rgba(200, 163, 90, .38) 0%, rgba(200, 163, 90, 0) 72%),
+                radial-gradient(60% 30% at 92% 100%, rgba(27, 111, 181, .42) 0%, rgba(27, 111, 181, 0) 75%),
+                linear-gradient(135deg, #08182a 0%, #0e2a47 60%, #123d63 100%);
+            font-family: Manrope, 'DM Sans', 'Segoe UI', Tahoma, Arial, sans-serif; color: #e8eef6; }
+        #agCover [hidden] { display: none !important; }
+        html.ag-locked #agCover { display: flex; }
+        #agCover .ag-box { max-width: 380px; }
+        #agCover .ag-spin { width: 44px; height: 44px; margin: 0 auto 18px; border: 4px solid rgba(255, 255, 255, .2); border-top-color: #c8a35a; border-radius: 50%; animation: agSpin .9s linear infinite; }
+        #agCover.ag-fail .ag-spin { display: none; }
+        @keyframes agSpin { to { transform: rotate(360deg); } }
+        @media (prefers-reduced-motion: reduce) { #agCover .ag-spin { animation-duration: 3s; } }
+        #agCover .ag-t { font-size: 18px; font-weight: 700; }
+        #agCover .ag-s { margin-top: 6px; font-size: 14px; color: #b9c7d8; line-height: 1.5; }
+        #agCover .ag-slow { margin-top: 14px; font-size: 13px; color: #f3d9a0; line-height: 1.5; }
+        #agCover button { margin-top: 14px; padding: 10px 24px; border: 0; border-radius: 50px; background: #c8a35a; color: #08182a; font-weight: 700; font-size: 14px; cursor: pointer; }
+        html.ag-locked, html.ag-locked body { overflow: hidden !important; }
+        html.ag-locked body > *:not(#agCover):not(#loginOverlay):not(#authModal):not(#toastWrap):not(script):not(style) { visibility: hidden !important; }
+        html.ag-locked #authModal { z-index: 100000 !important; visibility: visible !important; }
+        html.ag-locked #authCloseBtn { display: none !important; }
+        @media print { html.ag-locked body > * { display: none !important; } }
+    </style>
+    <script>
+        // Lock the page at once (before anything is drawn). It is unlocked only after a verified, approved login.
+        (function () {
+            document.documentElement.classList.add('ag-locked');
+            setTimeout(function () {
+                var m = document.getElementById('authModal');
+                if (!document.documentElement.classList.contains('ag-locked')) return;
+                if (document.getElementById('loginOverlay') || (m && m.style.display === 'flex')) return;
+                var s = document.getElementById('agSlow'), b = document.getElementById('agReload');
+                if (s) s.hidden = false;
+                if (b) b.hidden = false;
+            }, 12000);
+        })();
+    </script>
+    <title>Ambia Pulp and Paper Mills Ltd - Stock Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+
+        :root {
+            --background: #eef2f7;
+            --accent: #0284c7;
+            --navy: #0f2a43;
+            --line: #d7e0eb;
+            --zebra: #f7fafd;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: #1e293b;
+            margin: 0;
+            padding: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        /* ===== Header banner ===== */
+        .app-header {
+            text-align: center;
+            background: linear-gradient(135deg, #0b1f33 0%, #0c4a6e 55%, #0369a1 100%);
+            border-radius: 14px;
+            padding: 22px 18px;
+            margin-bottom: 14px;
+            border-bottom: 4px solid #38bdf8;
+            box-shadow: 0 10px 22px -10px rgba(3, 105, 161, .6);
+        }
+        .app-header h1 { margin: 0 0 6px 0; color: #fff; font-size: 24px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; }
+        .app-header p { margin: 0; color: #bae6fd; font-size: 13px; letter-spacing: .3px; font-weight: 400; }
+
+        /* ===== Data Safety Center (backup / internet / cloud status) ===== */
+        .status-card { padding: 16px 18px 18px !important; margin-bottom: 14px !important; }
+        .status-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+        .status-title { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #0f2a43; }
+        .status-title .shield { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 15px; background: linear-gradient(135deg, #0b1f33, #0369a1); color: #fff; box-shadow: 0 4px 10px -3px rgba(3, 105, 161, .55); }
+        .status-note { font-size: 12px; color: #64748b; }
+        .status-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+
+        .st-tile { --acc: #64748b; --acc-bg: #f1f5f9; --acc-tx: #334155;
+            position: relative; display: flex; gap: 12px; align-items: flex-start; overflow: hidden;
+            padding: 14px 14px 14px 18px; border: 1px solid var(--line); border-radius: 14px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            box-shadow: 0 1px 2px rgba(15, 23, 42, .05), 0 10px 20px -14px rgba(15, 23, 42, .35);
+            transition: box-shadow .2s, transform .2s, border-color .2s; }
+        .st-tile::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--acc); }
+        .st-tile[data-state="on"], .st-tile[data-state="online"], .st-tile[data-state="synced"] { --acc: #16a34a; --acc-bg: #dcfce7; --acc-tx: #166534; }
+        .st-tile[data-state="paused"], .st-tile[data-state="error"], .st-tile[data-state="pending"] { --acc: #d97706; --acc-bg: #fef3c7; --acc-tx: #92400e; }
+        .st-tile[data-state="off"], .st-tile[data-state="offline"], .st-tile[data-state="unsupported"] { --acc: #dc2626; --acc-bg: #fee2e2; --acc-tx: #991b1b; }
+        .st-tile[data-state="paused"], .st-tile[data-state="error"] { cursor: pointer; }
+        .st-tile[data-state="paused"]:hover, .st-tile[data-state="error"]:hover { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(15, 23, 42, .06), 0 14px 24px -14px rgba(15, 23, 42, .45); border-color: var(--acc); }
+        .st-icon { flex: 0 0 auto; width: 40px; height: 40px; border-radius: 12px; background: var(--acc-bg); display: flex; align-items: center; justify-content: center; font-size: 19px; }
+        .st-body { flex: 1; min-width: 0; }
+        .st-label { font-size: 11px; font-weight: 700; letter-spacing: .9px; text-transform: uppercase; color: #64748b; margin-bottom: 3px; }
+        .st-value { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; color: var(--acc-tx); line-height: 1.2; }
+        .st-dot { flex: 0 0 auto; width: 10px; height: 10px; border-radius: 50%; background: var(--acc); }
+        .st-tile[data-state="on"] .st-dot, .st-tile[data-state="online"] .st-dot, .st-tile[data-state="synced"] .st-dot { animation: stPulse 2s infinite; }
+        .st-tile[data-state="pending"] .st-dot, .st-tile[data-state="error"] .st-dot { animation: stBlink 1s infinite; }
+        .st-line { font-size: 12.5px; color: #475569; margin-top: 5px; line-height: 1.4; word-break: break-word; }
+        .st-line b { color: #0f2a43; font-weight: 600; }
+        .st-hint { display: none; margin-top: 7px; font-size: 12px; font-weight: 600; color: var(--acc-tx); background: var(--acc-bg); padding: 5px 9px; border-radius: 8px; }
+        .st-tile[data-state="paused"] .st-hint, .st-tile[data-state="error"] .st-hint, .st-tile[data-state="off"] .st-hint, .st-tile[data-state="unsupported"] .st-hint { display: inline-block; }
+        .st-hint:empty { display: none !important; }
+        .st-tile.flash { animation: stFlash 1.3s ease; }
+        @keyframes stPulse { 0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, .55); } 70% { box-shadow: 0 0 0 8px rgba(22, 163, 74, 0); } 100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); } }
+        @keyframes stBlink { 50% { opacity: .35; } }
+        @keyframes stFlash { 0% { background: #bbf7d0; } 100% { background: #ffffff; } }
+
+        /* Auto-backup tile: link-file actions + drag & drop zone */
+        .st-actions { margin-top: 11px; display: flex; flex-direction: column; gap: 8px; cursor: default; }
+        .st-btnrow { display: flex; gap: 8px; flex-wrap: wrap; }
+        .st-act { flex: 1 1 auto; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 7px 10px;
+            border: 1px solid #cbd5e1; border-radius: 9px; background: #fff; color: #0f172a;
+            font-size: 12.5px; font-weight: 600; line-height: 1.2; font-family: inherit; white-space: nowrap; cursor: pointer;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, .05); transition: background .15s, border-color .15s, color .15s; }
+        .st-act:hover:not(:disabled) { background: #f0f9ff; border-color: #0ea5e9; color: #0369a1; }
+        .st-act:focus-visible { outline: 2px solid #0ea5e9; outline-offset: 2px; }
+        .st-act:disabled { opacity: .5; cursor: not-allowed; }
+        .st-drop { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 9px 10px;
+            border: 1.5px dashed #94a3b8; border-radius: 10px; background: rgba(241, 245, 249, .65);
+            color: #64748b; font-size: 12px; font-weight: 600; text-align: center; user-select: none;
+            transition: border-color .15s, background .15s, color .15s; }
+        .st-drop .dz-over { display: none; }
+        .st-tile.dragover { border-color: #0ea5e9; box-shadow: 0 0 0 3px rgba(14, 165, 233, .18); }
+        .st-tile.dragover .st-drop { border-color: #0ea5e9; border-style: solid; background: #e0f2fe; color: #0369a1; }
+        .st-tile.dragover .st-drop .dz-idle { display: none; }
+        .st-tile.dragover .st-drop .dz-over { display: inline; }
+        .st-drop.disabled { opacity: .5; }
+
+        @media (max-width: 820px) { .status-grid { grid-template-columns: 1fr; } }
+        @media print { .status-card { display: none !important; } }
+
+        /* ===== Page navigation ===== */
+        .tabs {
+            display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; padding: 6px;
+            background: #fff; border: 1px solid var(--line); border-radius: 12px;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+        }
+        .tab-btn {
+            flex: 1 1 170px; background: transparent; border: none; color: #475569;
+            padding: 12px 14px; font-size: 14px; font-weight: 600; border-radius: 8px;
+            cursor: pointer; font-family: inherit; letter-spacing: .2px;
+        }
+        .tab-btn:not(.active):hover { background: #f1f5f9; color: #0f172a; }
+        .tab-btn.active {
+            background: linear-gradient(180deg, #0ea5e9, #0369a1); color: #fff;
+            box-shadow: 0 3px 8px rgba(3, 105, 161, .35);
+        }
+
+        /* ===== Pages (cards) ===== */
+        .tab-content { display: none; }
+        .tab-content.active {
+            display: block; background: #fff; padding: 20px; margin-bottom: 20px;
+            border: 1px solid var(--line); border-radius: 12px;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, .04), 0 8px 18px -10px rgba(15, 23, 42, .14);
+        }
+
+        h2, h3 { color: var(--navy); margin-top: 0; }
+        .tab-content > h3 {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 17px; font-weight: 700;
+            border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 18px;
+        }
+        .tab-content > h3::before {
+            content: ""; flex: 0 0 auto; width: 5px; height: 20px; border-radius: 3px;
+            background: linear-gradient(180deg, #38bdf8, #0369a1);
+        }
+        h3.sub-title, .tab-content > h3.sub-title {
+            display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px;
+            color: #0369a1; border-bottom: none; padding-bottom: 0; margin: 0 0 12px 0;
+        }
+        .tab-content > h3.sub-title::before { display: none; }
+        #issueForm .sub-title { border-top: 2px dashed var(--line); padding-top: 16px; margin-top: 4px; }
+
+        /* ===== Form ===== */
+        .header-section { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px; }
+        .form-group { display: flex; flex-direction: column; margin-bottom: 14px; }
+
+        label {
+            font-weight: 600; font-size: 12px; color: #475569;
+            text-transform: uppercase; letter-spacing: .35px; margin-bottom: 5px;
+        }
+
+        input, select {
+            width: 100%; padding: 9px 12px; font-size: 14px; font-family: inherit;
+            color: #0f172a; background: #fff;
+            border: 1px solid #c5d0de; border-radius: 8px;
+            transition: border-color .15s, box-shadow .15s;
+        }
+        input::placeholder { color: #94a3b8; }
+        input:hover, select:hover { border-color: #94a3b8; }
+        input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(2, 132, 199, .18); }
+
+        .item-head, .item-row {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.6fr) 44px;
+            gap: 10px;
+        }
+        .item-head {
+            padding: 0 13px 6px 16px; font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: .5px; color: #64748b;
+        }
+        .item-row {
+            align-items: start;
+            background: #f8fbfe; padding: 12px; margin-bottom: 10px;
+            border: 1px solid var(--line); border-left: 4px solid #0284c7; border-radius: 10px;
+        }
+        .item-row .btn-danger { height: 38px; width: 44px; padding: 0; }
+
+        /* ===== Buttons ===== */
+        .btn {
+            background: linear-gradient(180deg, #0ea5e9, #0284c7); color: #fff;
+            border: 1px solid transparent; padding: 10px 16px; font-size: 14px; font-weight: 600;
+            font-family: inherit; letter-spacing: .2px; border-radius: 8px; cursor: pointer;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, .35); transition: background .15s;
+        }
+        .btn:hover { background: linear-gradient(180deg, #0284c7, #0369a1); }
+        .btn-secondary { background: #fff; color: #334155; border: 1px solid #cbd5e1; box-shadow: none; }
+        .btn-secondary:hover { background: #f1f5f9; border-color: #94a3b8; }
+        .btn-danger { background: #ef4444; color: #fff; padding: 10px 12px; box-shadow: none; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-warning { background: #f59e0b; color: #fff; padding: 6px 10px; font-size: 13px; box-shadow: none; }
+        .btn-warning:hover { background: #d97706; }
+
+        .actions { display: flex; gap: 10px; margin-top: 20px; }
+        #saveBtn { flex: 2; }
+        .actions .btn-secondary { flex: 1; }
+
+        /* ===== Search & print panel (History) ===== */
+        .filter-panel {
+            display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; padding: 14px;
+            background: #f8fafc; border: 1px solid var(--line); border-radius: 10px;
+        }
+        .search-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; }
+        .search-field { position: relative; flex: 1 1 190px; min-width: 0; margin: 0; }
+        .date-row {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 10px;
+            border-top: 1px solid var(--line); padding-top: 12px;
+        }
+        .action-group { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; }
+        .action-group .form-group { margin: 0; }
+        .action-group input[type="date"] { width: auto; padding: 7px 10px; font-size: 13px; }
+        .search-row > .btn, .date-row .btn { padding: 9px 14px; font-size: 13.5px; }
+
+        .records-summary { text-align: right; font-size: 12px; color: #64748b; margin: 0 2px 8px; }
+        .records-summary b { color: var(--navy); }
+
+        /* ===== Professional data grid ===== */
+        table { width: 100%; border-collapse: collapse; }
+        .table-wrap { border: 1px solid #c5d0de; border-radius: 10px; background: #fff; overflow: auto; max-height: 68vh; }
+        .grid-table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        .grid-table thead th {
+            position: sticky; top: 0; z-index: 2;
+            background: var(--navy); color: #fff; text-align: left;
+            font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .4px;
+            padding: 10px 10px; white-space: nowrap;
+            border-bottom: 2px solid #0c4a6e; border-right: 1px solid rgba(255, 255, 255, .12);
+        }
+        .grid-table thead th:last-child { border-right: none; }
+        .grid-table td {
+            padding: 9px 10px; font-size: 13px; vertical-align: middle; text-align: left;
+            border-bottom: 1px solid #e2e8f0; border-right: 1px solid #edf1f6;
+            font-variant-numeric: tabular-nums;
+        }
+        .grid-table td:last-child { border-right: none; }
+        .grid-table tbody tr:nth-child(even) td { background: var(--zebra); }
+        .grid-table tbody tr:hover td { background: #e8f3fb; }
+        .grid-table th.num, .grid-table td.num { text-align: right; white-space: nowrap; }
+        .grid-table td:first-child { white-space: nowrap; }
+        .grid-table td:last-child { white-space: nowrap; width: 1%; }
+        .grid-table td .btn { padding: 5px 11px; font-size: 12px; margin: 0 3px 0 0; }
+        .grid-table tr.empty-row td {
+            text-align: center; color: #94a3b8; font-style: italic; padding: 30px 12px; background: #fff !important;
+        }
+
+        @media (max-width: 768px) {
+            .header-section { grid-template-columns: 1fr; }
+            .item-head { display: none; }
+            .item-row { grid-template-columns: 1fr; }
+            .item-row .btn-danger { width: 100%; }
+            #historyTable { min-width: 680px; }
+            .actions { flex-wrap: wrap; }
+        }
+        @media (max-width: 480px) {
+            .tab-btn { flex-basis: 100%; }
+            .tab-content.active { padding: 14px; }
+            .records-summary { text-align: left; }
+        }
+
+        /* ===== Records report (print all / filtered) ===== */
+        .modal {
+            display: none; position: fixed; inset: 0; z-index: 9000; overflow-y: auto;
+            align-items: flex-start; justify-content: center; padding: 20px 12px; background: rgba(15, 23, 42, .6);
+        }
+        .modal-content {
+            width: 100%; max-width: 980px; margin: auto; padding: 22px; background: #fff;
+            border-radius: 12px; box-shadow: 0 24px 60px rgba(0, 0, 0, .4);
+        }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+        .report-doc { font-family: Arial, sans-serif; color: #000; }
+        .report-header { text-align: center; border-bottom: 3px double #000; padding-bottom: 10px; margin-bottom: 12px; }
+        .report-header h2 { margin: 0 0 4px 0; font-size: 20px; letter-spacing: 1px; color: #000; }
+        .report-header p { margin: 2px 0; font-size: 12px; }
+        .report-meta {
+            display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 18px; margin-bottom: 10px;
+            padding: 8px 12px; font-size: 12px; background: #f8fafc; border: 1px solid #94a3b8; border-radius: 4px;
+        }
+        .report-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .report-table { width: 100%; min-width: 640px; border-collapse: collapse; }
+        .report-table th, .report-table td { border: 1px solid #64748b; padding: 5px 6px; font-size: 11px; vertical-align: top; text-align: left; }
+        .report-table th { background: #e2e8f0; text-transform: uppercase; font-size: 10px; text-align: center; }
+        .report-table td.c { text-align: center; }
+        .report-table td.num { text-align: right; white-space: nowrap; }
+
+        @page { size: A4 portrait; margin: 12mm; @bottom-right { content: "Page " counter(page) " of " counter(pages); font-size: 9px; } }
+        @media print {
+            /* only while the report is open: print the report, hide the rest of the app */
+            body.report-open { margin: 0 !important; padding: 0 !important; background: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            body.report-open > *:not(#reportModal) { display: none !important; }
+            body.report-open #reportModal {
+                display: block !important; position: static !important; width: 100% !important; height: auto !important;
+                padding: 0 !important; background: #fff !important; overflow: visible !important;
+            }
+            body.report-open #reportModal .modal-content {
+                max-width: none !important; width: 100% !important; margin: 0 !important; padding: 0 !important;
+                box-shadow: none; border-radius: 0; overflow: visible !important;
+            }
+            .no-print { display: none !important; }
+            .report-scroll { overflow: visible !important; }
+            .report-table { min-width: 0; }
+            .report-table thead { display: table-header-group; }
+            .report-table tr, .report-header, .report-meta { break-inside: avoid; page-break-inside: avoid; }
+        }
+
+        @media (max-width: 768px) {
+            .search-field { flex: 1 1 100%; }
+            .search-row > .btn { flex: 1 1 calc(50% - 5px); }
+            .date-row { flex-direction: column; align-items: stretch; }
+            .date-row .action-group { width: 100%; }
+            .date-row .action-group .form-group { flex: 1 1 calc(50% - 8px); }
+            .date-row .action-group input[type="date"] { width: 100%; }
+            .date-row .action-group > .btn { flex: 1 1 calc(50% - 8px); }
+            .modal { padding: 6px; }
+            .modal-content { padding: 14px; }
+            .modal-actions { flex-direction: column-reverse; }
+            .modal-actions .btn { width: 100%; }
+        }
+        @media (max-width: 480px) {
+            .search-row > .btn, .date-row .action-group > .btn { flex: 1 1 100%; }
+        }
+
+        /* ===== Auto capital letters (typed text always shows in CAPITALS) ===== */
+        input[type="text"], input[type="search"], input:not([type]), textarea { text-transform: uppercase; }
+        input::placeholder, textarea::placeholder { text-transform: none; }
+    
+
+        /* ===== Stock system additions ===== */
+        @page { size: A4 landscape; margin: 12mm; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
+        .kpi { --k: #0284c7; display: flex; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--line);
+            border-left: 5px solid var(--k); border-radius: 12px; background: linear-gradient(180deg, #fff, #f8fafc);
+            box-shadow: 0 1px 2px rgba(15, 23, 42, .05); cursor: default; }
+        .kpi.click { cursor: pointer; }
+        .kpi.click:hover { box-shadow: 0 8px 18px -10px rgba(15, 23, 42, .35); }
+        .k-ico { flex: 0 0 auto; width: 38px; height: 38px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 18px; background: #f1f5f9; }
+        .k-val { font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1.1; font-variant-numeric: tabular-nums; }
+        .k-lbl { font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: #64748b; margin-top: 2px; }
+        @media (max-width: 900px) { .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+        .low-banner { display: none; margin-bottom: 14px; padding: 11px 14px; border-radius: 10px; background: #fffbeb; border: 1px solid #fcd34d; color: #92400e; font-size: 13px; line-height: 1.5; }
+        .low-banner.show { display: block; }
+        .low-banner b { color: #78350f; }
+
+        .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; white-space: nowrap; letter-spacing: .2px; }
+        .b-ok { background: #dcfce7; color: #166534; }
+        .b-low { background: #fef3c7; color: #92400e; }
+        .b-out { background: #fee2e2; color: #991b1b; }
+        .b-issue { background: #e0f2fe; color: #075985; }
+        .b-open { background: #ede9fe; color: #5b21b6; }
+        .b-adj { background: #f1f5f9; color: #334155; }
+        .grid-table tbody tr.row-low td { background: #fffbeb; }
+        .grid-table tbody tr.row-out td { background: #fef2f2; }
+        .grid-table tbody tr.row-low:hover td, .grid-table tbody tr.row-out:hover td { background: #fde68a55; }
+        .grid-table tfoot td { position: sticky; bottom: 0; z-index: 1; background: #e2e8f0; font-weight: 700; color: var(--navy); padding: 10px; border-top: 2px solid #94a3b8; font-size: 13px; }
+        .grid-table td.neg { color: #dc2626; font-weight: 700; }
+        .grid-table td.plus { color: #15803d; font-weight: 700; }
+        .grid-table td.minus { color: #b91c1c; font-weight: 700; }
+        .grid-table td .btn.mini { padding: 4px 9px; font-size: 12px; }
+        .grid-table td.wrap { white-space: normal; min-width: 140px; }
+        .btn-green { background: linear-gradient(180deg, #22c55e, #16a34a); box-shadow: 0 2px 6px rgba(22, 163, 74, .35); }
+        .btn-green:hover { background: linear-gradient(180deg, #16a34a, #15803d); }
+
+        .seg { display: flex; gap: 6px; padding: 5px; margin-bottom: 16px; background: #f1f5f9; border-radius: 12px; }
+        .seg-btn { flex: 1; border: none; background: transparent; padding: 11px 10px; border-radius: 9px; font: inherit; font-weight: 700; font-size: 14px; color: #475569; cursor: pointer; }
+        .seg-btn.active[data-type="OUT"] { background: #fff; color: #075985; box-shadow: 0 2px 8px rgba(2, 132, 199, .25); }
+        .seg-btn.active[data-type="IN"] { background: #fff; color: #166534; box-shadow: 0 2px 8px rgba(22, 163, 74, .25); }
+
+        .avail { margin-top: 4px; font-size: 12px; color: #64748b; min-height: 16px; }
+        .avail.ok b { color: #166534; } .avail.bad { color: #b91c1c; font-weight: 600; } .avail.warn b { color: #b45309; }
+        .item-row input[readonly] { background: #f1f5f9; color: #475569; }
+
+        .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 768px) { .three-col, .two-col { grid-template-columns: 1fr; } }
+        .hint { font-size: 12px; color: #64748b; margin: -6px 0 14px; }
+
+        .lock-box { display: none; text-align: center; padding: 38px 16px; border: 2px dashed var(--line); border-radius: 12px; background: #f8fafc; color: #475569; }
+        .lock-box .lk { font-size: 34px; margin-bottom: 6px; }
+        .tab-content.locked .lock-box { display: block; }
+        .tab-content.locked .protected-body { display: none; }
+
+        /* Stock list report (print) — same look as the paper sheet */
+        .report-doc.stock-sheet .report-header { text-align: left; border-bottom: none; padding-bottom: 4px; }
+        .report-doc.stock-sheet .report-header h2 { font-size: 22px; letter-spacing: 0; }
+        .report-doc.stock-sheet .report-header p { font-style: italic; font-size: 13px; }
+        .rt-stock th { background: #7a8f84 !important; color: #fff; font-size: 11px; padding: 8px 6px; }
+        .rt-stock td { font-size: 12px; padding: 7px 6px; }
+        .rt-stock tr.tot td { border-top: 3px double #000; font-weight: 700; background: #fff; }
+        .rt-stock .st { font-weight: 700; white-space: nowrap; }
+        .rt-stock .st.low { color: #b45309; } .rt-stock .st.ok { color: #166534; } .rt-stock .st.out { color: #b91c1c; }
+        .sign-row { display: flex; justify-content: space-between; gap: 20px; margin-top: 46px; font-size: 12px; }
+        .sign-row div { flex: 1; text-align: center; border-top: 1px solid #000; padding-top: 5px; }
+        #editModal .modal-content { max-width: 520px; }
+        #mvSaveBtn, #itemSaveBtn { flex: 2; }
+        #mvForm .sub-title, #itemForm .sub-title { border-top: 2px dashed var(--line); padding-top: 16px; margin-top: 4px; }
+        @media print { #editModal { display: none !important; } }
+
+        /* =====================================================================
+           PREMIUM THEME - matches the SCP control panel (navy + brass)
+           ===================================================================== */
+        :root {
+            --ink: #08182a; --navy: #0e2a47; --navy-2: #123d63;
+            --brass: #c8a35a; --brass-soft: #ecdcb4; --brass-dark: #8a6a28;
+            --background: #eef2f6; --accent: #1b6fb5; --text: #13263a; --muted: #5d7084;
+            --line: #dbe3ec; --line-strong: #c4d0dd; --zebra: #f6f9fc;
+        }
+        html { -webkit-text-size-adjust: 100%; }
+        body { font-family: Manrope, 'Segoe UI', 'Noto Sans Bengali', Tahoma, Arial, sans-serif; color: var(--text); padding: 20px 18px 32px; }
+        .container { max-width: 1180px; }
+        button { -webkit-tap-highlight-color: transparent; }
+        button:focus-visible { outline: 3px solid rgba(56, 152, 214, .55); outline-offset: 2px; }
+        .ic { width: 1.15em; height: 1.15em; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+        /* ----- Header (same look as the SCP navigation bar) ----- */
+        .app-header {
+            position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 18px;
+            text-align: left; padding: 20px 26px; margin-bottom: 16px; border-radius: 18px;
+            background:
+                radial-gradient(60% 150% at 100% 0%, rgba(200, 163, 90, .24) 0%, rgba(200, 163, 90, 0) 62%),
+                linear-gradient(135deg, #08182a 0%, #0e2a47 55%, #123d63 100%);
+            border: 1px solid rgba(200, 163, 90, .35); border-bottom: 3px solid var(--brass);
+            box-shadow: 0 18px 36px -22px rgba(8, 24, 42, .85);
+        }
+        .ah-brand { display: flex; align-items: center; gap: 16px; min-width: 0; }
+        .ah-logo {
+            flex: 0 0 auto; width: 66px; height: 66px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: var(--brass-soft); border: 2px solid var(--brass); background: linear-gradient(145deg, #12385c, #0a1f36);
+            box-shadow: 0 0 0 4px rgba(200, 163, 90, .13), 0 10px 20px -10px rgba(0, 0, 0, .7);
+        }
+        .ah-logo svg { width: 50%; height: 50%; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+        .ah-text { min-width: 0; }
+        .app-header h1 {
+            margin: 0 0 5px; font-size: 22px; font-weight: 800; letter-spacing: .8px; text-transform: uppercase; line-height: 1.3;
+            background: linear-gradient(to right, #fff 0%, #ecdcb4 12%, #fff 24%, #c8a35a 100%); background-size: 200% auto;
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+            animation: ahShine 6s linear infinite;
+        }
+        .app-header p { margin: 0; color: rgba(255, 255, 255, .86); font-size: 12.5px; font-weight: 500; letter-spacing: 1px; }
+        .ah-badge {
+            flex: 0 0 auto; display: inline-flex; align-items: center; gap: 9px; padding: 9px 18px; border-radius: 50px;
+            color: var(--brass-soft); background: rgba(255, 255, 255, .06); border: 1px solid rgba(200, 163, 90, .55);
+            font-size: 12px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; white-space: nowrap;
+        }
+        .ah-badge i { width: 8px; height: 8px; border-radius: 50%; background: var(--brass); animation: ahPulse 2s infinite; }
+        @keyframes ahShine { to { background-position: 200% center; } }
+        @keyframes ahPulse { 0% { box-shadow: 0 0 0 0 rgba(200, 163, 90, .7); } 70% { box-shadow: 0 0 0 8px rgba(200, 163, 90, 0); } 100% { box-shadow: 0 0 0 0 rgba(200, 163, 90, 0); } }
+        @media (max-width: 720px) {
+            .app-header { flex-direction: column; text-align: center; padding: 18px 16px; }
+            .ah-brand { flex-direction: column; gap: 12px; }
+            .app-header h1 { font-size: 19px; }
+            .ah-badge { white-space: normal; }
+        }
+        @media (prefers-reduced-motion: reduce) { .app-header h1, .ah-badge i { animation: none; } }
+
+        /* ----- Cards ----- */
+        .status-card, .tab-content.active {
+            background: #fff; border: 1px solid var(--line); border-radius: 18px;
+            box-shadow: 0 1px 2px rgba(8, 24, 42, .04), 0 18px 40px -26px rgba(8, 24, 42, .45);
+        }
+        .tab-content.active { animation: tabIn .35s ease; }
+        @keyframes tabIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+        h2, h3 { color: var(--navy); }
+
+        /* ----- Data Safety Center ----- */
+        .status-title { color: var(--navy); letter-spacing: 1.2px; }
+        .status-title .shield {
+            width: 34px; height: 34px; border-radius: 50%; font-size: 16px; color: var(--brass-soft);
+            background: linear-gradient(145deg, #12385c, #0a1f36); border: 1.5px solid var(--brass);
+            box-shadow: 0 6px 14px -6px rgba(8, 24, 42, .6);
+        }
+        .status-note { color: var(--muted); }
+        .st-tile { border-radius: 16px; background: linear-gradient(180deg, #fff 0%, #f7fafd 100%); }
+        .st-icon { color: var(--acc-tx); border-radius: 14px; }
+        .st-icon .ic { width: 21px; height: 21px; }
+        .st-label { color: var(--muted); }
+        .st-line b { color: var(--navy); }
+        .st-act { border-radius: 50px; border-color: var(--line-strong); font-weight: 700; padding: 7px 12px; transition: all .3s ease; }
+        .st-act .ic { width: 14px; height: 14px; }
+        .st-act:hover:not(:disabled) { background: #eef4fa; border-color: var(--navy-2); color: var(--navy); transform: translateY(-2px); box-shadow: 0 5px 12px rgba(8, 24, 42, .15); }
+        .st-drop { border-radius: 12px; border-color: #aab9ca; color: var(--muted); }
+        .st-drop .ic { width: 14px; height: 14px; }
+        .st-drop .dz-idle, .st-drop .dz-over { align-items: center; gap: 6px; }
+        .st-drop .dz-idle { display: inline-flex; }
+        .st-tile.dragover .st-drop .dz-idle { display: none; }
+        .st-tile.dragover .st-drop .dz-over { display: inline-flex; }
+        .st-tile.dragover { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(27, 111, 181, .18); }
+        .st-tile.dragover .st-drop { border-color: var(--accent); background: #e3f0fa; color: var(--navy-2); }
+
+        /* ----- Page tabs (pill navigation) ----- */
+        .tabs { padding: 5px; gap: 6px; border-radius: 28px; border-color: var(--line); box-shadow: 0 1px 2px rgba(8, 24, 42, .05), 0 12px 28px -22px rgba(8, 24, 42, .5); }
+        .tab-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 9px; border-radius: 50px; padding: 11px 16px;
+            color: #4a5f75; font-weight: 700; transition: all .3s ease;
+        }
+        .tab-btn .ic { width: 17px; height: 17px; }
+        .tab-btn:not(.active):hover { background: #eef3f8; color: var(--navy); transform: translateY(-2px); }
+        .tab-btn.active {
+            color: #fff; background: linear-gradient(180deg, #17497a, #0d2f52);
+            box-shadow: 0 8px 18px -8px rgba(10, 39, 68, .75), inset 0 -3px 0 var(--brass);
+        }
+        @media (max-width: 480px) { .tabs { border-radius: 20px; } }
+
+        /* ----- Headings ----- */
+        .tab-content > h3 { color: var(--navy); font-size: 18px; letter-spacing: .2px; }
+        .tab-content > h3 .ic { width: 21px; height: 21px; color: var(--navy-2); }
+        .tab-content > h3::before { background: linear-gradient(180deg, var(--brass), #a8843f); }
+        h3.sub-title, .tab-content > h3.sub-title { color: var(--brass-dark); letter-spacing: 1px; }
+        #issueForm .sub-title, #mvForm .sub-title, #itemForm .sub-title { border-top-color: var(--line-strong); }
+
+        /* ----- Form ----- */
+        label { color: #4a5f75; font-weight: 700; font-size: 11.5px; letter-spacing: .6px; }
+        label .ic { width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px; color: var(--navy-2); }
+        input, select { padding: 10px 13px; border: 1px solid var(--line-strong); border-radius: 10px; color: var(--text); }
+        input:hover, select:hover { border-color: #91a8be; }
+        input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(27, 111, 181, .18); }
+        .item-head { color: var(--muted); letter-spacing: .8px; }
+        .item-row { background: #f7fafd; border-left: 4px solid var(--brass); border-radius: 12px; }
+        .item-row input[readonly] { background: #eef3f8; color: #4a5f75; }
+        .hint, .avail { color: var(--muted); }
+
+        /* ----- Buttons (pill, shine sweep, lift - same as SCP) ----- */
+        .btn {
+            position: relative; overflow: hidden; z-index: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 10px 20px; line-height: 1.5; border-radius: 50px; color: #fff; font-weight: 700; letter-spacing: .2px;
+            border: 1px solid #0a2744; background: linear-gradient(180deg, #17497a, #0d2f52);
+            box-shadow: 0 8px 18px -8px rgba(10, 39, 68, .7), inset 0 1px 0 rgba(255, 255, 255, .2);
+            transition: all .3s ease;
+        }
+        .btn .ic { width: 16px; height: 16px; }
+        .btn.mini .ic { width: 14px; height: 14px; }
+        .btn::before {
+            content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; z-index: -1; pointer-events: none;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, .38), transparent); transform: skewX(-20deg); transition: .5s;
+        }
+        .btn:hover::before { left: 100%; }
+        .btn:hover { background: linear-gradient(180deg, #1d568d, #103760); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(10, 39, 68, .45), inset 0 1px 0 rgba(255, 255, 255, .25); }
+        .btn:active { transform: translateY(0); box-shadow: inset 0 2px 5px rgba(0, 0, 0, .35); }
+        .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+        .btn-primary { /* alias of .btn (same as Receiving project) */ }
+        .btn-secondary { color: var(--text); border-color: var(--line-strong); background: linear-gradient(180deg, #fff, #f5f8fb); box-shadow: 0 1px 2px rgba(8, 24, 42, .07), inset 0 1px 0 #fff; }
+        .btn-secondary::before { background: linear-gradient(120deg, transparent, rgba(14, 42, 71, .12), transparent); }
+        .btn-secondary:hover { background: linear-gradient(180deg, #fff, #eef3f8); border-color: #91a8be; box-shadow: 0 5px 15px rgba(8, 24, 42, .22), inset 0 1px 0 #fff; }
+        .btn-secondary:active { box-shadow: inset 0 2px 4px rgba(8, 24, 42, .14); }
+        .btn-danger { border-color: #b32227; background: linear-gradient(180deg, #e5484d, #c92a2f); box-shadow: 0 6px 14px -8px rgba(201, 42, 47, .8), inset 0 1px 0 rgba(255, 255, 255, .2); }
+        .btn-danger:hover { background: linear-gradient(180deg, #ea5a5f, #d03035); box-shadow: 0 10px 22px rgba(201, 42, 47, .4); }
+        .btn-warning { color: #08182a; border-color: #a8843f; background: linear-gradient(135deg, #c8a35a, #ecdcb4); box-shadow: 0 6px 14px -8px rgba(168, 132, 63, .9), inset 0 1px 0 rgba(255, 255, 255, .5); }
+        .btn-warning:hover { background: linear-gradient(135deg, #d3b06a, #f3e6c4); box-shadow: 0 10px 22px rgba(200, 163, 90, .5); }
+        .btn-green { border-color: #14683f; background: linear-gradient(180deg, #25a06c, #1d8a5a); box-shadow: 0 6px 14px -8px rgba(29, 138, 90, .8), inset 0 1px 0 rgba(255, 255, 255, .25); }
+        .btn-green:hover { background: linear-gradient(180deg, #2db177, #219a65); box-shadow: 0 10px 22px rgba(29, 138, 90, .4); }
+        .actions .btn { padding: 12px 22px; font-size: 15px; }
+
+        /* ----- Stock Out / Stock In switch ----- */
+        .seg { gap: 4px; padding: 4px; border-radius: 50px; background: #e3eaf2; border: 1px solid #d3dde8; }
+        .seg-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 9px; border-radius: 50px; color: #4a5f75;
+            transition: all .3s ease;
+        }
+        .seg-btn .ic { width: 17px; height: 17px; }
+        .seg-btn:not(.active):hover { color: var(--navy); background: rgba(255, 255, 255, .6); }
+        .seg-btn.active[data-type="OUT"] { color: #fff; background: linear-gradient(180deg, #17497a, #0d2f52); box-shadow: 0 8px 18px -8px rgba(10, 39, 68, .75), inset 0 -3px 0 var(--brass); }
+        .seg-btn.active[data-type="IN"] { color: #fff; background: linear-gradient(180deg, #25a06c, #1d8a5a); box-shadow: 0 8px 18px -8px rgba(29, 138, 90, .75), inset 0 -3px 0 var(--brass); }
+
+        /* ----- KPI cards ----- */
+        .kpi { border-radius: 16px; background: linear-gradient(180deg, #fff, #f7fafd); box-shadow: 0 1px 2px rgba(8, 24, 42, .05), 0 12px 24px -18px rgba(8, 24, 42, .4); transition: all .3s ease; }
+        .kpi.click:hover { transform: translateY(-3px); box-shadow: 0 14px 26px -14px rgba(8, 24, 42, .45); }
+        .k-ico { color: var(--k); border-radius: 12px; background: #eef3f8; }
+        .k-ico .ic { width: 20px; height: 20px; }
+        .k-val { color: var(--navy); }
+        .k-lbl { color: var(--muted); }
+        .low-banner { border-radius: 14px; }
+        .badge { padding: 4px 11px; }
+        .badge .ic { width: 12px; height: 12px; stroke-width: 2.6; }
+
+        /* ----- Lock boxes ----- */
+        .lock-box { border-radius: 16px; border-color: var(--line-strong); background: #f7fafd; color: var(--muted); }
+        .lock-box .lk { color: var(--navy-2); display: flex; justify-content: center; }
+        .lock-box .lk .ic { width: 34px; height: 34px; }
+
+        /* ----- Search panel ----- */
+        .filter-panel { background: #f7fafd; border-radius: 14px; border-color: var(--line); }
+        .records-summary { color: var(--muted); }
+
+        /* ----- Data grid ----- */
+        .table-wrap { border-color: var(--line-strong); border-radius: 14px; }
+        .grid-table thead th {
+            background: linear-gradient(180deg, #123d63, #0e2a47); letter-spacing: .7px; font-size: 11.5px;
+            border-bottom: 3px solid var(--brass);
+        }
+        .grid-table td { border-bottom-color: #e3eaf1; }
+        .grid-table tbody tr:hover td { background: #eaf1f8; }
+        .grid-table tr.empty-row td { color: var(--muted); }
+        .grid-table tfoot td { background: #e8eef5; border-top: 2px solid var(--brass); }
+
+        /* ----- Popups (screen only - printed reports stay untouched) ----- */
+        @media screen {
+            .modal { background: rgba(8, 24, 42, .66); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+            .modal-content { border-radius: 18px; border-top: 4px solid var(--brass); }
+        }
+
+        /* =====================================================================
+           ACCESS / LOGIN / DATA SAFETY - identical to the Receiving project
+           ===================================================================== */
+        .ic { vertical-align: middle; }
+
+        /* ----- Login popup (full-page, navy + brass) ----- */
+        #authModal {
+            background:
+                radial-gradient(55% 38% at 14% 24%, rgba(200, 163, 90, .38) 0%, rgba(200, 163, 90, 0) 72%),
+                radial-gradient(60% 30% at 92% 100%, rgba(27, 111, 181, .42) 0%, rgba(27, 111, 181, 0) 75%),
+                linear-gradient(135deg, #08182a 0%, #0e2a47 60%, #123d63 100%);
+            overflow-y: auto; padding: 20px 16px; align-items: center; justify-content: center;
+            font-family: Manrope, 'DM Sans', 'Segoe UI', Tahoma, Arial, sans-serif;
+        }
+        #authModal *, #authModal *::before, #authModal *::after { box-sizing: border-box; }
+        #authModal .auth-card {
+            position: relative; width: 100%; max-width: 440px; margin: auto;
+            border-radius: 26px; border-top: 4px solid var(--brass); background: #fff; padding: 26px 26px 24px;
+            box-shadow: 0 30px 70px -28px rgba(0, 0, 0, .75);
+            animation: authIn .35s cubic-bezier(.2, .8, .2, 1);
+        }
+        @keyframes authIn { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: none; } }
+        @media (prefers-reduced-motion: reduce) { #authModal .auth-card { animation: none; } }
+        #authModal .auth-x {
+            position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; min-height: 0; padding: 0; margin: 0;
+            border-radius: 50%; border: none; background: #f4f4f5; color: #52525b; font-size: 14px; line-height: 1; cursor: pointer;
+        }
+        #authModal .auth-x:hover { background: #e4e4e7; color: #18181b; }
+        #authModal .auth-brand { display: flex; align-items: center; gap: 14px; padding-right: 30px; }
+        #authModal .auth-logo { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--brass-soft); border: 2px solid var(--brass); background: linear-gradient(145deg, #12385c, #0a1f36); }
+        #authModal .auth-logo svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+        #authModal .auth-brand-name { font-size: 17px; font-weight: 700; color: #18181b; line-height: 1.2; }
+        #authModal .auth-brand-sub { font-size: 14px; color: #52525b; margin-top: 3px; }
+        #authModal .auth-tabs { position: relative; display: grid; grid-template-columns: 1fr 1fr; margin-top: 22px; padding: 5px; background: #f4f4f5; border-radius: 999px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .02); }
+        #authModal .auth-pill {
+            position: absolute; top: 5px; bottom: 5px; left: 5px; width: calc(50% - 5px); border-radius: 999px; background: #fff;
+            box-shadow: 0 6px 16px -6px rgba(14, 42, 71, .35), 0 1px 2px rgba(0, 0, 0, .06);
+            transition: transform .28s cubic-bezier(.3, .8, .3, 1), opacity .2s;
+        }
+        #authModal .auth-tabs[data-active="create"] .auth-pill { transform: translateX(100%); }
+        #authModal .auth-tabs[data-active="none"] .auth-pill { opacity: 0; }
+        #authModal .auth-tab { position: relative; z-index: 1; background: transparent; border: none; border-radius: 999px; min-height: 0; margin: 0; padding: 12px 8px; font: inherit; font-size: 15.5px; font-weight: 600; color: #52525b; cursor: pointer; transition: color .2s; }
+        #authModal .auth-tab.active { color: #18181b; }
+        #authModal .auth-tab:hover:not(.active) { color: #18181b; }
+        #authModal #authTitle { margin: 26px 0 18px; padding: 0; border: none; font-size: 30px; font-weight: 700; letter-spacing: -.4px; color: #18181b; line-height: 1.15; }
+        #authModal .auth-field { margin-bottom: 16px; }
+        #authModal .auth-labelrow { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+        #authModal label { display: block; margin: 0; font-size: 15.5px; font-weight: 600; color: #18181b; text-transform: none; letter-spacing: 0; }
+        #authModal input {
+            display: block; width: 100%; height: 52px; margin: 0; padding: 0 16px; font: inherit; font-size: 16px; color: #18181b; text-transform: none;
+            background: #fff; border: 1.5px solid #d4d4d8; border-radius: 16px; outline: none; transition: border-color .15s, box-shadow .15s;
+        }
+        #authModal input::placeholder { color: #a1a1aa; }
+        #authModal input:hover { border-color: #a1a1aa; }
+        #authModal input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(27, 111, 181, .16); }
+        #authModal .auth-pwwrap { position: relative; }
+        #authModal .auth-pwwrap input { padding-right: 52px; }
+        #authModal .auth-eye { position: absolute; top: 50%; right: 8px; transform: translateY(-50%); width: 38px; height: 38px; min-height: 0; margin: 0; padding: 0; border: none; border-radius: 12px; background: transparent; color: #3f3f46; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        #authModal .auth-eye:hover { background: #f4f4f5; }
+        #authModal .auth-eye svg { width: 22px; height: 22px; }
+        #authModal .auth-eye .eye-off { display: none; }
+        #authModal .auth-eye.shown .eye-on { display: none; }
+        #authModal .auth-eye.shown .eye-off { display: block; }
+        #authModal .auth-linkbtn, #authModal .auth-link { background: none; border: none; padding: 0; margin: 0; min-height: 0; font: inherit; font-size: 15px; font-weight: 700; color: var(--accent); text-decoration: none; cursor: pointer; box-shadow: none; }
+        #authModal .auth-linkbtn:hover, #authModal .auth-link:hover { background: none; color: var(--navy); text-decoration: underline; }
+        #authModal #authSubmit {
+            display: block; width: 100%; height: 56px; margin-top: 8px; padding: 0; border: 1px solid #0a2744; border-radius: 50px;
+            background: linear-gradient(180deg, #17497a, #0d2f52); color: #fff; font: inherit; font-size: 17px; font-weight: 600; letter-spacing: .1px; cursor: pointer;
+            box-shadow: 0 14px 24px -14px rgba(10, 39, 68, .8); transition: transform .12s, background .15s, opacity .15s;
+        }
+        #authModal #authSubmit:hover { background: linear-gradient(180deg, #1d568d, #103760); }
+        #authModal #authSubmit:active { transform: scale(.985); }
+        #authModal #authSubmit:disabled { opacity: .6; cursor: wait; }
+        #authModal .auth-links { display: flex; justify-content: center; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 20px; }
+        #authModal .auth-links .auth-create-btn { border: 1.5px solid var(--accent); border-radius: 10px; padding: 9px 18px; font-weight: 700; text-decoration: none; }
+        #authModal .auth-links .auth-create-btn:hover { background: rgba(15, 76, 129, .08); text-decoration: none; }
+        #authMsg { display: none; margin: 2px 0 12px; padding: 11px 14px; border-radius: 14px; font-size: 14px; line-height: 1.45; }
+        @media print { #authModal { display: none !important; } }
+
+        /* ----- Toolbar: login info (left) + live Data Safety button (right) ----- */
+        .app-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+        .app-toolbar .tb-left { flex: 1 1 auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; min-width: 0; margin: 0; justify-content: flex-start; }
+        #authInfo { font-size: 12px; font-weight: 600; color: var(--navy); }
+        #authBtn { padding: 8px 20px; color: #fff; border-color: #0a2744; background: linear-gradient(180deg, #17497a, #0d2f52); box-shadow: 0 8px 18px -8px rgba(10, 39, 68, .7), inset 0 1px 0 rgba(255, 255, 255, .2); }
+        #authBtn::before { background: linear-gradient(120deg, transparent, rgba(255, 255, 255, .38), transparent); }
+        #authBtn:hover { background: linear-gradient(180deg, #1d568d, #103760); border-color: #0a2744; box-shadow: 0 10px 25px rgba(10, 39, 68, .45); }
+        .safety-btn { --hc: #64748b; --hc-bg: #f1f5f9; --hc-tx: #334155;
+            position: relative; display: inline-flex; align-items: center; gap: 11px; padding: 7px 18px 7px 8px; border-radius: 50px;
+            background: #fff; border: 1px solid var(--line-strong); color: var(--navy); font-family: inherit; cursor: pointer; margin-left: auto;
+            box-shadow: 0 1px 2px rgba(8, 24, 42, .05), 0 12px 26px -20px rgba(8, 24, 42, .55);
+            transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+        .safety-btn:hover { transform: translateY(-2px); border-color: var(--hc); box-shadow: 0 2px 4px rgba(8, 24, 42, .06), 0 14px 26px -16px rgba(8, 24, 42, .5); }
+        .safety-btn.active { background: linear-gradient(180deg, #17497a, #0d2f52); border-color: #0a2744; color: #fff; box-shadow: 0 8px 18px -8px rgba(10, 39, 68, .75), inset 0 -3px 0 var(--brass); }
+        .safety-btn[data-health="good"] { --hc: #16a34a; --hc-bg: #dcfce7; --hc-tx: #166534; }
+        .safety-btn[data-health="warn"] { --hc: #d97706; --hc-bg: #fef3c7; --hc-tx: #92400e; }
+        .safety-btn[data-health="bad"]  { --hc: #dc2626; --hc-bg: #fee2e2; --hc-tx: #991b1b; }
+        .sb-icon { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--hc-bg); color: var(--hc-tx); }
+        .sb-icon .ic { width: 18px; height: 18px; }
+        .sb-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2; min-width: 0; text-align: left; }
+        .sb-text b { font-size: 13px; font-weight: 800; letter-spacing: .3px; }
+        .sb-text small { font-size: 11.5px; font-weight: 600; color: var(--hc-tx); max-width: 230px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .safety-btn.active .sb-text small { color: var(--brass-soft); }
+        .sb-dot { flex: 0 0 auto; width: 10px; height: 10px; border-radius: 50%; background: var(--hc); }
+        .safety-btn[data-health="good"] .sb-dot { animation: stPulse 2s infinite; }
+        .safety-btn[data-health="warn"] .sb-dot, .safety-btn[data-health="bad"] .sb-dot { animation: stBlink 1s infinite; }
+        .tabs.dim .tab-btn.active { background: #eef3f8; color: #4a5f75; box-shadow: none; }
+        @media (max-width: 560px) {
+            .app-toolbar { flex-direction: column; align-items: stretch; }
+            .safety-btn { justify-content: flex-start; margin-left: 0; width: 100%; }
+            .sb-text { flex: 1; }
+            .sb-text small { max-width: none; white-space: normal; }
+            .app-toolbar .tb-left { justify-content: center; }
+        }
+        .st-tile[data-state="off"] { cursor: pointer; }
+        .st-tile[data-state="off"]:hover { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(15, 23, 42, .06), 0 14px 24px -14px rgba(15, 23, 42, .45); border-color: var(--acc); }
+        .st-tile[data-state="pending"] .st-hint, .st-tile[data-state="error"] .st-hint { display: inline-block; }
+        @media print { .app-toolbar, #pageSafety { display: none !important; } }
+
+        /* ----- Data Safety Center page ----- */
+        #pageSafety > h3 .sp-back { margin-left: auto; padding: 7px 16px; font-size: 13px; }
+        #pageSafety > h3 .sp-shield { width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--brass-soft); background: linear-gradient(145deg, #12385c, #0a1f36); border: 1.5px solid var(--brass); }
+        #pageSafety > h3 .sp-shield .ic { width: 16px; height: 16px; }
+        .sp-banner { --hc: #64748b; --hc-bg: #f1f5f9; --hc-tx: #334155;
+            display: flex; align-items: center; gap: 16px; padding: 16px 18px; margin-bottom: 20px; border-radius: 16px;
+            border: 1px solid var(--line); border-left: 6px solid var(--hc); background: linear-gradient(180deg, #fff, var(--hc-bg)); }
+        .sp-banner[data-health="good"] { --hc: #16a34a; --hc-bg: #f0fdf4; --hc-tx: #166534; }
+        .sp-banner[data-health="warn"] { --hc: #d97706; --hc-bg: #fffbeb; --hc-tx: #92400e; }
+        .sp-banner[data-health="bad"]  { --hc: #dc2626; --hc-bg: #fef2f2; --hc-tx: #991b1b; }
+        .sp-banner-icon { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--hc-tx); background: #fff; border: 2px solid var(--hc); }
+        .sp-banner-icon .ic { width: 23px; height: 23px; }
+        .sp-banner-body { flex: 1; min-width: 0; }
+        .sp-banner-title { font-size: 16px; font-weight: 800; color: var(--hc-tx); letter-spacing: .2px; }
+        .sp-banner-sub { margin-top: 3px; font-size: 13px; color: #475569; line-height: 1.45; }
+        .sp-banner-time { flex: 0 0 auto; font-size: 11.5px; font-weight: 700; color: var(--muted); text-align: right; }
+        .sp-subtitle { margin: 0 0 12px; font-size: 12.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.1px; color: var(--brass-dark); }
+        .sp-gap { margin-top: 24px !important; }
+        .sp-layers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+        .sp-layer { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border: 1px solid var(--line); border-left: 4px solid var(--brass); border-radius: 12px; background: #f7fafd; }
+        .sp-layer b { font-size: 13px; color: var(--navy); }
+        .sp-layer span { font-size: 12.5px; color: #475569; line-height: 1.45; }
+        @media (max-width: 820px) { .sp-layers { grid-template-columns: 1fr; } .sp-banner-time { display: none; } }
+        @media (max-width: 480px) { #pageSafety > h3 { flex-wrap: wrap; } #pageSafety > h3 .sp-back { margin-left: 0; width: 100%; } }
+    </style>
+</head>
+<body>
+
+<div id="agCover" role="status" aria-live="polite">
+    <div class="ag-box">
+        <div class="ag-spin" aria-hidden="true"></div>
+        <div class="ag-t">Ambia Pulp and Paper Mills Ltd</div>
+        <div class="ag-s" id="agMsg">Checking secure session…</div>
+        <div class="ag-slow" id="agSlow" hidden>This is taking longer than usual. Check the internet connection, then reload.</div>
+        <button type="button" id="agReload" hidden onclick="location.reload()">Reload page</button>
+    </div>
+</div>
+
+
+<div class="container">
+    <header class="app-header">
+        <div class="ah-brand">
+            <div class="ah-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V11l5 3.5V11l5 3.5V4h5v17"/><path d="M17.5 8h.01M17.5 12h.01M17.5 16h.01"/></svg></div>
+            <div class="ah-text">
+                <h1>Ambia Pulp and Paper Mills Ltd</h1>
+                <p>Store Department - Stock Management System</p>
+            </div>
+        </div>
+        <div class="ah-badge"><i></i>Stock Management</div>
+    </header>
+
+    <!-- Toolbar: login (left) + live Data Safety button (right) -->
+    <div class="app-toolbar">
+        <div class="auth-bar tb-left" id="authBar">
+            <span id="authInfo"></span>
+            <button type="button" class="btn btn-secondary" id="authBtn" style="display:none;">🔐 Login</button>
+        </div>
+        <button type="button" id="safetyBtn" class="safety-btn" data-health="checking" aria-pressed="false"
+                onclick="openSafetyPage()" aria-label="Open Data Safety Center" title="Open Data Safety Center">
+            <span class="sb-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.2 7.8 8 9 4.8-1.2 8-4.5 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <span class="sb-text"><b>Data Safety Center</b><small id="safetyBtnSub">Checking…</small></span>
+            <span class="sb-dot" aria-hidden="true"></span>
+        </button>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs" id="pageNav">
+        <button class="tab-btn active" data-tab="stockTab" onclick="switchTab('stockTab')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5V8z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v8"/></svg> Current Stock</button>
+        <button class="tab-btn" data-tab="inoutTab" onclick="switchTab('inoutTab')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4 3 8l4 4"/><path d="M3 8h14"/><path d="m17 20 4-4-4-4"/><path d="M21 16H7"/></svg> Stock In / Out</button>
+        <button class="tab-btn" data-tab="itemTab" onclick="switchTab('itemTab')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Item Entry</button>
+        <button class="tab-btn" data-tab="historyTab" onclick="switchTab('historyTab')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg> Movement History</button>
+        <button class="tab-btn" data-tab="deptTab" onclick="switchTab('deptTab')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v16"/><path d="M14 10h5a1 1 0 0 1 1 1v10"/><path d="M3 21h18"/><path d="M8 8h2M8 12h2M8 16h2"/></svg> Departments</button>
+    </div>
+
+    <!-- TAB 1: CURRENT STOCK -->
+    <div id="stockTab" class="tab-content active">
+        <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5V8z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v8"/></svg> Current Stock List</h3>
+        <div class="lock-box"><div class="lk"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><div><b>Login required</b><br>You are online — log in to view the stock list. (Offline, the data saved on this device can be viewed.)</div><br><button type="button" class="btn" onclick="openAuthModal('login', null)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/></svg> Login</button></div>
+        <div class="protected-body">
+            <div class="kpi-grid" id="kpiGrid"></div>
+            <div class="low-banner" id="lowBanner"></div>
+
+            <div class="filter-panel">
+                <div class="search-row">
+                    <div class="form-group search-field">
+                        <label for="sSearch"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg> Item / Description / Location</label>
+                        <input type="text" id="sSearch" placeholder="Type to search..." autocomplete="off">
+                    </div>
+                    <div class="form-group search-field">
+                        <label for="sDept">Department</label>
+                        <select id="sDept" class="deptSel" data-ph="ALL DEPARTMENTS" data-all="1"></select>
+                    </div>
+                    <div class="form-group search-field">
+                        <label for="sStatus">Status</label>
+                        <select id="sStatus">
+                            <option value="">ALL STATUS</option>
+                            <option value="OK">OK</option>
+                            <option value="LOW">LOW STOCK</option>
+                            <option value="OUT">OUT OF STOCK</option>
+                            <option value="ATTN">LOW + OUT (NEEDS ORDER)</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="sClear">Clear</button>
+                </div>
+                <div class="date-row">
+                    <div class="action-group"><span class="status-note" id="sSummary"></span></div>
+                    <div class="action-group">
+                        <button type="button" class="btn btn-warning" onclick="openReport('stock')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><rect x="7" y="14" width="10" height="7"/></svg> Print Stock List</button>
+                        <button type="button" class="btn" onclick="exportStockCSV()"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg> Export CSV</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table id="stockTable" class="grid-table">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Item Description</th>
+                            <th>Dept</th>
+                            <th>Unit</th>
+                            <th class="num">Current Stock Balance</th>
+                            <th class="num">Safety Stock Level</th>
+                            <th>Status</th>
+                            <th>Storage Location</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stockBody"></tbody>
+                    <tfoot id="stockFoot"></tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: STOCK IN / OUT -->
+    <div id="inoutTab" class="tab-content">
+        <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4 3 8l4 4"/><path d="M3 8h14"/><path d="m17 20 4-4-4-4"/><path d="M21 16H7"/></svg> Stock In / Out Entry</h3>
+        <form id="mvForm" class="mode-out">
+            <div class="seg">
+                <button type="button" class="seg-btn active" data-type="OUT" onclick="setMvType('OUT')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><path d="M12 15V4"/><path d="m8 8 4-4 4 4"/></svg> Stock Out (Issue)</button>
+                <button type="button" class="seg-btn" data-type="IN" onclick="setMvType('IN')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><path d="M12 4v11"/><path d="m8 11 4 4 4-4"/></svg> Stock In (Receive)</button>
+            </div>
+            <div class="two-col">
+                <div class="form-group">
+                    <label for="mvDate">Date</label>
+                    <input type="date" id="mvDate" required>
+                </div>
+            </div>
+
+            <h3 class="sub-title">Items</h3>
+            <div class="item-head" id="mvHead"></div>
+            <div id="mvRows"></div>
+            <button type="button" class="btn btn-secondary" onclick="addMvRow()"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Add Another Item</button>
+
+            <div class="actions">
+                <button type="submit" class="btn" id="mvSaveBtn">Save Stock Out</button>
+                <button type="button" class="btn btn-secondary" onclick="resetMv()"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg> Cancel / Clear</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- TAB 3: ITEM ENTRY -->
+    <div id="itemTab" class="tab-content">
+        <h3 id="itemTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Item Entry</h3>
+        <form id="itemForm">
+            <input type="hidden" id="itemEditId" value="">
+            <div class="two-col">
+                <div class="form-group">
+                    <label for="iName">Item Name</label>
+                    <input type="text" id="iName" placeholder="e.g. Bearing 22236" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="iDesc">Item Description</label>
+                    <input type="text" id="iDesc" placeholder="e.g. Roller bearing" autocomplete="off">
+                </div>
+            </div>
+            <div class="three-col">
+                <div class="form-group">
+                    <label for="iDept">Department</label>
+                    <select id="iDept" class="deptSel" data-ph="SELECT DEPARTMENT" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="iUnit">Unit</label>
+                    <input type="text" id="iUnit" placeholder="PC / LITERS / KG" required list="unitList" autocomplete="off">
+                    <datalist id="unitList"></datalist>
+                </div>
+                <div class="form-group">
+                    <label for="iLoc">Storage Location</label>
+                    <input type="text" id="iLoc" placeholder="e.g. Shelf 1" list="locList" autocomplete="off">
+                    <datalist id="locList"></datalist>
+                </div>
+            </div>
+            <div class="two-col">
+                <div class="form-group">
+                    <label for="iBal" id="iBalLabel">Opening Stock Balance</label>
+                    <input type="number" id="iBal" step="any" min="0" value="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="iSafety">Safety Stock Level</label>
+                    <input type="number" id="iSafety" step="any" min="0" value="0" required>
+                </div>
+            </div>
+            <p class="hint" id="iHint">Status shows LOW STOCK when the balance falls below the safety stock level.</p>
+            <datalist id="itemList"></datalist>
+            <div class="actions">
+                <button type="submit" class="btn" id="itemSaveBtn">Save Item</button>
+                <button type="button" class="btn btn-secondary" onclick="resetItemForm()"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg> Cancel / Clear</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- TAB 4: MOVEMENT HISTORY -->
+    <div id="historyTab" class="tab-content">
+        <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg> Movement History, Search &amp; Print</h3>
+        <div class="lock-box"><div class="lk"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><div><b>Login required</b><br>You are online — log in to view the history. (Offline, the data saved on this device can be viewed.)</div><br><button type="button" class="btn" onclick="openAuthModal('login', null)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/></svg> Login</button></div>
+        <div class="protected-body">
+            <div class="filter-panel">
+                <div class="search-row">
+                    <div class="form-group search-field"><label for="hItem"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg> Item Name</label><input type="text" id="hItem" placeholder="Type item name..." autocomplete="off"></div>
+                    <div class="form-group search-field"><label for="hDept">Department</label><select id="hDept" class="deptSel" data-ph="ALL DEPARTMENTS" data-all="1"></select></div>
+                    <div class="form-group search-field"><label for="hType">Type</label>
+                        <select id="hType"><option value="">ALL TYPES</option><option value="OUT">ISSUED (OUT)</option><option value="IN">STOCK IN</option><option value="OPENING">OPENING</option><option value="ADJUST">ADJUSTMENT</option></select></div>
+                </div>
+                <div class="date-row">
+                    <div class="action-group">
+                        <div class="form-group"><label for="hFrom">From Date</label><input type="date" id="hFrom"></div>
+                        <div class="form-group"><label for="hTo">To Date</label><input type="date" id="hTo"></div>
+                        <button type="button" class="btn btn-secondary" id="hClear">Clear Filters</button>
+                    </div>
+                    <div class="action-group">
+                        <button type="button" class="btn btn-secondary needs-add" onclick="document.getElementById('dlvFile').click()" title="Import issue records from the Delivery system backup file"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><path d="M12 4v11"/><path d="m8 11 4 4 4-4"/></svg> Import Delivery File</button>
+                        <button type="button" class="btn btn-warning" onclick="openReport('history')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><rect x="7" y="14" width="10" height="7"/></svg> Print Report</button>
+                        <button type="button" class="btn" onclick="exportHistoryCSV()"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg> Export CSV</button>
+                        <input type="file" id="dlvFile" accept=".json,application/json" style="display:none">
+                    </div>
+                </div>
+            </div>
+            <div class="records-summary" id="hSummary"></div>
+            <div class="table-wrap">
+                <table id="historyTable" class="grid-table">
+                    <thead>
+                        <tr><th>Date</th><th>Type</th><th>Item Name</th><th>Department</th><th class="num">Qty</th><th>Unit</th><th>Remarks</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody id="historyBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 5: DEPARTMENTS -->
+    <div id="deptTab" class="tab-content">
+        <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v16"/><path d="M14 10h5a1 1 0 0 1 1 1v10"/><path d="M3 21h18"/><path d="M8 8h2M8 12h2M8 16h2"/></svg> Departments</h3>
+        <form id="deptForm" class="needs-add">
+            <input type="hidden" id="deptEditKey" value="">
+            <div class="search-row">
+                <div class="form-group search-field"><label for="dName">Department Name</label><input type="text" id="dName" placeholder="e.g. Mechanical" required autocomplete="off"></div>
+                <div class="form-group search-field"><label for="dRecv">Default Receiver (optional)</label><input type="text" id="dRecv" placeholder="e.g. Munna" autocomplete="off"></div>
+                <button type="submit" class="btn" id="dSaveBtn">Add Department</button>
+                <button type="button" class="btn btn-secondary" onclick="resetDeptForm()">Clear</button>
+            </div>
+        </form>
+        <div class="lock-box"><div class="lk"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><div><b>Login required</b><br>You are online — log in to see the department list.</div><br><button type="button" class="btn" onclick="openAuthModal('login', null)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/></svg> Login</button></div>
+        <div class="protected-body">
+        <div class="table-wrap" style="margin-top:12px;">
+            <table class="grid-table" id="deptTable">
+                <thead><tr><th>Department Name</th><th>Default Receiver</th><th class="num">Items</th><th class="num">Issue Entries</th><th>Actions</th></tr></thead>
+                <tbody id="deptBody"></tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+    <!-- PAGE: Data Safety Center (Internet, Auto-Backup file, Cloud Sync) -->
+    <div id="pageSafety" class="tab-content">
+        <h3><span class="sp-shield"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.2 7.8 8 9 4.8-1.2 8-4.5 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/></svg></span>Data Safety Center
+            <button type="button" class="btn btn-secondary sp-back" onclick="closeSafetyPage()" aria-label="Go back"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg><span id="spBackLabel">Back to Stock</span></button>
+        </h3>
+        <div class="sp-banner" id="safetyBanner" data-health="checking" role="status" aria-live="polite">
+            <div class="sp-banner-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.2 7.8 8 9 4.8-1.2 8-4.5 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/></svg></div>
+            <div class="sp-banner-body">
+                <div class="sp-banner-title" id="safetyBannerTitle">Checking system status…</div>
+                <div class="sp-banner-sub" id="safetyBannerSub">Please wait a moment.</div>
+            </div>
+            <div class="sp-banner-time" id="safetyBannerTime"></div>
+        </div>
+        <h4 class="sp-subtitle">System Status</h4>
+        <div class="status-grid">
+            <div class="st-tile" id="netTile" data-state="online">
+                <div class="st-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><path d="M2 9a15 15 0 0 1 20 0"/><circle cx="12" cy="19" r="1"/></svg></div>
+                <div class="st-body">
+                    <div class="st-label">Internet</div>
+                    <div class="st-value"><span class="st-dot"></span><span id="netValue">Checking…</span></div>
+                    <div class="st-line" id="netSub"></div>
+                </div>
+            </div>
+            <div class="st-tile" id="syncBar" data-state="checking" onclick="syncBarClick()">
+                <div class="st-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v5h7V3"/><rect x="8" y="13" width="8" height="8"/></svg></div>
+                <div class="st-body">
+                    <div class="st-label">Auto-Backup (File)</div>
+                    <div class="st-value"><span class="st-dot"></span><span id="syncValue">Checking…</span></div>
+                    <div class="st-line" id="syncFile"></div>
+                    <div class="st-line" id="syncTime"></div>
+                    <div class="st-hint" id="syncHint"></div>
+                    <div class="st-actions" id="syncActions" onclick="event.stopPropagation()">
+                        <div class="st-btnrow">
+                            <button type="button" class="st-act" onclick="linkExistingFile()" title="Select an existing data file"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg> Select Existing</button>
+                            <button type="button" class="st-act" onclick="linkNewFile()" title="Create a new data file"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M12 11v6M9 14h6"/></svg> Create New</button>
+                            <button type="button" class="st-act" onclick="linkFolderPick()" title="Select the folder that contains the data file (found automatically)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> Select Folder</button>
+                        </div>
+                        <div class="st-drop" id="syncDrop">
+                            <span class="dz-idle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg> Drag &amp; drop data file here</span>
+                            <span class="dz-over"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg> Release to link this file</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="st-tile" id="cloudTile" data-state="local" onclick="cloudTileClick()">
+                <div class="st-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.5-9A6 6 0 0 1 18 8.5 4 4 0 0 1 17.5 18z"/></svg></div>
+                <div class="st-body">
+                    <div class="st-label">Cloud Sync</div>
+                    <div class="st-value"><span class="st-dot"></span><span id="cloudValue">Checking…</span></div>
+                    <div class="st-line" id="cloudSub"></div>
+                    <div class="st-hint" id="cloudHint"></div>
+                </div>
+            </div>
+        </div>
+
+        <h4 class="sp-subtitle sp-gap">How your data is protected</h4>
+        <div class="sp-layers">
+            <div class="sp-layer"><b>1 · This device</b><span>Every entry is saved in this browser the moment you save it, even without internet.</span></div>
+            <div class="sp-layer"><b>2 · Backup file</b><span>After every save, the data is copied to your backup file (desktop Chrome / Edge).</span></div>
+            <div class="sp-layer"><b>3 · Cloud</b><span>When you are online and logged in, entries are uploaded to the cloud automatically.</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- Report modal (print) -->
+<div id="reportModal" class="modal">
+    <div class="modal-content">
+        <div class="report-doc" id="reportDoc"></div>
+        <div class="modal-actions no-print">
+            <button type="button" class="btn btn-secondary" onclick="closeReport()">Close</button>
+            <button type="button" class="btn" onclick="printReport()"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><rect x="7" y="14" width="10" height="7"/></svg> Print</button>
+        </div>
+    </div>
+</div>
+
+<!-- Edit movement modal -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <h3 style="margin-bottom:14px;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit Entry</h3>
+        <form id="editForm">
+            <input type="hidden" id="eId">
+            <div class="form-group"><label>Item</label><input type="text" id="eItem" readonly></div>
+            <div class="two-col">
+                <div class="form-group"><label for="eDate">Date</label><input type="date" id="eDate" required></div>
+                <div class="form-group"><label for="eQty">Qty</label><input type="number" id="eQty" step="any" min="0.0001" required></div>
+            </div>
+            <div class="form-group"><label for="eNote">Remarks</label><input type="text" id="eNote"></div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeEdit()">Cancel</button>
+                <button type="submit" class="btn">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Login Popup -->
+<div id="authModal" class="modal">
+    <div class="auth-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+        <button type="button" id="authCloseBtn" class="auth-x" aria-label="Close" title="Close">&#10005;</button>
+        <div class="auth-brand">
+            <div class="auth-logo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V11l5 3.5V11l5 3.5V4h5v17"/><path d="M17.5 8h.01M17.5 12h.01M17.5 16h.01"/></svg></div>
+            <div>
+                <div class="auth-brand-name">Ambia Pulp And Paper Mills Ltd.</div>
+                <div class="auth-brand-sub">Store Department</div>
+            </div>
+        </div>
+        <div class="auth-tabs" id="authTabs" data-active="login" role="tablist">
+            <span class="auth-pill"></span>
+            <button type="button" class="auth-tab active" data-mode="login" role="tab">Login</button>
+            <button type="button" class="auth-tab" data-mode="create" role="tab">Create account</button>
+        </div>
+        <h3 id="authTitle">Login</h3>
+        <form id="authForm" novalidate>
+            <div class="auth-field">
+                <div class="auth-labelrow"><label for="authEmail">Email</label></div>
+                <input type="email" id="authEmail" autocomplete="username" placeholder="email" autocapitalize="off" spellcheck="false">
+            </div>
+            <div class="auth-field" id="authPwRow">
+                <div class="auth-labelrow">
+                    <label for="authPassword">Password</label>
+                    <button type="button" class="auth-linkbtn auth-forgot" data-mode="forgot">Forgot password?</button>
+                </div>
+                <div class="auth-pwwrap">
+                    <input type="password" id="authPassword" autocomplete="current-password" placeholder="Password">
+                    <button type="button" class="auth-eye" data-target="authPassword" aria-label="Show password" title="Show / hide password"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5.5 4.5 12 4.5 22.5 12 22.5 12 18.5 19.5 12 19.5 1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3.2"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5.5 4.5 12 4.5c2 0 3.8.7 5.3 1.7M22.5 12S18.5 19.5 12 19.5c-2 0-3.8-.7-5.3-1.7"/><path d="M9.9 9.9a3.2 3.2 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg></button>
+                </div>
+            </div>
+            <div class="auth-field" id="authPw2Row" style="display: none;">
+                <div class="auth-labelrow"><label for="authPassword2">Confirm Password</label></div>
+                <div class="auth-pwwrap">
+                    <input type="password" id="authPassword2" autocomplete="new-password" placeholder="Confirm password">
+                    <button type="button" class="auth-eye" data-target="authPassword2" aria-label="Show password" title="Show / hide password"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5.5 4.5 12 4.5 22.5 12 22.5 12 18.5 19.5 12 19.5 1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3.2"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5.5 4.5 12 4.5c2 0 3.8.7 5.3 1.7M22.5 12S18.5 19.5 12 19.5c-2 0-3.8-.7-5.3-1.7"/><path d="M9.9 9.9a3.2 3.2 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg></button>
+                </div>
+            </div>
+            <div id="authMsg" role="alert"></div>
+            <button type="submit" class="btn-primary" id="authSubmit">Login</button>
+        </form>
+        <div class="auth-links">
+            <button type="button" class="auth-link" data-mode="login">Back to Login</button>
+            <button type="button" class="auth-link auth-create-btn" data-mode="create">➕ Create new account</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ===== line icons used by generated markup (same style as the SCP panel) ===== */
+const ICO = {
+  box: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5V8z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v8"/></svg>',
+  check: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>',
+  alert: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17h.01"/></svg>',
+  ban: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/></svg>',
+  calc: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/></svg>',
+  up: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><path d="M12 15V4"/><path d="m8 8 4-4 4 4"/></svg>',
+  inbox: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><path d="M12 4v11"/><path d="m8 11 4 4 4-4"/></svg>',
+  edit: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',
+  trash: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M6 6l1 14h10l1-14"/><path d="M10 11v5M14 11v5"/></svg>',
+  plus: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'
+};
+/* =====================================================================
+   AMBIA STOCK MANAGEMENT
+   - Local database (IndexedDB) -> works fully offline
+   - Auto-backup to a JSON file on this PC (File System Access API)
+   - Cloud sync (Firestore) with role based login (view / add & edit / full)
+   ===================================================================== */
+const CLOUD_CONFIG = {
+  apiKey: "AIzaSyB_KxQEdMmoT5koLhErAnnyUA_9BXacCr0",
+  authDomain: "ambia-store-stock.firebaseapp.com",
+  projectId: "ambia-store-stock",
+  storageBucket: "ambia-store-stock.firebasestorage.app",
+  messagingSenderId: "1019849405887",
+  appId: "1:1019849405887:web:02645a00b5ca1fdca6dd0a"
+};
+const COLS = { items: 'stock_items', moves: 'stock_moves', meta: 'stock_meta' };
+const STORES = ['items', 'moves', 'meta'];
+const DB_NAME = 'AmbiaStockDB';
+const PROTECTED = ['stockTab', 'historyTab', 'deptTab'];
+
+// Same department list + default receivers as the Delivery system (+ STOCK PREPARATION from the paper list)
+const DEFAULT_DEPTS = [
+    { name: 'MECHANICAL', receiver: 'MUNNA' }, { name: 'ELECTRICAL', receiver: 'MILLAT' },
+    { name: 'STOCK PREPARATION', receiver: '' }, { name: 'REWINDER', receiver: 'KAMRUL' },
+    { name: 'WORKSHOP', receiver: 'ABDUR RAHMAN' }, { name: 'JANE ALOM GROUP', receiver: 'JANE ALOM' },
+    { name: 'SUJON GROUP', receiver: 'SUJON' }, { name: 'GENERATOR', receiver: 'SUMON' },
+    { name: 'MACHINE', receiver: 'SALAHUDDIN' }, { name: 'BIJOY GROUP', receiver: 'BIJOY' }
+];
+const DEFAULT_UNITS = ['PC', 'LITERS', 'KG', 'SET', 'METER', 'BOX', 'ROLL', 'DRUM', 'BAG', 'PAIR', 'TON'];
+
+
+/* ---------- helpers ---------- */
+const $ = id => document.getElementById(id);
+const val = id => $(id).value;
+const p2 = n => String(n).padStart(2, '0');
+const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const up = v => String(v == null ? '' : v).trim().toUpperCase();
+const fmt = n => Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const r4 = n => Math.round(Number(n || 0) * 10000) / 10000;
+const uid = () => (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+const todayISO = () => { const d = new Date(); return d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate()); };
+const fd = iso => { const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})$/); return m ? m[3] + '-' + m[2] + '-' + m[1] : (iso || ''); };
+function withTimeout(p, ms, label) {
+    return new Promise((resolve, reject) => {
+        const t = setTimeout(() => { const e = new Error(label || 'Timed out'); e.code = 'timeout'; reject(e); }, ms);
+        p.then(v => { clearTimeout(t); resolve(v); }, er => { clearTimeout(t); reject(er); });
+    });
+}
+
+/* ---------- in-memory data + IndexedDB ---------- */
+let db;
+const mem = { items: [], moves: [], meta: [] };
+
+function openDB() {
+    return new Promise((res, rej) => {
+        const r = indexedDB.open(DB_NAME, 1);
+        r.onupgradeneeded = () => { STORES.forEach(s => { if (!r.result.objectStoreNames.contains(s)) r.result.createObjectStore(s, { keyPath: 'id' }); }); };
+        r.onsuccess = () => res(r.result);
+        r.onerror = () => rej(r.error);
+    });
+}
+function idbAll(s) {
+    return new Promise((res, rej) => { const q = db.transaction(s, 'readonly').objectStore(s).getAll(); q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error); });
+}
+function idbPutMany(s, recs) {
+    return new Promise((res, rej) => { const t = db.transaction(s, 'readwrite'); recs.forEach(r => t.objectStore(s).put(r)); t.oncomplete = res; t.onerror = () => rej(t.error); });
+}
+function idbDelMany(s, ids) {
+    return new Promise((res, rej) => { const t = db.transaction(s, 'readwrite'); ids.forEach(i => t.objectStore(s).delete(i)); t.oncomplete = res; t.onerror = () => rej(t.error); });
+}
+async function loadAll() { for (const s of STORES) mem[s] = await idbAll(s); }
+
+async function saveMany(store, recs) {
+    const now = Date.now();
+    recs.forEach((r, i) => { r.updatedAt = now + i; if (!r.createdAt) r.createdAt = now + i; });
+    await idbPutMany(store, recs);
+    recs.forEach(r => { const k = mem[store].findIndex(x => x.id === r.id); if (k >= 0) mem[store][k] = r; else mem[store].push(r); });
+    afterChange();
+}
+const save = (store, rec) => saveMany(store, [rec]);
+
+async function removeMany(store, ids) {
+    if (!canAdminAct()) throw new Error('Full-access login (online) is required to delete data.');
+    await idbDelMany(store, ids);
+    const set = new Set(ids);
+    mem[store] = mem[store].filter(x => !set.has(x.id));
+    ids.forEach(id => { cloud.tomb[store + '/' + id] = 1; delete cloud.known[store + '/' + id]; });
+    saveTomb(); saveKnown();
+    afterChange();
+}
+function afterChange() { renderAll(); queueBackup(); schedule(false); }
+
+/* ---------- domain logic ---------- */
+function balances() {
+    const m = {};
+    mem.moves.forEach(x => { m[x.itemId] = (m[x.itemId] || 0) + Number(x.delta || 0); });
+    Object.keys(m).forEach(k => { m[k] = r4(m[k]); });
+    return m;
+}
+function statusOf(it, b) { return b <= 0 ? 'OUT' : (b < Number(it.safety || 0) ? 'LOW' : 'OK'); }
+function badge(st) {
+    return st === 'OK' ? '<span class="badge b-ok">' + ICO.check + ' OK</span>' : st === 'LOW' ? '<span class="badge b-low">' + ICO.alert + ' LOW STOCK</span>' : '<span class="badge b-out">' + ICO.ban + ' OUT OF STOCK</span>';
+}
+const itemById = id => mem.items.find(i => i.id === id);
+const itemByName = n => { const u = up(n); return mem.items.find(i => up(i.name) === u); };
+const itemNameOf = m => { const it = itemById(m.itemId); return it ? it.name : (m.itemName || '(DELETED ITEM)'); };
+const itemUnitOf = m => { const it = itemById(m.itemId); return it ? it.unit : (m.unit || ''); };
+function getDeptRec() { return mem.meta.find(m => m.id === 'departments'); }
+function getDepts() { const r = getDeptRec(); return r ? r.list : DEFAULT_DEPTS.slice(); }
+const TYPE_LABEL = { IN: 'STOCK IN', OUT: 'ISSUED', OPENING: 'OPENING', ADJUST: 'ADJUSTMENT' };
+const TYPE_CLASS = { IN: 'b-ok', OUT: 'b-issue', OPENING: 'b-open', ADJUST: 'b-adj' };
+
+/* ---------- tabs + lock ---------- */
+const TAB_IDS = ['stockTab', 'inoutTab', 'itemTab', 'historyTab', 'deptTab', 'pageSafety'];
+const TAB_NAMES = { stockTab: 'Stock', inoutTab: 'Stock In / Out', itemTab: 'Item Entry', historyTab: 'History', deptTab: 'Departments' };
+let currentTab = 'stockTab', lastMainTab = 'stockTab';   // lastMainTab = last real page (never the safety page): the Back button returns here
+function switchTab(id, opts) {
+    opts = opts || {};
+    if (TAB_IDS.indexOf(id) === -1) id = 'stockTab';
+    if (securityOn() && roleLvl() === 1 && (id === 'inoutTab' || id === 'itemTab' || id === 'pageSafety')) id = 'stockTab';   // view-only accounts
+    currentTab = id;
+    if (id !== 'pageSafety') lastMainTab = id;
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.toggle('active', t.id === id));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === lastMainTab));
+    // the Data Safety Center lives behind its own button (not a tab): mark it, and grey the tab bar while it is open
+    const sBtn = $('safetyBtn');
+    if (sBtn) { sBtn.classList.toggle('active', id === 'pageSafety'); sBtn.setAttribute('aria-pressed', id === 'pageSafety' ? 'true' : 'false'); }
+    $('pageNav').classList.toggle('dim', id === 'pageSafety');
+    const bl = $('spBackLabel'); if (bl) bl.textContent = 'Back to ' + (TAB_NAMES[lastMainTab] || 'Stock');
+    applyLock();
+    if (!opts.noHash) { try { if (location.hash !== '#' + id) location.hash = id; } catch (e) {} }
+    if (!opts.keepScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function openSafetyPage() { switchTab('pageSafety'); }
+function closeSafetyPage() { switchTab(lastMainTab || 'stockTab'); }
+window.addEventListener('hashchange', () => { const x = location.hash.replace('#', ''); if (TAB_IDS.indexOf(x) !== -1) switchTab(x, { noHash: true }); });
+function applyLock() {
+    const locked = !canView();
+    PROTECTED.forEach(id => $(id).classList.toggle('locked', locked));
+    updateAccessUI();
+}
+
+/* ---------- department selects & datalists ---------- */
+function deptOptions(selected, ph) {
+    const list = getDepts().map(d => d.name);
+    if (selected && !list.includes(selected)) list.push(selected);
+    return '<option value="">' + esc(ph || 'SELECT') + '</option>' + list.map(n => '<option value="' + esc(n) + '"' + (n === selected ? ' selected' : '') + '>' + esc(n) + '</option>').join('');
+}
+function refreshDeptSelects() {
+    document.querySelectorAll('select.deptSel').forEach(s => { const cur = s.value; s.innerHTML = deptOptions(cur, s.dataset.ph); s.value = cur; });
+}
+function refreshLists() {
+    const vis = canView();   // while locked (online, not logged in) the suggestion lists stay empty
+    $('itemList').innerHTML = vis ? mem.items.map(i => '<option value="' + esc(i.name) + '">' + esc(i.desc) + '</option>').join('') : '';
+    const units = Array.from(new Set(DEFAULT_UNITS.concat(vis ? mem.items.map(i => i.unit) : []))).filter(Boolean);
+    $('unitList').innerHTML = units.map(u => '<option value="' + esc(u) + '">').join('');
+    const locs = vis ? Array.from(new Set(mem.items.map(i => i.loc).filter(Boolean))) : [];
+    $('locList').innerHTML = locs.map(u => '<option value="' + esc(u) + '">').join('');
+}
+
+/* ---------- render: current stock ---------- */
+function stockRows() {
+    const bm = balances();
+    const q = up(val('sSearch')), dp = val('sDept'), st = val('sStatus');
+    return mem.items.map(it => { const b = r4(bm[it.id] || 0); return { it, b, st: statusOf(it, b) }; })
+        .filter(r => (!q || up(r.it.name + ' ' + r.it.desc + ' ' + r.it.loc).includes(q)) &&
+            (!dp || r.it.dept === dp) &&
+            (!st || (st === 'ATTN' ? r.st !== 'OK' : r.st === st)))
+        .sort((a, b) => a.it.name.localeCompare(b.it.name));
+}
+function renderStock() {
+    if (!canView()) {
+        $('kpiGrid').innerHTML = ''; $('lowBanner').classList.remove('show'); $('lowBanner').innerHTML = '';
+        $('stockBody').innerHTML = ''; $('stockFoot').innerHTML = ''; $('sSummary').innerHTML = '';
+        return;
+    }
+    const bm = balances();
+    const all = mem.items.map(it => ({ it, b: r4(bm[it.id] || 0) })).map(r => Object.assign(r, { st: statusOf(r.it, r.b) }));
+    const cnt = s => all.filter(r => r.st === s).length;
+    const total = all.reduce((s, r) => s + r.b, 0);
+    $('kpiGrid').innerHTML =
+        kpi(ICO.box, all.length, 'Total Items', '#0284c7', '') +
+        kpi(ICO.check, cnt('OK'), 'Stock OK', '#16a34a', 'OK') +
+        kpi(ICO.alert, cnt('LOW'), 'Low Stock', '#d97706', 'LOW') +
+        kpi(ICO.ban, cnt('OUT'), 'Out of Stock', '#dc2626', 'OUT') +
+        kpi(ICO.calc, fmt(total), 'Total Stock Counts', '#0f2a43', '');
+    const need = all.filter(r => r.st !== 'OK');
+    const lb = $('lowBanner');
+    if (need.length) {
+        lb.classList.add('show');
+        lb.innerHTML = ICO.alert + ' <b>' + need.length + ' item' + (need.length > 1 ? 's' : '') + ' below safety level:</b> ' +
+            need.slice(0, 6).map(r => esc(r.it.name) + ' (short by ' + fmt(Number(r.it.safety) - r.b) + ' ' + esc(r.it.unit) + ')').join(' · ') +
+            (need.length > 6 ? ' · +' + (need.length - 6) + ' more' : '') +
+            ' &nbsp;<a href="#" onclick="$(\'sStatus\').value=\'ATTN\';renderStock();return false;" style="color:#92400e;font-weight:700;">Show them</a>';
+    } else { lb.classList.remove('show'); lb.innerHTML = ''; }
+
+    const rows = stockRows();
+    if (!mem.items.length) {
+        $('stockBody').innerHTML = '<tr class="empty-row"><td colspan="9">No items yet. Add your first item in <b>Item Entry</b>.</td></tr>';
+    } else if (!rows.length) {
+        $('stockBody').innerHTML = '<tr class="empty-row"><td colspan="9">No items match your search.</td></tr>';
+    } else {
+        $('stockBody').innerHTML = rows.map(r => {
+            const it = r.it;
+            return '<tr class="' + (r.st === 'LOW' ? 'row-low' : r.st === 'OUT' ? 'row-out' : '') + '">' +
+                '<td><b>' + esc(it.name) + '</b></td><td class="wrap">' + esc(it.desc) + '</td><td>' + esc(it.dept) + '</td><td>' + esc(it.unit) + '</td>' +
+                '<td class="num' + (r.b < 0 ? ' neg' : '') + '"><b>' + fmt(r.b) + '</b></td><td class="num">' + fmt(it.safety) + '</td>' +
+                '<td>' + badge(r.st) + '</td><td>' + esc(it.loc) + '</td>' +
+                '<td><button type="button" class="btn mini needs-add" onclick="quickMove(\'' + it.id + '\',\'OUT\')" title="Issue this item">' + ICO.up + '</button>' +
+                '<button type="button" class="btn mini btn-green needs-add" onclick="quickMove(\'' + it.id + '\',\'IN\')" title="Receive this item">' + ICO.inbox + '</button>' +
+                '<button type="button" class="btn mini btn-secondary needs-modify" onclick="editItem(\'' + it.id + '\')" title="Edit item">' + ICO.edit + '</button>' +
+                '<button type="button" class="btn mini btn-danger needs-admin" onclick="deleteItem(\'' + it.id + '\')" title="Delete item">' + ICO.trash + '</button></td></tr>';
+        }).join('');
+    }
+    const sum = rows.reduce((s, r) => s + r.b, 0);
+    $('stockFoot').innerHTML = '<tr><td colspan="4">Total Stock Counts</td><td class="num">' + fmt(sum) + '</td><td colspan="4"></td></tr>';
+    $('sSummary').innerHTML = 'Showing <b>' + rows.length + '</b> of <b>' + mem.items.length + '</b> items';
+}
+function kpi(ico, v, lbl, color, filter) {
+    return '<div class="kpi' + (filter ? ' click' : '') + '" style="--k:' + color + '"' + (filter ? ' onclick="$(\'sStatus\').value=\'' + filter + '\';renderStock();"' : '') + '><div class="k-ico">' + ico + '</div><div><div class="k-val">' + v + '</div><div class="k-lbl">' + lbl + '</div></div></div>';
+}
+
+/* ---------- render: history ---------- */
+function histRows() {
+    const it = up(val('hItem')), dp = val('hDept'), ty = val('hType'), fr = val('hFrom'), to = val('hTo');
+    return mem.moves.filter(m => (!it || up(itemNameOf(m)).includes(it)) && (!dp || up(m.dept) === dp) &&
+        (!ty || m.type === ty) && (!fr || m.date >= fr) && (!to || m.date <= to))
+        .sort((a, b) => String(b.date).localeCompare(String(a.date)) || (b.createdAt || 0) - (a.createdAt || 0));
+}
+function renderHistory() {
+    if (!canView()) { $('hSummary').innerHTML = ''; $('historyBody').innerHTML = ''; return; }
+    const rows = histRows();
+    $('hSummary').innerHTML = 'Showing <b>' + rows.length + '</b> of <b>' + mem.moves.length + '</b> entries';
+    if (!rows.length) { $('historyBody').innerHTML = '<tr class="empty-row"><td colspan="8">No entries found.</td></tr>'; return; }
+    $('historyBody').innerHTML = rows.map(m => {
+        const d = Number(m.delta || 0);
+        const editable = m.type === 'IN' || m.type === 'OUT';
+        return '<tr><td>' + fd(m.date) + '</td><td><span class="badge ' + TYPE_CLASS[m.type] + '">' + TYPE_LABEL[m.type] + '</span></td>' +
+            '<td><b>' + esc(itemNameOf(m)) + '</b></td><td>' + esc(m.dept) + '</td>' +
+            '<td class="num ' + (d >= 0 ? 'plus' : 'minus') + '">' + (d >= 0 ? '+' : '−') + fmt(Math.abs(d)) + '</td><td>' + esc(itemUnitOf(m)) + '</td>' +
+            '<td class="wrap">' + esc(m.note) + '</td><td>' +
+            (editable ? '<button type="button" class="btn mini btn-secondary needs-modify" onclick="editMove(\'' + m.id + '\')">' + ICO.edit + ' Edit</button>' : '') +
+            '<button type="button" class="btn mini btn-danger needs-admin" onclick="deleteMove(\'' + m.id + '\')">' + ICO.trash + '</button></td></tr>';
+    }).join('');
+}
+
+/* ---------- render: departments ---------- */
+function renderDepts() {
+    if (!canView()) { $('deptBody').innerHTML = ''; return; }
+    $('deptBody').innerHTML = getDepts().map((d, i) => {
+        const ni = mem.items.filter(i => i.dept === d.name).length;
+        const nm = mem.moves.filter(m => m.type === 'OUT' && up(m.dept) === d.name).length;
+        return '<tr><td><b>' + esc(d.name) + '</b></td><td>' + esc(d.receiver) + '</td><td class="num">' + ni + '</td><td class="num">' + nm + '</td>' +
+            '<td><button type="button" class="btn mini btn-secondary needs-modify" onclick="editDept(' + i + ')">' + ICO.edit + ' Edit</button>' +
+            '<button type="button" class="btn mini btn-danger needs-admin" onclick="deleteDept(' + i + ')">' + ICO.trash + '</button></td></tr>';
+    }).join('') || '<tr class="empty-row"><td colspan="5">No departments.</td></tr>';
+}
+
+function renderAll() {
+    refreshDeptSelects(); refreshLists();
+    renderStock(); renderHistory(); renderDepts();
+    applyLock(); renderBackupInfo(); refresh();
+    document.querySelectorAll('#mvRows .item-row').forEach(r => updateAvail(r));
+}
+['sSearch', 'sDept', 'sStatus'].forEach(id => { $(id).addEventListener('input', renderStock); $(id).addEventListener('change', renderStock); });
+$('sClear').onclick = () => { $('sSearch').value = ''; $('sDept').value = ''; $('sStatus').value = ''; renderStock(); };
+['hItem', 'hDept', 'hType', 'hFrom', 'hTo'].forEach(id => { $(id).addEventListener('input', renderHistory); $(id).addEventListener('change', renderHistory); });
+$('hClear').onclick = () => { ['hItem', 'hDept', 'hType', 'hFrom', 'hTo'].forEach(id => $(id).value = ''); renderHistory(); };
+
+/* ---------- item entry ---------- */
+$('itemForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const editId = val('itemEditId');
+    if (editId ? !needModify() : !needAdd()) return;
+    const name = up(val('iName'));
+    if (!name) return;
+    const dup = mem.items.find(i => up(i.name) === name && i.id !== editId);
+    if (dup) { showToast('warn', 'Item already exists', name + ' is already in the stock list. Use a different name.'); return; }
+    const rec = {
+        id: editId || uid(), name, desc: up(val('iDesc')), dept: val('iDept'), unit: up(val('iUnit')),
+        safety: Number(val('iSafety')) || 0, loc: up(val('iLoc'))
+    };
+    const bal = r4(val('iBal'));
+    if (editId) {
+        const old = itemById(editId);
+        rec.createdAt = old.createdAt;
+        const cur = r4(balances()[editId] || 0);
+        await save('items', rec);
+        if (bal !== cur) {
+            await save('moves', { id: uid(), date: todayISO(), itemId: editId, itemName: name, type: 'ADJUST', delta: r4(bal - cur), party: 'STORE', dept: '', note: 'MANUAL ADJUSTMENT (' + fmt(cur) + ' → ' + fmt(bal) + ')' });
+        }
+        showToast('edit', 'Item updated', name + ' was updated.');
+    } else {
+        await save('items', rec);
+        if (bal > 0) await save('moves', { id: uid(), date: todayISO(), itemId: rec.id, itemName: name, type: 'OPENING', delta: bal, party: 'OPENING BALANCE', dept: '', note: '' });
+        showToast('success', 'Item saved', name + ' was added to the stock list.');
+    }
+    resetItemForm();
+});
+function resetItemForm() {
+    $('itemForm').reset(); $('itemEditId').value = '';
+    $('iBal').value = 0; $('iSafety').value = 0;
+    $('itemTitle').innerHTML = ICO.plus + ' Item Entry';
+    $('iBalLabel').textContent = 'Opening Stock Balance';
+    $('iHint').textContent = 'Status shows LOW STOCK when the balance falls below the safety stock level.';
+    $('itemSaveBtn').textContent = 'Save Item';
+}
+function editItem(id) {
+    if (!needModify()) return;
+    const it = itemById(id); if (!it) return;
+    switchTab('itemTab');
+    $('itemEditId').value = id;
+    $('iName').value = it.name; $('iDesc').value = it.desc || ''; $('iDept').innerHTML = deptOptions(it.dept, 'SELECT DEPARTMENT'); $('iDept').value = it.dept; $('iUnit').value = it.unit;
+    $('iLoc').value = it.loc || ''; $('iSafety').value = it.safety;
+    $('iBal').value = r4(balances()[id] || 0);
+    $('itemTitle').innerHTML = ICO.edit + ' Edit Item';
+    $('iBalLabel').textContent = 'Current Stock Balance';
+    $('iHint').textContent = 'Changing the balance records an ADJUSTMENT entry in the history. For normal receiving or issuing, use Stock In / Out.';
+    $('itemSaveBtn').textContent = 'Update Item';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+async function deleteItem(id) {
+    if (!needAdmin()) return;
+    const it = itemById(id); if (!it) return;
+    const mv = mem.moves.filter(m => m.itemId === id);
+    if (!confirm('Delete "' + it.name + '" and its ' + mv.length + ' history entr' + (mv.length === 1 ? 'y' : 'ies') + '?\nThis cannot be undone.')) return;
+    if (mv.length) await removeMany('moves', mv.map(m => m.id));
+    await removeMany('items', [id]);
+    showToast('delete', 'Item deleted', it.name + ' was removed.');
+}
+
+/* ---------- stock in / out ---------- */
+let mvType = 'OUT';
+function setMvType(t) {
+    mvType = t;
+    document.querySelectorAll('.seg-btn').forEach(b => b.classList.toggle('active', b.dataset.type === t));
+    $('mvForm').classList.toggle('mode-in', t === 'IN');
+    $('mvSaveBtn').textContent = t === 'OUT' ? 'Save Stock Out' : 'Save Stock In';
+    $('mvSaveBtn').className = t === 'OUT' ? 'btn' : 'btn btn-green';
+    $('mvHead').innerHTML = '<div>Item Name</div><div>Unit</div><div>Qty</div><div>Remarks (optional)</div><div></div>';
+    document.querySelectorAll('#mvRows .item-row').forEach(r => updateAvail(r));
+}
+function addMvRow(itemName) {
+    const row = document.createElement('div');
+    row.className = 'item-row';
+    row.innerHTML =
+        '<div class="form-group" style="margin:0;"><input type="text" class="mvItem" placeholder="Item Name" list="itemList" required autocomplete="off"><div class="avail"></div></div>' +
+        '<div class="form-group" style="margin:0;"><input type="text" class="mvUnit" placeholder="Unit" readonly tabindex="-1"></div>' +
+        '<div class="form-group" style="margin:0;"><input type="number" class="mvQty" placeholder="Qty" step="any" min="0.0001" required></div>' +
+        '<div class="form-group" style="margin:0;"><input type="text" class="mvNote" placeholder="Remarks (optional)" autocomplete="off"></div>' +
+        '<button type="button" class="btn btn-danger" onclick="removeMvRow(this)" title="Remove">X</button>';
+    $('mvRows').appendChild(row);
+    row.querySelector('.mvItem').addEventListener('input', () => updateAvail(row));
+    row.querySelector('.mvItem').addEventListener('change', () => updateAvail(row));
+    row.querySelector('.mvQty').addEventListener('input', () => updateAvail(row));
+    if (itemName) { row.querySelector('.mvItem').value = itemName; updateAvail(row); }
+    return row;
+}
+function removeMvRow(btn) {
+    if (document.querySelectorAll('#mvRows .item-row').length > 1) btn.closest('.item-row').remove();
+    else showToast('warn', 'Keep one row', 'You must keep at least one item row.');
+}
+function updateAvail(row) {
+    const inp = row.querySelector('.mvItem'), box = row.querySelector('.avail'), unit = row.querySelector('.mvUnit');
+    const name = up(inp.value);
+    if (!name) { box.textContent = ''; box.className = 'avail'; unit.value = ''; return; }
+    const it = itemByName(name);
+    if (!canView()) { box.className = 'avail'; box.textContent = '🔒 Stock levels are hidden until login.'; unit.value = it ? it.unit : ''; return; }
+    if (!it) { box.className = 'avail bad'; box.textContent = 'Item not found — add it in Item Entry first.'; unit.value = ''; return; }
+    unit.value = it.unit;
+    const b = r4(balances()[it.id] || 0);
+    const q = Number(row.querySelector('.mvQty').value) || 0;
+    if (mvType === 'OUT') {
+        if (q > b) { box.className = 'avail bad'; box.innerHTML = 'Only ' + fmt(b) + ' ' + esc(it.unit) + ' in stock — cannot issue ' + fmt(q) + '.'; }
+        else { box.className = 'avail ' + (b - q < Number(it.safety) ? 'warn' : 'ok'); box.innerHTML = 'Available: <b>' + fmt(b) + ' ' + esc(it.unit) + '</b>' + (q ? ' · after issue: ' + fmt(b - q) : ''); }
+    } else {
+        box.className = 'avail ok'; box.innerHTML = 'In stock now: <b>' + fmt(b) + ' ' + esc(it.unit) + '</b>' + (q ? ' · after receiving: ' + fmt(b + q) : '');
+    }
+}
+$('mvForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!needAdd()) return;
+    const rows = Array.from(document.querySelectorAll('#mvRows .item-row'));
+    const need = {}, recs = [];
+    const date = val('mvDate');
+    const bm = balances();
+    for (const row of rows) {
+        const it = itemByName(row.querySelector('.mvItem').value);
+        const q = r4(row.querySelector('.mvQty').value);
+        if (!it) { showToast('warn', 'Item not found', '"' + up(row.querySelector('.mvItem').value) + '" is not in the stock list. Add it in Item Entry first.'); return; }
+        if (!(q > 0)) { showToast('warn', 'Quantity needed', 'Enter a quantity for ' + it.name + '.'); return; }
+        need[it.id] = r4((need[it.id] || 0) + q);
+        recs.push({ id: uid(), date, itemId: it.id, itemName: it.name, type: mvType, delta: mvType === 'OUT' ? -q : q, party: '', dept: mvType === 'OUT' ? it.dept : '', note: up(row.querySelector('.mvNote').value) });
+    }
+    if (mvType === 'OUT') {
+        for (const id of Object.keys(need)) {
+            const b = r4(bm[id] || 0);
+            if (need[id] > b) { const it = itemById(id); showToast('warn', 'Not enough stock', canView() ? it.name + ': only ' + fmt(b) + ' ' + it.unit + ' available, but ' + fmt(need[id]) + ' requested.' : 'The requested quantity of ' + it.name + ' is not available.'); return; }
+        }
+    }
+    await saveMany('moves', recs);
+    const low = recs.map(r => itemById(r.itemId)).filter((it, i, a) => it && a.indexOf(it) === i)
+        .filter(it => statusOf(it, r4(balances()[it.id] || 0)) !== 'OK');
+    showToast('success', mvType === 'OUT' ? 'Stock out saved' : 'Stock in saved', recs.length + ' item' + (recs.length > 1 ? 's' : '') + ' recorded.');
+    if (mvType === 'OUT' && low.length && canView()) setTimeout(() => showToast('warn', 'Low stock alert', low.map(i => i.name).join(', ') + ' is now below the safety level.'), 700);
+    resetMv();
+});
+function resetMv() {
+    $('mvRows').innerHTML = ''; $('mvDate').value = todayISO();
+    addMvRow(); setMvType(mvType);
+}
+function quickMove(id, type) {
+    if (!needAdd()) return;
+    const it = itemById(id); if (!it) return;
+    switchTab('inoutTab'); resetMv(); setMvType(type);
+    const row = document.querySelector('#mvRows .item-row');
+    row.querySelector('.mvItem').value = it.name; updateAvail(row);
+    row.querySelector('.mvQty').focus();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ---------- edit / delete movement ---------- */
+function editMove(id) {
+    if (!needModify()) return;
+    const m = mem.moves.find(x => x.id === id); if (!m) return;
+    $('eId').value = id; $('eItem').value = itemNameOf(m); $('eDate').value = m.date; $('eQty').value = Math.abs(m.delta);
+    $('eNote').value = m.note || '';
+    $('editModal').style.display = 'flex';
+}
+function closeEdit() { $('editModal').style.display = 'none'; }
+$('editForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!needModify()) { closeEdit(); return; }
+    const m = mem.moves.find(x => x.id === val('eId')); if (!m) return closeEdit();
+    const q = r4(val('eQty'));
+    const nd = m.type === 'OUT' ? -q : q;
+    const cur = r4(balances()[m.itemId] || 0), after = r4(cur - m.delta + nd);
+    if (after < 0 && after < cur) { showToast('warn', 'Not enough stock', 'This change would make the balance ' + fmt(after) + '.'); return; }
+    await save('moves', Object.assign({}, m, { date: val('eDate'), delta: nd, note: up(val('eNote')) }));
+    closeEdit(); showToast('edit', 'Entry updated', itemNameOf(m) + ' was updated.');
+});
+async function deleteMove(id) {
+    if (!needAdmin()) return;
+    const m = mem.moves.find(x => x.id === id); if (!m) return;
+    const cur = r4(balances()[m.itemId] || 0), after = r4(cur - m.delta);
+    if (after < 0 && after < cur) { showToast('warn', 'Cannot delete', 'Deleting this entry would make the balance ' + fmt(after) + '.'); return; }
+    if (!confirm('Delete this ' + TYPE_LABEL[m.type] + ' entry for ' + itemNameOf(m) + ' (' + fmt(Math.abs(m.delta)) + ')?\nThe stock balance will be recalculated.')) return;
+    await removeMany('moves', [id]);
+    showToast('delete', 'Entry deleted', 'Stock balance was recalculated.');
+}
+
+/* ---------- departments ---------- */
+async function saveDepts(list) { await save('meta', { id: 'departments', list, createdAt: (getDeptRec() || {}).createdAt }); }
+$('deptForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const name = up(val('dName')), receiver = up(val('dRecv')), key = val('deptEditKey');
+    if (key ? !needModify() : !needAdd()) return;
+    const list = getDepts().map(d => Object.assign({}, d));
+    if (list.some(d => d.name === name && d.name !== key)) { showToast('warn', 'Already exists', name + ' is already in the list.'); return; }
+    if (key) {
+        const d = list.find(x => x.name === key); d.name = name; d.receiver = receiver;
+        if (key !== name) {   // keep items and entries in step with the new name
+            const its = mem.items.filter(i => i.dept === key).map(i => Object.assign({}, i, { dept: name }));
+            const mvs = mem.moves.filter(m => up(m.dept) === key).map(m => Object.assign({}, m, { dept: name }));
+            if (its.length) await saveMany('items', its);
+            if (mvs.length) await saveMany('moves', mvs);
+        }
+    } else list.push({ name, receiver });
+    await saveDepts(list); resetDeptForm();
+    showToast('success', 'Department saved', name + ' is in the list.');
+});
+function resetDeptForm() { $('deptForm').reset(); $('deptEditKey').value = ''; $('dSaveBtn').textContent = 'Add Department'; }
+function editDept(i) { if (!needModify()) return; const d = getDepts()[i]; if (!d) return; $('deptEditKey').value = d.name; $('dName').value = d.name; $('dRecv').value = d.receiver; $('dSaveBtn').textContent = 'Save Changes'; $('dName').focus(); }
+async function deleteDept(i) {
+    if (!needAdmin()) return;
+    const dd = getDepts()[i]; if (!dd) return;
+    const name = dd.name;
+    const used = mem.items.filter(i => i.dept === name).length + mem.moves.filter(m => up(m.dept) === name).length;
+    if (!confirm('Remove department "' + name + '" from the list?' + (used ? '\n' + used + ' existing items/entries keep this name.' : ''))) return;
+    await saveDepts(getDepts().filter(d => d.name !== name));
+    showToast('delete', 'Department removed', name);
+}
+
+/* ---------- reports, print, CSV ---------- */
+function openReport(kind) {
+    if (!needView()) return;
+    const now = new Date();
+    const stamp = fd(todayISO()) + ' ' + p2(now.getHours()) + ':' + p2(now.getMinutes());
+    let html;
+    if (kind === 'stock') {
+        const rows = stockRows(), sum = rows.reduce((s, r) => s + r.b, 0);
+        const f = [];
+        if (val('sSearch')) f.push('Search: ' + esc(val('sSearch')));
+        if (val('sDept')) f.push('Dept: ' + esc(val('sDept')));
+        if (val('sStatus')) f.push('Status: ' + esc($('sStatus').selectedOptions[0].text));
+        html = '<div class="report-header"><h2>Ambia Pulp and Paper Mills Ltd.</h2><p>Current Stock List</p></div>' +
+            '<div class="report-meta"><span>Printed: <b>' + stamp + '</b></span><span>Items: <b>' + rows.length + '</b></span><span>' + (f.join(' | ') || 'All items') + '</span></div>' +
+            '<div class="report-scroll"><table class="report-table rt-stock"><thead><tr><th>Item Name</th><th>Item Description</th><th>Dept</th><th>Unit</th><th>Current Stock Balance</th><th>Safety Stock Level</th><th>Status</th><th>Storage Location</th></tr></thead><tbody>' +
+            rows.map(r => '<tr><td>' + esc(r.it.name) + '</td><td>' + esc(r.it.desc) + '</td><td>' + esc(r.it.dept) + '</td><td class="c">' + esc(r.it.unit) + '</td>' +
+                '<td class="num">' + fmt(r.b) + '</td><td class="num">' + fmt(r.it.safety) + '</td>' +
+                '<td class="st ' + r.st.toLowerCase() + '">' + (r.st === 'OK' ? '✔ OK' : r.st === 'LOW' ? '⚠ LOW STOCK' : '✖ OUT OF STOCK') + '</td><td>' + esc(r.it.loc) + '</td></tr>').join('') +
+            '<tr class="tot"><td colspan="4">Total Stock Counts</td><td class="num">' + fmt(sum) + '</td><td colspan="3"></td></tr></tbody></table></div>';
+        $('reportDoc').className = 'report-doc stock-sheet';
+    } else {
+        const rows = histRows();
+        const f = [];
+        if (val('hItem')) f.push('Item: ' + esc(val('hItem')));
+        if (val('hDept')) f.push('Dept: ' + esc(val('hDept')));
+        if (val('hType')) f.push('Type: ' + TYPE_LABEL[val('hType')]);
+        if (val('hFrom') || val('hTo')) f.push('Date: ' + (val('hFrom') ? fd(val('hFrom')) : 'start') + ' to ' + (val('hTo') ? fd(val('hTo')) : 'today'));
+        html = '<div class="report-header"><h2>AMBIA PULP AND PAPER MILLS LTD.</h2><p>Store Department - Stock Movement Report</p></div>' +
+            '<div class="report-meta"><span>Printed: <b>' + stamp + '</b></span><span>Entries: <b>' + rows.length + '</b></span><span>' + (f.join(' | ') || 'All entries') + '</span></div>' +
+            '<div class="report-scroll"><table class="report-table"><thead><tr><th>Sl</th><th>Date</th><th>Type</th><th>Item Name</th><th>Department</th><th>Qty</th><th>Unit</th><th>Remarks</th></tr></thead><tbody>' +
+            (rows.map((m, i) => '<tr><td class="c">' + (i + 1) + '</td><td class="c">' + fd(m.date) + '</td><td class="c">' + TYPE_LABEL[m.type] + '</td><td>' + esc(itemNameOf(m)) + '</td><td>' + esc(m.dept) + '</td>' +
+                '<td class="num">' + (m.delta >= 0 ? '+' : '−') + fmt(Math.abs(m.delta)) + '</td><td class="c">' + esc(itemUnitOf(m)) + '</td><td>' + esc(m.note) + '</td></tr>').join('') || '<tr><td colspan="8" class="c">No entries.</td></tr>') +
+            '</tbody></table></div>';
+        $('reportDoc').className = 'report-doc';
+    }
+    html += '<div class="sign-row"><div>Prepared by</div><div>Store In-Charge</div><div>Approved by</div></div>';
+    $('reportDoc').innerHTML = html;
+    $('reportModal').style.display = 'flex';
+}
+function closeReport() { $('reportModal').style.display = 'none'; document.body.classList.remove('report-open'); }
+function printReport() { document.body.classList.add('report-open'); window.print(); }
+window.addEventListener('afterprint', () => document.body.classList.remove('report-open'));
+
+function csvText(rows) { return '\ufeff' + rows.map(r => r.map(c => '"' + String(c == null ? '' : c).replace(/"/g, '""') + '"').join(',')).join('\r\n'); }
+function downloadText(name, text) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' }));
+    a.download = name; document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+function exportStockCSV() {
+    if (!needView()) return;
+    const rows = stockRows();
+    const out = [['Item Name', 'Item Description', 'Dept', 'Unit', 'Current Stock Balance', 'Safety Stock Level', 'Status', 'Storage Location']]
+        .concat(rows.map(r => [r.it.name, r.it.desc, r.it.dept, r.it.unit, r.b.toFixed(2), Number(r.it.safety).toFixed(2), r.st === 'OK' ? 'OK' : r.st === 'LOW' ? 'LOW STOCK' : 'OUT OF STOCK', r.it.loc]));
+    out.push(['Total Stock Counts', '', '', '', rows.reduce((s, r) => s + r.b, 0).toFixed(2), '', '', '']);
+    downloadText('Stock_List_' + todayISO() + '.csv', csvText(out));
+    showToast('success', 'CSV exported', rows.length + ' items exported.');
+}
+function exportHistoryCSV() {
+    if (!needView()) return;
+    const rows = histRows();
+    downloadText('Stock_Movements_' + todayISO() + '.csv', csvText([['Date', 'Type', 'Item Name', 'Department', 'Qty', 'Unit', 'Remarks']]
+        .concat(rows.map(m => [fd(m.date), TYPE_LABEL[m.type], itemNameOf(m), m.dept, m.delta.toFixed(2), itemUnitOf(m), m.note]))));
+    showToast('success', 'CSV exported', rows.length + ' entries exported.');
+}
+
+/* ---------- import issue records from the Delivery system ---------- */
+$('dlvFile').addEventListener('change', async e => {
+    const f = e.target.files[0]; e.target.value = '';
+    if (!f || !needAdd()) return;
+    try {
+        const data = JSON.parse(await f.text());
+        if (!Array.isArray(data)) throw new Error('This is not a Delivery data file.');
+        const have = new Set(mem.moves.map(m => m.source).filter(Boolean));
+        const recs = [], missing = new Set(); let dup = 0;
+        data.forEach(r => {
+            if (!r || !r.itemName || !r.qty) return;
+            const src = 'DLV:' + (r.cloudId || [r.date, r.receiver, r.itemName, r.areaOfUse, r.qty, r.unit].join('|'));
+            if (have.has(src)) { dup++; return; }
+            const it = itemByName(r.itemName);
+            if (!it) { missing.add(up(r.itemName)); return; }
+            have.add(src);
+            recs.push({ id: uid(), date: r.date, itemId: it.id, itemName: it.name, type: 'OUT', delta: -r4(r.qty), party: up(r.receiver), dept: up(r.areaOfUse), note: 'FROM DELIVERY SYSTEM', source: src });
+        });
+        if (recs.length) await saveMany('moves', recs);
+        showToast(recs.length ? 'success' : 'warn', 'Delivery import finished', recs.length + ' issue entries added' + (dup ? ', ' + dup + ' already imported' : '') + (missing.size ? ', ' + missing.size + ' item name(s) not found' : '') + '.');
+        if (missing.size) alert('These Delivery item names are not in the stock list, so they were skipped:\n\n' + Array.from(missing).slice(0, 25).join('\n') + (missing.size > 25 ? '\n…' : '') + '\n\nAdd them in Item Entry, then import the file again (already imported entries are never duplicated).');
+    } catch (err) { alert('Could not import: ' + err.message); }
+});
+
+/* ===================================================================
+   AUTO-BACKUP TO A FILE ON THIS PC
+   =================================================================== */
+let fileHandle = null, syncReady = false, writeQueue = Promise.resolve(), bkTimer = null;
+let askArmed = true, reconnecting = false, fileRetryTimer = null, fileRetryCount = 0;   // next click anywhere may show the one-time "Allow" prompt
+const FH_DB = 'AmbiaStockFileHandleDB', FH_STORE = 'h';
+const fsSupported = ('showSaveFilePicker' in window) && ('showOpenFilePicker' in window);
+const FILE_TYPES = [{ description: 'JSON data file', accept: { 'application/json': ['.json'] } }];
+
+function fhOpen() { return new Promise((res, rej) => { const r = indexedDB.open(FH_DB, 1); r.onupgradeneeded = () => r.result.createObjectStore(FH_STORE); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); }
+async function fhSave(h) { const d = await fhOpen(); return new Promise((res, rej) => { const t = d.transaction(FH_STORE, 'readwrite'); t.objectStore(FH_STORE).put(h, 'main'); t.oncomplete = res; t.onerror = () => rej(t.error); }); }
+async function fhClear() { const d = await fhOpen(); return new Promise((res, rej) => { const t = d.transaction(FH_STORE, 'readwrite'); t.objectStore(FH_STORE).delete('main'); t.oncomplete = res; t.onerror = () => rej(t.error); }); }
+async function fhLoad() { const d = await fhOpen(); return new Promise((res, rej) => { const q = d.transaction(FH_STORE, 'readonly').objectStore(FH_STORE).get('main'); q.onsuccess = () => res(q.result || null); q.onerror = () => rej(q.error); }); }
+
+function snapshot() { return { app: 'AmbiaStock', version: 1, savedAt: new Date().toISOString(), items: mem.items, moves: mem.moves, meta: mem.meta }; }
+function queueBackup() { if (!fileHandle) return; if (!syncReady) { askArmed = true; return; } clearTimeout(bkTimer); bkTimer = setTimeout(() => writeToFile(snapshot()), 250); }
+
+    function fmtStamp(ms) {
+        const d = new Date(ms); let h = d.getHours(); const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+        return p2(d.getDate()) + '-' + p2(d.getMonth() + 1) + '-' + d.getFullYear() + ' ' + p2(h) + ':' + p2(d.getMinutes()) + ':' + p2(d.getSeconds()) + ' ' + ap;
+    }
+    function fmtClock(ms) {
+        const d = new Date(ms); let h = d.getHours(); const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+        return p2(h) + ':' + p2(d.getMinutes()) + ' ' + ap;
+    }
+    function fmtAgo(ms) {
+        const s = Math.max(0, Math.round((Date.now() - ms) / 1000));
+        if (s < 10) return 'just now';
+        if (s < 60) return s + ' sec ago';
+        const m = Math.floor(s / 60); if (m < 60) return m + ' min ago';
+        const h = Math.floor(m / 60); if (h < 24) return h + ' hr ago';
+        const d = Math.floor(h / 24); return d + ' day' + (d > 1 ? 's' : '') + ' ago';
+    }
+    function fmtSize(b) {
+        if (!b) return '';
+        if (b < 1024) return b + ' B';
+        if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+        return (b / 1048576).toFixed(2) + ' MB';
+    }
+
+
+
+let lastBackup = null;
+try { lastBackup = JSON.parse(localStorage.getItem('AmbiaStockLastBackup') || 'null'); } catch (e) { lastBackup = null; }
+let netSince = Date.now();
+function noteBackup(items, moves, size) {
+    lastBackup = { t: Date.now(), n: items, m: moves, size: size || 0, name: fileHandle ? fileHandle.name : '' };
+    try { localStorage.setItem('AmbiaStockLastBackup', JSON.stringify(lastBackup)); } catch (e) {}
+}
+function flashBackupTile() { const t = $('syncBar'); t.classList.remove('flash'); void t.offsetWidth; t.classList.add('flash'); setTimeout(() => t.classList.remove('flash'), 1400); }
+const SYNC_TEXT = {
+    on: ['Active — data is protected', ''],
+    paused: ['Paused', 'Click here (or anywhere) and choose Allow to resume'],
+    error: ['Write failed — retrying', 'File busy, moved or deleted. Retrying automatically — click to retry now'],
+    off: ['Not linked', 'Click "Select Folder" to auto-detect your data file, or click here to create one'],
+    unsupported: ['Not supported', 'File auto-backup needs desktop Chrome / Edge']
+};
+function renderBackupInfo() {
+    const f = $('syncFile'), t = $('syncTime');
+    if (!f || !t) return;
+    if (fileHandle) {
+        const sz = (lastBackup && lastBackup.size && lastBackup.name === fileHandle.name) ? ' · ' + fmtSize(lastBackup.size) : '';
+        f.innerHTML = '📄 <b></b>' + sz; f.querySelector('b').textContent = fileHandle.name;
+    } else f.textContent = 'No backup file linked';
+    if (lastBackup && lastBackup.t) {
+        t.innerHTML = 'Last backup: <b></b> (' + fmtAgo(lastBackup.t) + ') · ' + lastBackup.n + ' item' + (lastBackup.n === 1 ? '' : 's') + ', ' + lastBackup.m + ' entr' + (lastBackup.m === 1 ? 'y' : 'ies');
+        t.querySelector('b').textContent = fmtStamp(lastBackup.t);
+    } else t.textContent = 'No backup written yet';
+}
+function setSync(state) {
+    const bar = $('syncBar'), x = SYNC_TEXT[state] || ['Checking…', ''];
+    bar.dataset.state = state; $('syncValue').textContent = x[0]; $('syncHint').textContent = x[1];
+    renderBackupInfo();
+    const off = state === 'unsupported';
+    document.querySelectorAll('#syncActions .st-act').forEach(b => { b.disabled = off; });
+    $('syncDrop').classList.toggle('disabled', off);
+}
+setInterval(renderBackupInfo, 15000);
+
+function updateNet() {
+    const on = (typeof netUp === 'function') ? netUp() : navigator.onLine;
+    $('netTile').dataset.state = on ? 'online' : 'offline';
+    $('netValue').textContent = on ? 'Online' : 'Offline';
+    $('netSub').textContent = on ? 'Connected since ' + fmtClock(netSince) + '. Cloud upload is active.'
+        : 'Offline since ' + fmtClock(netSince) + '. Everything keeps saving on this device and in the backup file.';
+}
+window.addEventListener('online', () => { netSince = Date.now(); updateNet(); updateCloudTile(); showToast('success', 'Back online', 'Waiting entries will upload to the cloud automatically.'); });
+window.addEventListener('offline', () => { netSince = Date.now(); updateNet(); updateCloudTile(); showToast('warn', 'You are offline', 'Entries keep saving on this device and in the backup file.'); });
+updateNet();
+
+function syncBarClick() {
+    const st = $('syncBar').dataset.state;
+    if (st === 'paused') reconnectFile();
+    else if (st === 'error') { fileRetryCount = 0; if (syncReady) writeToFile(snapshot()); else reconnectFile(); }
+    else if (st === 'off') linkNewFile();
+}
+
+function writeToFile(data) {
+    if (!fileHandle) return;
+    if (!syncReady) { askArmed = true; return; }   // permission not granted yet: the newest data is written the moment it is allowed (reconcile)
+    const json = JSON.stringify(data, null, 2);
+    writeQueue = writeQueue.then(async () => {
+        try {
+            const w = await fileHandle.createWritable(); await w.write(json); await w.close();
+            let size = 0; try { size = (await fileHandle.getFile()).size; } catch (x) {}
+            noteBackup(data.items.length, data.moves.length, size);
+            fileRetryCount = 0; clearTimeout(fileRetryTimer);
+            setSync('on'); flashBackupTile();
+        } catch (e) {
+            console.error('File write failed', e);
+            if (e && (e.name === 'NotAllowedError' || e.name === 'SecurityError')) {
+                syncReady = false; askArmed = true; setSync('paused');   // permission lost: wait for reconnect
+            } else {
+                setSync('error');                                          // temporary problem: retry automatically, and again on the next save
+                clearTimeout(fileRetryTimer);
+                if (fileRetryCount < 6) { fileRetryCount++; fileRetryTimer = setTimeout(() => writeToFile(snapshot()), 4000); }
+            }
+        }
+    });
+}
+async function readFileData(handle) {
+    const text = await (await handle.getFile()).text();
+    if (!text.trim()) return { items: [], moves: [], meta: [] };
+    const p = JSON.parse(text);
+    if (Array.isArray(p)) throw new Error('This looks like a Delivery data file. Use "Import Delivery File" in Movement History instead.');
+    if (!p || !Array.isArray(p.items) || !Array.isArray(p.moves)) throw new Error('Not a valid stock data file');
+    return { items: p.items, moves: p.moves, meta: Array.isArray(p.meta) ? p.meta : [] };
+}
+// merge: add records that are missing, newer version wins (records deleted on this device are never brought back)
+async function mergeData(d) {
+    let added = 0;
+    for (const s of STORES) {
+        const local = new Map(mem[s].map(r => [r.id, r]));
+        const put = (d[s] || []).filter(r => r && r.id && (!local.has(r.id) || Number(r.updatedAt || 0) > Number(local.get(r.id).updatedAt || 0)) && !cloud.tomb[s + '/' + r.id]);
+        if (put.length) { await idbPutMany(s, put); added += put.length; }
+    }
+    await loadAll(); return added;
+}
+async function initFileSync() {
+    if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+    if (!fsSupported) {
+        setSync('unsupported');
+        const dz = $('syncDrop'); if (dz) { dz.classList.add('disabled'); dz.querySelector('.dz-idle').lastChild.textContent = ' Auto-backup needs desktop Chrome / Edge'; }
+        return;
+    }
+    try { fileHandle = await fhLoad(); } catch (e) { fileHandle = null; }
+    if (!fileHandle) { setSync('off'); autoLoadFromFolder(); return; }
+    try { const perm = await fileHandle.queryPermission({ mode: 'readwrite' }); if (perm === 'granted') await reconcile(); else { askArmed = true; setSync('paused'); } }
+    catch (e) { askArmed = true; setSync('paused'); }
+}
+async function reconnectFile(quiet) {
+    if (!fileHandle || reconnecting) return;
+    reconnecting = true;
+    try {
+        const p = await fileHandle.requestPermission({ mode: 'readwrite' });
+        if (p === 'granted') await reconcile();
+        else if (quiet !== true) alert('Permission denied. Auto-save stays paused.');
+    } catch (e) { if (quiet !== true) alert('Could not reconnect: ' + e.message); }
+    finally { reconnecting = false; }
+}
+// After a reload or a drag & drop, Chrome needs one click to give write permission:
+// ask on the next click anywhere on the page, so nobody has to find the yellow bar.
+document.addEventListener('click', () => {
+    if (!askArmed || !fileHandle || reconnecting) return;
+    if ($('syncBar').dataset.state !== 'paused') return;
+    askArmed = false; reconnectFile(true);
+}, true);
+
+async function reconcile() {
+    let fd_;
+    try { fd_ = await readFileData(fileHandle); }
+    catch (e) {
+        if (e && e.name === 'NotFoundError') {
+            // the file was moved or deleted (e.g. project folder copied to another PC): forget it
+            fileHandle = null; syncReady = false;
+            try { await fhClear(); } catch (x) {}
+            setSync('off');
+            const found = await autoLoadFromFolder();
+            if (!found) showToast('warn', 'Data file not found', 'Click "Select Folder" and choose the folder that has your data file.');
+            return;
+        }
+        alert('Data file could not be read, so it was NOT overwritten: ' + e.message); setSync('paused'); return;
+    }
+    if (!mem.items.length && !mem.moves.length && (fd_.items.length || fd_.moves.length)) {
+        if (confirm('The data file has ' + fd_.items.length + ' items and ' + fd_.moves.length + ' entries but the database is empty. Load them now?')) { await mergeData(fd_); renderAll(); }
+        else { setSync('paused'); return; }
+    }
+    syncReady = true; fileRetryCount = 0; queueBackup(); setSync('on');
+}
+async function linkNewFile() {
+    if (!fsSupported) { alert('Please use desktop Chrome or Edge.'); return; }
+    try {
+        const h = await window.showSaveFilePicker({ suggestedName: DATA_FILE, types: FILE_TYPES });
+        fileHandle = h; await fhSave(h); syncReady = true; fileRetryCount = 0; writeToFile(snapshot());
+        showToast('success', 'Data file created', h.name + ' is now your auto-backup file.');
+    } catch (e) { if (e.name !== 'AbortError') alert('Failed: ' + e.message); }
+}
+async function linkExistingFile() {
+    if (!fsSupported) { alert('Please use desktop Chrome or Edge.'); return; }
+    try { const [h] = await window.showOpenFilePicker({ types: FILE_TYPES }); await linkDataFile(h); }
+    catch (e) { if (e.name !== 'AbortError') alert('Failed: ' + e.message + ' (file must be a valid JSON data file)'); }
+}
+// link a file for auto-save (used by "Select Existing", folder pick and drag & drop)
+async function linkDataFile(h) {
+    if (fileHandle && syncReady && h.isSameEntry) {
+        let same = false; try { same = await h.isSameEntry(fileHandle); } catch (x) {}
+        if (same) { showToast('edit', 'Already linked', h.name + ' is already your auto-backup file.'); return; }
+    }
+    // 1) write permission first. A button click gets it at once; after a drag & drop Chrome may ask for one more click.
+    let granted = false;
+    try { granted = (await h.requestPermission({ mode: 'readwrite' })) === 'granted'; } catch (e) { granted = false; }
+    // 2) read the file and merge its records into this device
+    const d = await readFileData(h);
+    const n = await mergeData(d);
+    // 3) link it and start auto-save
+    fileHandle = h; await fhSave(h); fileRetryCount = 0;
+    if (granted) {
+        syncReady = true; renderAll(); writeToFile(snapshot());
+        showToast('success', 'Data file linked', n ? n + ' record' + (n === 1 ? '' : 's') + ' loaded from ' + h.name + '.' : h.name + ' is now your auto-backup file.');
+    } else {
+        syncReady = false; askArmed = true; setSync('paused'); renderAll();
+        showToast('edit', 'File linked: ' + h.name, 'Click anywhere on the page and choose Allow to start auto-save.');
+    }
+}
+
+/* ===== Auto-load the data file that sits in the same folder as this page ===== */
+const DATA_FILE = 'ambia_stock_data.json';
+
+// (A) Page opened from a web server (http/https): read the JSON next to the page automatically.
+//     Browsers block this for pages opened as a plain file (file://) - use (B) there.
+async function autoLoadFromFolder() {
+    if (!/^https?:$/.test(location.protocol)) return false;
+    try {
+        const r = await fetch(DATA_FILE, { cache: 'no-store' });
+        if (!r.ok) return false;
+        const p = await r.json();
+        if (!p || Array.isArray(p) || !Array.isArray(p.items) || !Array.isArray(p.moves)) return false;
+        const n = await mergeData({ items: p.items, moves: p.moves, meta: Array.isArray(p.meta) ? p.meta : [] });
+        if (n) { renderAll(); showToast('success', 'Data loaded from folder', DATA_FILE + ' was found next to this page and ' + n + ' record' + (n === 1 ? '' : 's') + ' loaded.'); }
+        return true;
+    } catch (e) { return false; }
+}
+
+// (B) Pick (or drop) the project folder once: the data file inside it is found and linked automatically.
+async function linkFolder(dir) {
+    if ((await dir.requestPermission({ mode: 'readwrite' })) !== 'granted') { alert('Write permission is required for this folder.'); return; }
+    let h;
+    try { h = await dir.getFileHandle(DATA_FILE); }
+    catch (e) {
+        if (e.name !== 'NotFoundError') throw e;
+        if (!confirm(DATA_FILE + ' was not found in the folder "' + dir.name + '". Create a new data file there?')) return;
+        h = await dir.getFileHandle(DATA_FILE, { create: true });
+    }
+    await linkDataFile(h);
+}
+async function linkFolderPick() {
+    if (!fsSupported || !window.showDirectoryPicker) { alert('Please use desktop Chrome or Edge.'); return; }
+    try { const d = await window.showDirectoryPicker({ mode: 'readwrite' }); await linkFolder(d); }
+    catch (e) { if (e.name !== 'AbortError') alert('Failed: ' + e.message + '\n(Choose the project folder itself - Chrome does not allow Desktop, Documents or Downloads as a whole.)'); }
+}
+    // ----- Drag & drop a data file onto the Auto-Backup tile -----
+    (function initFileDrop() {
+        const tile = document.getElementById('syncBar');
+        if (!tile) return;
+        const hasFiles = e => e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types || [], 'Files') !== -1;
+        let depth = 0;
+
+        // stop the browser from opening a file that is dropped outside the tile
+        window.addEventListener('dragover', e => { if (hasFiles(e)) e.preventDefault(); });
+        window.addEventListener('drop', e => { if (hasFiles(e)) e.preventDefault(); });
+
+        tile.addEventListener('dragenter', e => {
+            if (!hasFiles(e)) return;
+            e.preventDefault(); depth++; tile.classList.add('dragover');
+        });
+        tile.addEventListener('dragover', e => {
+            if (!hasFiles(e)) return;
+            e.preventDefault(); e.dataTransfer.dropEffect = 'copy';
+        });
+        tile.addEventListener('dragleave', e => {
+            if (!hasFiles(e)) return;
+            depth = Math.max(0, depth - 1);
+            if (!depth) tile.classList.remove('dragover');
+        });
+        tile.addEventListener('drop', e => {
+            if (!hasFiles(e)) return;
+            e.preventDefault(); e.stopPropagation();
+            depth = 0; tile.classList.remove('dragover');
+
+            const items = Array.prototype.filter.call(e.dataTransfer.items || [], i => i.kind === 'file');
+            if (!fsSupported || !items.length || !items[0].getAsFileSystemHandle) {
+                showToast('warn', 'Not supported', 'Drag & drop needs desktop Chrome or Edge. Use "Select Existing" instead.');
+                return;
+            }
+            if (items.length > 1) { showToast('warn', 'One file at a time', 'Please drop a single .json data file.'); return; }
+
+            const pending = items[0].getAsFileSystemHandle();   // must be requested inside the drop event
+            pending.then(async h => {
+                if (h && h.kind === 'directory') {
+                    try { await linkFolder(h); }
+                    catch (err) {
+                        if (err && (err.name === 'SecurityError' || err.name === 'NotAllowedError')) showToast('warn', 'Permission needed', 'Use "Select Folder" to give access to this folder.');
+                        else alert('Failed: ' + (err && err.message));
+                    }
+                    return;
+                }
+                if (!h || h.kind !== 'file') { showToast('warn', 'Not a file', 'Please drop a .json data file or the data folder.'); return; }
+                if (!/\.json$/i.test(h.name)) { showToast('warn', 'Wrong file type', h.name + ' is not a .json data file.'); return; }
+                try { await linkDataFile(h); }
+                catch (err) {
+                    if (err && (err.name === 'SecurityError' || err.name === 'NotAllowedError')) {
+                        showToast('warn', 'Permission needed', 'Use "Select Existing" to give write access to this file.');
+                    } else { alert('Failed: ' + (err && err.message) + ' (file must be a valid JSON data file)'); }
+                }
+            }).catch(() => showToast('warn', 'Could not read file', 'Try "Select Existing" instead.'));
+        });
+    })();
+
+
+
+/* ===================================================================
+   CLOUD SYNC (Firestore) + LOGIN — same system as the Receiving project
+   - Local database first (works offline), cloud second.
+   - No e-mail address or role is stored in this page. The list of approved e-mails (and their level) lives only in
+     the cloud rules (firestore.rules). To learn its own level, a login asks the server three harmless questions
+     ("probe" 1, 2, 3): the rules answer "yes" only up to the level that e-mail has been given
+     (1 = view, 2 = add & edit, 3 = full access).
+   =================================================================== */
+const PROBE_COLLECTION = '_p';
+const ROLE_KEY = 'AmbiaStockRoleCache';
+const cloud = { known: {}, tomb: {} };
+try { cloud.known = JSON.parse(localStorage.getItem('AmbiaStockCloudKnown') || '{}') || {}; } catch (e) {}
+try { cloud.tomb = JSON.parse(localStorage.getItem('AmbiaStockPendingDelete') || '{}') || {}; } catch (e) {}
+function saveKnown() { try { localStorage.setItem('AmbiaStockCloudKnown', JSON.stringify(cloud.known)); } catch (e) {} }
+function saveTomb() { try { localStorage.setItem('AmbiaStockPendingDelete', JSON.stringify(cloud.tomb)); } catch (e) {} }
+
+let fdb = null, auth = null, cloudReady = false, initTried = false;
+let running = false, again = false, againPull = false, pullWanted = false, pulled = false, syncTimer = null;
+let lastError = '', lastSync = null, retryTimer = null, retryCount = 0;
+let myRole = 0;                                   // 0 = no access, 1 = view, 2 = add & edit, 3 = full
+let authMode = 'login', authAfterTab = null, authBusy = false;
+var authSettled = false, gateFailed = false, gateNote = '', gateFails = 0, gateLockUntil = 0;   // access gate state
+try { lastSync = JSON.parse(localStorage.getItem('AmbiaStockLastCloudSync') || 'null'); } catch (e) {}
+const configured = !!(CLOUD_CONFIG.apiKey && CLOUD_CONFIG.projectId && !/^YOUR_/i.test(CLOUD_CONFIG.apiKey) && !/^YOUR_/i.test(CLOUD_CONFIG.projectId));
+
+function describeCloudError(e, prefix) {
+    const code = (e && e.code) || '';
+    let why;
+    if (code === 'permission-denied') why = 'permission denied (log in with an account that has this permission; if it still fails, the cloud rules must be published)';
+    else if (code === 'unauthenticated') why = 'you are not logged in';
+    else if (code === 'timeout' || code === 'deadline-exceeded') why = 'the server did not respond in time';
+    else if (code === 'unavailable') why = 'the cloud server is unreachable (check the internet connection)';
+    else if (code === 'resource-exhausted') why = 'the cloud usage limit was reached (will try again later)';
+    else why = (e && e.message) ? e.message : 'unknown error';
+    return prefix ? prefix + ': ' + why : why;
+}
+
+function initCloud() {
+    initTried = true;
+    startAccessMonitor();
+    try {
+        if (typeof firebase === 'undefined') throw new Error('Cloud library not loaded');
+        if (!configured) throw new Error('Cloud settings not filled in');
+        firebase.initializeApp(CLOUD_CONFIG);
+        auth = firebase.auth();
+        fdb = firebase.firestore();
+    } catch (e) {
+        console.warn('Cloud not available, running in local mode:', e.message);
+        auth = null; fdb = null;
+    }
+    if (auth) {
+        cloudReady = true;
+        try { auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(() => {}); } catch (e) {}   // login ends when the tab/browser is closed
+        auth.onAuthStateChanged(onAuthChanged);
+    } else if (configured) {
+        gateFail('The login service could not load. Connect to the internet, then reload the page.');
+    }
+    enforceAccess();
+}
+
+/* ----- access rules ----- */
+function localMode() { return !netUp(); }
+function roleLvl() { return (auth && auth.currentUser) ? myRole : 0; }
+function isAdmin() { return roleLvl() >= 3; }          // full access
+async function loadRole(user) {
+    myRole = 0;
+    if (!user || !fdb) return 0;
+    let res = [];
+    try {
+        res = await withTimeout(Promise.all([3, 2, 1].map(n =>
+            fdb.collection(PROBE_COLLECTION).doc(String(n)).get().then(() => n, e => ({ e })))), 10000, 'Access check timed out');
+    } catch (e) { res = [{ e }]; }
+    const ok = res.filter(r => typeof r === 'number');
+    if (ok.length) {
+        myRole = Math.max.apply(null, ok);
+        try { localStorage.setItem(ROLE_KEY, JSON.stringify({ u: user.uid, l: myRole })); } catch (e) {}
+    } else if (res.some(r => r && r.e && r.e.code !== 'permission-denied')) {
+        // network problem (not a refusal): use the last known level of this same login
+        try { const c = JSON.parse(localStorage.getItem(ROLE_KEY) || 'null'); if (c && c.u === user.uid) myRole = (c.l | 0); } catch (x) {}
+    } else {
+        try { localStorage.setItem(ROLE_KEY, JSON.stringify({ u: user.uid, l: 0 })); } catch (e) {}
+    }
+    return myRole;
+}
+
+/* ===================================================================
+   SECURE ACCESS POLICY
+   - Offline : data saved on this device can be viewed, and NEW entries can be added.
+               Editing and deleting are NOT possible offline.
+   - Online  : a login is required: view-only, add & edit, or full access (set per account in the cloud).
+   - The cloud data itself is protected by the Firestore rules (server side).
+   =================================================================== */
+const IDLE_LOGOUT_MIN = 15;                       // a logged-in user is logged out after this many idle minutes (0 = never)
+const NET_PROBE_URL = 'https://firestore.googleapis.com/';
+var netFails = 0, netProbing = false, netProbeTimer = null, accessMonitorOn = false;   // var: safe even if read before this line runs
+function securityOn() { return configured; }
+function netUp() { return navigator.onLine && !(netFails >= 2); }
+function canView() { return !securityOn() || !netUp() || roleLvl() >= 1; }
+function canModify() { return !securityOn() || (netUp() && roleLvl() >= 2); }       // edit existing data
+function canAdminAct() { return !securityOn() || (netUp() && roleLvl() >= 3); }     // delete
+function canAdd() {                                                                 // new entries
+    if (!securityOn()) return true;
+    return (auth && auth.currentUser) ? roleLvl() >= 2 : true;                      // not logged in: saved on this device first
+}
+function accessMode() {
+    if (!securityOn()) return 'local';
+    if (!netUp()) return 'offline';
+    const r = roleLvl();
+    return r >= 3 ? 'admin' : r === 2 ? 'editor' : r === 1 ? 'viewer' : 'locked';
+}
+
+// Real internet check: "online" only counts when the cloud server can really be reached.
+async function probeNet() {
+    if (netProbing) return;
+    if (!navigator.onLine) { netFails = 2; return; }
+    netProbing = true;
+    const before = netUp();
+    let ctl = null, to = null;
+    try {
+        ctl = window.AbortController ? new AbortController() : null;
+        to = setTimeout(() => { if (ctl) ctl.abort(); }, 7000);
+        await fetch(NET_PROBE_URL + '?t=' + Date.now(), { mode: 'no-cors', cache: 'no-store', signal: ctl ? ctl.signal : undefined });
+        netFails = 0;
+    } catch (e) { netFails = Math.min(2, netFails + 1); }
+    clearTimeout(to);
+    netProbing = false;
+    if (netFails > 0 && netFails < 2) { clearTimeout(netProbeTimer); netProbeTimer = setTimeout(probeNet, 2500); }
+    if (before !== netUp()) accessChanged();
+}
+
+// Auto logout after a period without any activity
+let idleTimer = null, idleStamp = 0;
+function idleReset(force) {
+    if (!IDLE_LOGOUT_MIN) return;
+    const now = Date.now();
+    if (!force && now - idleStamp < 4000) return;
+    idleStamp = now;
+    clearTimeout(idleTimer);
+    if (!(auth && auth.currentUser)) return;
+    idleTimer = setTimeout(() => {
+        if (!(auth && auth.currentUser)) return;
+        if (!netUp()) { idleReset(true); return; }   // offline: nobody could log in again, so the open session is kept
+        gateNote = 'You were logged out automatically after ' + IDLE_LOGOUT_MIN + ' minutes without activity.';
+        try { auth.signOut(); } catch (e) {}
+        showToast('warn', 'Logged out', 'Logged out automatically after ' + IDLE_LOGOUT_MIN + ' minutes without activity.');
+    }, IDLE_LOGOUT_MIN * 60000);
+}
+
+function startAccessMonitor() {
+    if (accessMonitorOn) return;
+    accessMonitorOn = true;
+    window.addEventListener('online', () => { netFails = 0; accessChanged(); probeNet(); });
+    window.addEventListener('offline', () => accessChanged());
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) probeNet(); });
+    ['click', 'keydown', 'touchstart', 'mousemove', 'scroll'].forEach(ev => document.addEventListener(ev, () => idleReset(false), { passive: true, capture: true }));
+    setInterval(probeNet, 20000);
+    probeNet();
+    updateAccessUI();
+}
+
+function updateAccessUI() {
+    if (!document.getElementById('accessStyle')) {
+        const st = document.createElement('style');
+        st.id = 'accessStyle';
+        st.textContent =
+            '#accessBadge { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:.2px; border:1px solid transparent; white-space:nowrap; }' +
+            '#accessBadge[data-mode="admin"] { background:#dcfce7; color:#166534; border-color:#bbf7d0; }' +
+            '#accessBadge[data-mode="offline"] { background:#e0f2fe; color:#075985; border-color:#bae6fd; }' +
+            '#accessBadge[data-mode="locked"] { background:#fee2e2; color:#991b1b; border-color:#fecaca; }' +
+            '#accessBadge[data-mode="local"] { background:#f1f5f9; color:#475569; border-color:#e2e8f0; }' +
+            '#accessBadge[data-mode="editor"] { background:#e0e7ff; color:#3730a3; border-color:#c7d2fe; }' +
+            '#accessBadge[data-mode="viewer"] { background:#f1f5f9; color:#334155; border-color:#cbd5e1; }' +
+            'body[data-role="1"] .needs-modify, body[data-role="1"] .needs-admin, body[data-role="1"] .needs-add, body[data-role="2"] .needs-admin { display:none !important; }' +
+            'body[data-role="1"] #pageNav [data-tab="inoutTab"], body[data-role="1"] #pageNav [data-tab="itemTab"], body[data-role="1"] #safetyBtn { display:none !important; }' +
+            'body[data-access="offline"] .needs-modify, body[data-access="locked"] .needs-modify, body[data-access="viewer"] .needs-modify,' +
+            'body[data-access="offline"] .needs-admin, body[data-access="locked"] .needs-admin, body[data-access="viewer"] .needs-admin, body[data-access="editor"] .needs-admin { opacity:.45; cursor:not-allowed; filter:grayscale(.6); }' +
+            '@media print { #accessBadge { display:none !important; } }';
+        document.head.appendChild(st);
+    }
+    const mode = accessMode();
+    document.body.dataset.access = mode;
+    document.body.dataset.role = String(securityOn() ? roleLvl() : 0);
+    let el = document.getElementById('accessBadge');
+    const anchor = document.getElementById('authInfo') || document.getElementById('authBtn');
+    if (!el && anchor && anchor.parentNode) {
+        el = document.createElement('span');
+        el.id = 'accessBadge';
+        anchor.parentNode.insertBefore(el, anchor);
+    }
+    if (!el) return;
+    el.dataset.mode = mode;
+    if (mode === 'admin') { el.textContent = '🛡 Full access'; el.title = 'View, add, edit and delete are allowed.'; }
+    else if (mode === 'editor') { el.textContent = '✏️ Add & edit'; el.title = 'You can view, add and edit data. Deleting needs full access.'; }
+    else if (mode === 'viewer') { el.textContent = '👁 View only'; el.title = 'You can view data and reports. Adding, editing and deleting are not allowed.'; }
+    else if (mode === 'offline') { el.textContent = '📴 Offline · view & add only'; el.title = 'Offline: you can view data saved on this device and add new entries. Editing and deleting need internet + login.'; }
+    else if (mode === 'locked') {
+        el.textContent = auth ? '🔒 Locked · login required' : '🔒 Locked · cloud login unavailable';
+        el.title = 'Online: login is required to view, edit or delete data.';
+    }
+    else { el.textContent = '💾 Local mode'; el.title = 'Cloud is not connected.'; }
+}
+
+// Gates: edit needs "add & edit" or full access; delete needs full access (online + login)
+function needModify() { return canModify() ? true : denyAccess('edit data'); }
+function needAdmin() { return canAdminAct() ? true : denyAccess('delete data'); }
+function needAdd() {
+    if (canAdd()) return true;
+    showToast('warn', 'Permission needed', 'Your account is not allowed to add data.');
+    return false;
+}
+function denyAccess(what) {
+    if (!netUp()) showToast('warn', 'Internet + login needed', 'Editing and deleting work only online after login. Offline you can view saved data and add new entries.');
+    else if (auth && auth.currentUser) showToast('warn', 'Permission needed', 'Your account is not allowed to ' + what + '.');
+    else if (auth) { showToast('warn', 'Login required', 'Please log in to ' + what + '.'); openAuthModal('login', null); }
+    else showToast('warn', 'Cloud login unavailable', 'Reload the page when the internet connection is stable, then log in.');
+    return false;
+}
+// Gate for viewing data / reports / exports
+function needView() {
+    if (canView()) return true;
+    if (auth) { showToast('warn', 'Login required', 'Please log in to view data.'); openAuthModal('login', null); }
+    else showToast('warn', 'Cloud login unavailable', 'Reload the page when the internet connection is stable, then log in.');
+    return false;
+}
+
+// called whenever login state or real internet state changes
+function accessChanged() {
+    enforceAccess();
+    if (typeof updateNet === 'function') updateNet();
+}
+
+/* ===== ACCESS GATE =====
+   The whole page stays locked (see #agCover) until a verified, approved login exists.
+   A login session lasts for this browser tab only. Offline: a session that is already open keeps working. */
+function gateLocked() { return securityOn() && !(auth && auth.currentUser && auth.currentUser.emailVerified && myRole >= 1); }
+function gateInfo(text) {
+    authMessage(text, true);
+    authEls.msg.style.background = '#eef2ff'; authEls.msg.style.color = '#3730a3';
+}
+function gateUpdate() {
+    const m = document.getElementById('authModal');
+    if (gateFailed || !m) return;
+    if (gateLocked()) {
+        document.documentElement.classList.add('ag-locked');
+        if (authSettled && m.style.display !== 'flex') {
+            try {
+                setAuthMode('login');
+                authEls.pw.value = ''; authEls.pw2.value = '';
+                m.style.display = 'flex';
+                gateInfo(gateNote || (netUp() ? 'Login required. This page opens only for approved staff of the Store Department.' : 'No internet connection. Login needs the internet.'));
+                setTimeout(() => authEls.email.focus(), 50);
+            } catch (e) {}
+        }
+    } else {
+        document.documentElement.classList.remove('ag-locked');
+        gateNote = ''; gateFails = 0;
+        if (m.style.display === 'flex') {
+            m.style.display = 'none';
+            try { authEls.pw.value = ''; authEls.pw2.value = ''; resetEyes(); } catch (e) {}
+        }
+    }
+}
+function gateFail(text) {
+    gateFailed = true;
+    document.documentElement.classList.add('ag-locked');
+    const c = document.getElementById('agCover'); if (c) c.classList.add('ag-fail');
+    const t = document.getElementById('agMsg'); if (t) t.textContent = text;
+    const s = document.getElementById('agSlow'); if (s) s.hidden = true;
+    const b = document.getElementById('agReload'); if (b) b.hidden = false;
+}
+
+// re-check access and update the UI (login/logout, online/offline events)
+function enforceAccess() {
+    gateUpdate();
+    if (!canView()) {
+        ['reportModal', 'editModal'].forEach(id => { const el = $(id); if (el) el.style.display = 'none'; });
+        $('reportDoc').innerHTML = '';
+    }
+    if (db) renderAll(); else applyLock();
+    updateAuthUI();
+    const viewerOnly = securityOn() && roleLvl() === 1;
+    if (viewerOnly && (currentTab === 'inoutTab' || currentTab === 'itemTab' || currentTab === 'pageSafety') && canView()) switchTab('stockTab', { noHash: true, keepScroll: true });
+}
+
+function refresh() { updateAuthUI(); }
+function updateAuthUI() {
+    updateAccessUI();
+    const info = $('authInfo'), btn = $('authBtn');
+    if (!info || !btn) return;
+    const user = auth && auth.currentUser;
+    btn.style.display = auth ? '' : 'none';
+    btn.textContent = user ? '🚪 Logout' : '🔐 Login';
+    let t = '';
+    if (!auth) t = '💾 Local mode (cloud not connected)';
+    else if (localMode()) t = '';
+    else if (user) t = user.email;
+    const n = waiting();
+    if (auth && n) t += ' · ' + n + ' not uploaded yet';
+    if (auth && lastError) t += ' · sync failed';
+    info.textContent = t.replace(/^ · /, '');
+    updateCloudTile();
+}
+
+// Cloud Sync tile in the Data Safety Center (smart status: last sync time, plain-language problems, auto retry)
+function waiting() {
+    let n = Object.keys(cloud.tomb).length;
+    STORES.forEach(s => mem[s].forEach(r => { if (cloud.known[s + '/' + r.id] !== r.updatedAt) n++; }));
+    return n;
+}
+function updateCloudTile() {
+    const tile = $('cloudTile');
+    if (!tile) return;
+    const val = $('cloudValue'), sub = $('cloudSub'), hint = $('cloudHint');
+    const user = auth && auth.currentUser;
+    const n = waiting(), dels = Object.keys(cloud.tomb).length;
+    const last = lastSync ? 'Last synced: ' + fmtStamp(lastSync.t) + ' (' + fmtAgo(lastSync.t) + ')' + (lastSync.n != null ? ' · ' + lastSync.n + ' record' + (lastSync.n === 1 ? '' : 's') : '') : '';
+    let st, v, sb, h = '';
+    if (initTried && !auth) { st = 'local'; v = 'Local mode'; sb = 'Cloud is not connected. Data is kept on this device and in the backup file.'; }
+    else if (!initTried) { st = 'local'; v = 'Starting…'; sb = ''; }
+    else if (!navigator.onLine) { st = 'pending'; v = n ? n + ' waiting for internet' : 'Waiting for internet'; sb = 'Entries, edits and deletions sync automatically when you are back online.' + (last ? ' ' + last : ''); }
+    else if (lastError) {
+        st = 'error'; v = 'Sync problem — retrying automatically';
+        sb = describeCloudError({ code: lastError, message: lastError }).replace(/^./, c => c.toUpperCase()) + '. ' + (n ? n + ' not synced yet.' : '');
+        h = 'Click to retry now';
+    }
+    else if (dels && !isAdmin()) { st = 'pending'; v = 'Waiting for login'; sb = dels + ' deletion(s) will be applied to the cloud after a full-access login.' + (last ? ' ' + last : ''); }
+    else if (n && roleLvl() < 2) { st = 'pending'; v = 'Waiting for add & edit access'; sb = n + ' change(s) saved on this device will upload after a login with add & edit access.' + (last ? ' ' + last : ''); }
+    else if (n || running) { st = 'pending'; v = n ? 'Syncing… ' + n + ' waiting' : 'Syncing…'; sb = 'Saved on this device. Syncing to the cloud.'; }
+    else { st = 'synced'; v = 'All data synced'; sb = last || 'Everything on this device is in the cloud.'; }
+    if (user && sb) sb += ' Signed in: ' + user.email;
+    tile.dataset.state = st;
+    val.textContent = v;
+    sub.textContent = sb;
+    if (hint) hint.textContent = h;
+}
+// click the Cloud Sync tile when it shows a problem: retry right now
+function cloudTileClick() {
+    if (!fdb || !navigator.onLine || !cloudReady) return;
+    retryCount = 0; clearTimeout(retryTimer); retryTimer = null;
+    schedule({ pull: roleLvl() >= 1, now: true });
+    showToast('edit', 'Syncing…', 'Checking the cloud now.');
+}
+function noteSynced() {
+    lastSync = { t: Date.now(), n: mem.items.length + mem.moves.length + mem.meta.length };
+    try { localStorage.setItem('AmbiaStockLastCloudSync', JSON.stringify(lastSync)); } catch (e) {}
+    lastError = ''; retryCount = 0;
+    clearTimeout(retryTimer); retryTimer = null;
+}
+// after a failure: try again by itself (8 s, 16 s, 32 s ... up to 5 min)
+function scheduleRetry() {
+    if (retryTimer || !navigator.onLine || !fdb) return;
+    const delay = Math.min(300000, 8000 * Math.pow(2, retryCount)); retryCount++;
+    retryTimer = setTimeout(() => { retryTimer = null; if (navigator.onLine && fdb) schedule({ pull: roleLvl() >= 1, now: true }); }, delay);
+}
+// coming back to this tab: sync again if something is waiting, failed, or the last sync is old
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden || !fdb || !navigator.onLine) return;
+    const stale = !lastSync || (Date.now() - lastSync.t > 180000);
+    if (waiting() || lastError || stale) schedule({ pull: roleLvl() >= 1 && stale, now: false });
+});
+setInterval(() => { if ($('cloudTile')) updateCloudTile(); }, 20000);   // keeps "x min ago" fresh
+
+async function onAuthChanged(user) {
+    if (user) {
+        if (!user.emailVerified) { myRole = 0; authSettled = true; enforceAccess(); return; }
+        await loadRole(user);
+        if (!myRole) {   // an e-mail that is not on the approved list has no access at all
+            gateNote = 'This email is not approved for this system yet. Please contact the system owner.';
+            try { await auth.signOut(); } catch (e) {}
+            showToast('warn', 'Not approved', 'This email is not approved for this system yet. Please contact the system owner.');
+            return;
+        }
+    } else { myRole = 0; }
+    idleReset(true);
+    authSettled = true;
+    enforceAccess();
+    if (navigator.onLine) schedule({ pull: roleLvl() >= 1, now: true });
+}
+function onNetChange() {
+    enforceAccess();
+    if (navigator.onLine && auth) schedule({ pull: roleLvl() >= 1, now: true });
+}
+window.addEventListener('online', onNetChange);
+window.addEventListener('offline', onNetChange);
+
+/* ----- the sync cycle: delete (full) -> download (view+) -> upload (add & edit+) ----- */
+const clean = r => JSON.parse(JSON.stringify(r));
+const validDocId = id => !!id && id.indexOf('/') === -1 && id !== '.' && id !== '..';
+
+async function runSync(pull) {
+    if (!fdb || localMode()) return;
+    const lvl = roleLvl();
+    if (lvl < 1) return;
+    try {
+        // 1. deletes made on this PC (full access only)
+        if (lvl >= 3) {
+            const tk = Object.keys(cloud.tomb);
+            for (let i = 0; i < tk.length; i += 400) {
+                const part = tk.slice(i, i + 400), good = part.filter(k => COLS[k.split('/')[0]] && validDocId(k.slice(k.indexOf('/') + 1)));
+                if (good.length) {
+                    const b = fdb.batch();
+                    good.forEach(k => b.delete(fdb.collection(COLS[k.split('/')[0]]).doc(k.slice(k.indexOf('/') + 1))));
+                    await withTimeout(b.commit(), 15000, 'Cloud delete timed out');
+                }
+                part.forEach(k => { delete cloud.tomb[k]; delete cloud.known[k]; });
+                saveTomb();
+            }
+        }
+        // 2. download records that are new / newer online (always before the first upload of a session)
+        if (pull || !pulled) {
+            let changed = false;
+            for (const s of STORES) {
+                const snap = await withTimeout(fdb.collection(COLS[s]).get({ source: 'server' }), 15000, 'Cloud read timed out');
+                const local = new Map(mem[s].map(r => [r.id, r])), put = [];
+                snap.forEach(d => {
+                    const k = s + '/' + d.id; if (cloud.tomb[k]) return;
+                    const data = d.data(), cu = Number(data.updatedAt || 0), l = local.get(d.id);
+                    if (!l || cu > Number(l.updatedAt || 0)) { put.push(Object.assign({}, data, { id: d.id })); cloud.known[k] = cu; }
+                    else if (Number(l.updatedAt || 0) === cu) cloud.known[k] = cu;
+                });
+                if (put.length) { await idbPutMany(s, put); changed = true; }
+            }
+            pulled = true;
+            if (changed) { await loadAll(); renderAll(); queueBackup(); }
+        }
+        // 3. upload new / edited records (add & edit or full access)
+        if (lvl >= 2) {
+            const ops = [];
+            STORES.forEach(s => mem[s].forEach(r => { if (validDocId(r.id) && cloud.known[s + '/' + r.id] !== r.updatedAt) ops.push([s, r]); }));
+            for (let i = 0; i < ops.length; i += 400) {
+                const b = fdb.batch(); const part = ops.slice(i, i + 400);
+                part.forEach(([s, r]) => b.set(fdb.collection(COLS[s]).doc(r.id), clean(r)));
+                await withTimeout(b.commit(), 20000, 'Cloud save timed out');
+                part.forEach(([s, r]) => { cloud.known[s + '/' + r.id] = r.updatedAt; });
+                saveKnown();
+            }
+        }
+        saveKnown(); noteSynced();
+    } catch (err) {
+        lastError = (err && (err.code || err.message)) || 'error'; console.error('Cloud sync failed', err); saveKnown(); scheduleRetry();
+    }
+}
+// schedule(): run one sync cycle. A pull request that arrives while a cycle is running is kept and runs right after.
+function schedule(opts) {
+    if (!cloudReady) return;
+    if (typeof opts !== 'object' || !opts) opts = { pull: !!opts };
+    if (opts.pull) { if (running) againPull = true; else pullWanted = true; }
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(runCycle, opts.now ? 0 : 500);
+    updateAuthUI();
+}
+async function runCycle() {
+    if (running) { again = true; return; }
+    running = true;
+    try {
+        do {
+            again = false;
+            const p = pullWanted || againPull; pullWanted = false; againPull = false;
+            await runSync(p);
+            if (lastError) break;
+        } while (again || againPull);
+    } finally { running = false; updateAuthUI(); }
+}
+
+/* ----- login popup (Login / Create account / Forgot password) ----- */
+const authEls = {
+    modal: $('authModal'), title: $('authTitle'), form: $('authForm'), email: $('authEmail'),
+    pw: $('authPassword'), pw2: $('authPassword2'), pwRow: $('authPwRow'), pw2Row: $('authPw2Row'),
+    msg: $('authMsg'), submit: $('authSubmit')
+};
+function authMessage(text, ok) {
+    authEls.msg.textContent = text || '';
+    authEls.msg.style.display = text ? 'block' : 'none';
+    authEls.msg.style.background = ok ? '#dcfce7' : '#fee2e2';
+    authEls.msg.style.color = ok ? '#166534' : '#991b1b';
+}
+function setAuthMode(mode) {
+    authMode = mode;
+    const titles = { login: 'Login', create: 'Create Account', forgot: 'Reset Password' };
+    const labels = { login: 'Login', create: 'Create Account', forgot: 'Send Reset Email' };
+    authEls.title.textContent = titles[mode];
+    authEls.submit.textContent = labels[mode];
+    authEls.pwRow.style.display = mode === 'forgot' ? 'none' : '';
+    authEls.pw2Row.style.display = mode === 'create' ? '' : 'none';
+    authEls.pw.setAttribute('autocomplete', mode === 'create' ? 'new-password' : 'current-password');
+    document.querySelectorAll('#authModal .auth-link').forEach(b => { b.style.display = b.dataset.mode === mode ? 'none' : ''; });
+    const tabs = $('authTabs');
+    tabs.dataset.active = (mode === 'login' || mode === 'create') ? mode : 'none';
+    tabs.querySelectorAll('.auth-tab').forEach(t => {
+        const on = t.dataset.mode === mode;
+        t.classList.toggle('active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    const fg = document.querySelector('#authModal .auth-forgot');
+    if (fg) fg.style.display = mode === 'login' ? '' : 'none';
+    resetEyes();
+    authMessage('');
+}
+// show / hide password (eye button)
+function resetEyes() {
+    document.querySelectorAll('#authModal .auth-eye').forEach(b => {
+        b.classList.remove('shown');
+        b.setAttribute('aria-label', 'Show password');
+        const inp = $(b.dataset.target);
+        if (inp) inp.type = 'password';
+    });
+}
+function openAuthModal(mode, afterTab) {
+    if (!auth) { alert('Cloud login is not available (cloud sync is not set up or could not load). Everything works locally.'); return; }
+    if (!netUp()) { alert('You are offline. Saved data is open on this device and new entries can be added. Editing and deleting need internet and login.'); return; }
+    authAfterTab = afterTab || null;
+    setAuthMode(mode || 'login');
+    authEls.pw.value = ''; authEls.pw2.value = '';
+    authEls.modal.style.display = 'flex';
+    setTimeout(() => authEls.email.focus(), 50);
+}
+function closeAuthModal() {
+    // the login page cannot be closed while the page is locked; it closes by itself after a successful login
+    if (document.documentElement.classList.contains('ag-locked')) { authEls.pw.value = ''; authEls.pw2.value = ''; resetEyes(); return; }
+    authEls.modal.style.display = 'none';
+    authEls.pw.value = ''; authEls.pw2.value = '';
+    resetEyes();
+    authAfterTab = null;
+}
+function authErrMsg(e) {
+    const code = (e && e.code) || '';
+    switch (code) {
+        case 'auth/wrong-password':
+        case 'auth/invalid-credential':
+        case 'auth/invalid-login-credentials':
+        case 'auth/user-not-found': return 'Wrong email or password.';
+        case 'auth/email-already-in-use': return 'This email already has an account. Use Login, or Forgot password.';
+        case 'auth/weak-password': return 'Password is too weak. Use at least 6 characters.';
+        case 'auth/network-request-failed': return 'Network error. Check your internet connection and try again.';
+        case 'auth/too-many-requests': return 'Too many attempts. Wait a while, or reset your password.';
+        case 'auth/invalid-email': return 'Invalid email address.';
+        case 'auth/user-disabled': return 'This account has been disabled.';
+        case 'auth/operation-not-allowed': return 'Email/Password sign-in is not enabled on the cloud server. Ask the system owner to enable it.';
+        case 'auth/operation-not-supported-in-this-environment': return 'Login does not work from a file:// page. Open this page over https:// (e.g. a web host) or http://localhost.';
+        default: return (e && e.message) ? e.message : 'Something went wrong. Please try again.';
+    }
+}
+async function doLogin(email, pw) {
+    if (!pw) { authMessage('Enter your password.'); return; }
+    const cred = await auth.signInWithEmailAndPassword(email, pw);
+    if (!cred.user.emailVerified) {
+        try { await cred.user.sendEmailVerification(); } catch (e) { console.warn('verification mail failed', e); }
+        await auth.signOut();
+        authMessage('Email not verified yet. A verification email has been sent again to ' + email + '. Verify it, then log in.');
+        return;
+    }
+    if (!(await loadRole(cred.user))) {
+        await auth.signOut();
+        authMessage('This email is not approved for this system yet. Please contact the system owner.');
+        return;
+    }
+    const tab = authAfterTab;
+    closeAuthModal();
+    enforceAccess();
+    if (tab) switchTab(tab);
+    schedule({ pull: true, now: true });
+    showToast('success', 'Logged in', email);
+}
+async function doCreate(email, pw, pw2) {
+    if (pw.length < 6) { authMessage('Password must be at least 6 characters.'); return; }
+    if (pw !== pw2) { authMessage('Passwords do not match.'); return; }
+    const cred = await auth.createUserWithEmailAndPassword(email, pw);
+    let mailErr = null;
+    try { await cred.user.sendEmailVerification(); } catch (e) { mailErr = e; }
+    await auth.signOut();
+    setAuthMode('login');
+    authEls.pw.value = ''; authEls.pw2.value = '';
+    authMessage(mailErr
+        ? 'Account created, but the verification email could not be sent. Try to log in: it will be sent again.'
+        : 'Account created. A verification email was sent to ' + email + '. Verify it, then log in. Access is given only if the system owner has approved this email.', !mailErr);
+}
+async function doForgot(email) {
+    await auth.sendPasswordResetEmail(email);
+    authMessage('Password reset email sent to ' + email + '.', true);
+}
+authEls.form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (authBusy) return;
+    const email = authEls.email.value.trim().toLowerCase();
+    if (!email) { authMessage('Enter your email.'); return; }
+    if (!navigator.onLine) { authMessage('You are offline. Network error.'); return; }
+    if (authMode === 'login' && Date.now() < gateLockUntil) { authMessage('Too many failed attempts. Try again in ' + Math.ceil((gateLockUntil - Date.now()) / 1000) + ' seconds.'); return; }
+    authBusy = true; authEls.submit.disabled = true; authMessage('');
+    try {
+        if (authMode === 'login') await doLogin(email, authEls.pw.value);
+        else if (authMode === 'create') await doCreate(email, authEls.pw.value, authEls.pw2.value);
+        else await doForgot(email);
+    } catch (err) {
+        if (authMode === 'login' && /invalid-credential|wrong-password|user-not-found|invalid-login-credentials/.test((err && err.code) || '')) { if (++gateFails >= 5) { gateFails = 0; gateLockUntil = Date.now() + 30000; } }
+        authMessage(authErrMsg(err));
+    } finally {
+        authBusy = false; authEls.submit.disabled = false;
+    }
+});
+document.querySelectorAll('#authModal .auth-link, #authModal .auth-tab, #authModal .auth-forgot').forEach(b => {
+    b.addEventListener('click', () => setAuthMode(b.dataset.mode));
+});
+document.querySelectorAll('#authModal .auth-eye').forEach(b => {
+    b.addEventListener('click', () => {
+        const inp = $(b.dataset.target);
+        const show = inp.type === 'password';
+        inp.type = show ? 'text' : 'password';
+        b.classList.toggle('shown', show);
+        b.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+        inp.focus();
+    });
+});
+$('authCloseBtn').addEventListener('click', closeAuthModal);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && authEls.modal.style.display === 'flex') closeAuthModal(); });
+$('authBtn').addEventListener('click', async () => {
+    if (auth && auth.currentUser) {
+        try { await auth.signOut(); } catch (e) { alert('Logout failed: ' + e.message); return; }
+        enforceAccess();
+        showToast('success', 'Logged out', 'Stock data is locked again.');
+    } else {
+        openAuthModal('login', null);
+    }
+});
+
+    function showToast(type, title, message) {
+        if (!document.getElementById('toastStyle')) {
+            const st = document.createElement('style');
+            st.id = 'toastStyle';
+            st.textContent = `
+                #toastWrap { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); z-index: 99999; display: flex; flex-direction: column; gap: 10px; width: min(420px, 92vw); pointer-events: none; }
+                .toast { pointer-events: auto; position: relative; overflow: hidden; display: flex; align-items: flex-start; gap: 12px; background: #fff; border-radius: 10px; padding: 14px 16px 16px; box-shadow: 0 10px 30px rgba(15,23,42,.22), 0 2px 6px rgba(15,23,42,.10); border-left: 5px solid var(--tc); font-family: 'Segoe UI', Tahoma, Arial, sans-serif; transform: translateY(-140%); opacity: 0; transition: transform .45s cubic-bezier(.2,.9,.3,1.2), opacity .35s ease; }
+                .toast.show { transform: translateY(0); opacity: 1; }
+                .toast.hide { transform: translateY(-140%); opacity: 0; }
+                .toast-icon { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%; background: var(--tc); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; }
+                .toast-body { flex: 1; min-width: 0; }
+                .toast-title { font-size: 14.5px; font-weight: 700; color: #0f172a; margin: 0 0 2px; }
+                .toast-msg { font-size: 13px; color: #475569; margin: 0; word-break: break-word; }
+                .toast-close { flex: 0 0 auto; background: none; border: none; color: #94a3b8; font-size: 20px; line-height: 1; cursor: pointer; padding: 0 2px; }
+                .toast-close:hover { color: #0f172a; }
+                .toast-bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--tc); opacity: .55; transform-origin: left; animation: toastBar 3.6s linear forwards; }
+                @keyframes toastBar { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+                @media print { #toastWrap { display: none !important; } }
+            `;
+            document.head.appendChild(st);
+        }
+        let wrap = document.getElementById('toastWrap');
+        if (!wrap) {
+            wrap = document.createElement('div');
+            wrap.id = 'toastWrap';
+            document.body.appendChild(wrap);
+        }
+
+        const kinds = {
+            success: { color: '#16a34a', icon: '✓' },
+            edit:    { color: '#0284c7', icon: '✎' },
+            warn:    { color: '#d97706', icon: '!' },
+            delete:  { color: '#dc2626', icon: '🗑' }
+        };
+        const k = kinds[type] || kinds.success;
+
+        const el = document.createElement('div');
+        el.className = 'toast';
+        el.style.setProperty('--tc', k.color);
+        el.innerHTML = `
+            <div class="toast-icon">${k.icon}</div>
+            <div class="toast-body"><p class="toast-title"></p><p class="toast-msg"></p></div>
+            <button type="button" class="toast-close" aria-label="Close">&times;</button>
+            <div class="toast-bar"></div>`;
+        el.querySelector('.toast-title').textContent = title;
+        el.querySelector('.toast-msg').textContent = message || '';
+
+        const close = () => { el.classList.remove('show'); el.classList.add('hide'); setTimeout(() => el.remove(), 450); };
+        el.querySelector('.toast-close').addEventListener('click', close);
+        wrap.appendChild(el);
+        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+        setTimeout(close, 3600);
+    }
+
+
+/* ---------- start ---------- */
+(async function init() {
+    try { db = await openDB(); } catch (e) { alert('Failed to open local database storage.'); return; }
+    await loadAll();
+    if (!getDeptRec()) {
+        const seed = { id: 'departments', list: DEFAULT_DEPTS.map(d => Object.assign({}, d)), createdAt: 1, updatedAt: 1 };
+        await idbPutMany('meta', [seed]); mem.meta.push(seed);
+    }
+    $('mvDate').value = todayISO();
+    addMvRow(); setMvType('OUT');
+    renderAll();
+    { const x = location.hash.replace('#', ''); switchTab(TAB_IDS.indexOf(x) !== -1 ? x : 'stockTab', { noHash: true, keepScroll: true }); }
+    initFileSync();
+    initCloud();
+})();
+</script>
+
+<script>
+/* ===== Data Safety Center: live health (button + banner) =====
+   Reads data-state of the 3 status tiles and keeps the toolbar button and the page banner in sync. */
+(function () {
+  var TILES = [
+    { id: 'netTile',   name: 'Internet' },
+    { id: 'syncBar',   name: 'Backup file' },
+    { id: 'cloudTile', name: 'Cloud sync' }
+  ];
+  // state -> [level, message]. Any state not listed (checking, starting …) counts as "waiting".
+  var ISSUE = {
+    netTile:   { offline: ['warn', 'Internet is offline — working from this device'] },
+    syncBar:   { paused: ['warn', 'Backup file paused — open the page and reconnect'],
+                 off: ['bad', 'Backup file is not linked'],
+                 error: ['bad', 'Backup file write failed — retrying'],
+                 unsupported: ['warn', 'Backup file needs desktop Chrome / Edge'] },
+    cloudTile: { local: ['bad', 'Cloud is not connected'],
+                 error: ['bad', 'Cloud sync problem — retrying'],
+                 pending: ['warn', 'Cloud sync is waiting'] }
+  };
+  var GOOD = { netTile: ['online'], syncBar: ['on'], cloudTile: ['synced'] };
+  var el = function (id) { return document.getElementById(id); };
+  var raf = null, lastHealth = '';
+
+  // the app uses state "local" for both "cloud still starting" and "cloud not connected"
+  function isStarting(id, st) {
+    return id === 'cloudTile' && st === 'local' && /^Starting/i.test((el('cloudValue') || {}).textContent || '');
+  }
+
+  function compute() {
+    var issues = [], waiting = 0;
+    TILES.forEach(function (t) {
+      var n = el(t.id); if (!n) return;
+      var st = n.dataset.state || '';
+      if (GOOD[t.id].indexOf(st) !== -1) return;
+      var m = isStarting(t.id, st) ? null : ISSUE[t.id][st];
+      if (m) issues.push({ level: m[0], text: m[1] }); else waiting++;
+    });
+    var health = 'good';
+    if (waiting && !issues.length) health = 'checking';
+    if (issues.some(function (i) { return i.level === 'warn'; })) health = 'warn';
+    if (issues.some(function (i) { return i.level === 'bad'; })) health = 'bad';
+    return { health: health, issues: issues };
+  }
+
+  function render() {
+    raf = null;
+    var r = compute();
+    var btn = el('safetyBtn'), sub = el('safetyBtnSub'), ban = el('safetyBanner');
+    var title, text, brief;
+    if (r.health === 'good') {
+      title = 'All systems protected';
+      text = 'Internet, backup file and cloud sync are working. Every save is written to this device, your backup file and the cloud.';
+      brief = 'All protected';
+    } else if (r.health === 'checking') {
+      title = 'Checking system status…'; text = 'Please wait a moment.'; brief = 'Checking…';
+    } else {
+      title = r.health === 'bad' ? 'Action needed' : 'Please check';
+      text = r.issues.map(function (i) { return i.text; }).join(' · ');
+      brief = r.issues[0].text + (r.issues.length > 1 ? ' (+' + (r.issues.length - 1) + ')' : '');
+    }
+    if (btn) {
+      btn.dataset.health = r.health;
+      btn.title = title + (r.health === 'good' || r.health === 'checking' ? '' : ' — ' + text);
+      btn.setAttribute('aria-label', 'Open Data Safety Center. ' + title);
+    }
+    if (sub) sub.textContent = brief;
+    if (ban) { ban.dataset.health = r.health; el('safetyBannerTitle').textContent = title; el('safetyBannerSub').textContent = text; }
+    var tm = el('safetyBannerTime');
+    if (tm) tm.textContent = 'Updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    // one toast only when everything was fine and now something needs action (never at page load)
+    if (lastHealth === 'good' && r.health === 'bad' && window.showToast) {
+      try { showToast('warn', 'Data Safety: action needed', text); } catch (e) {}
+    }
+    lastHealth = r.health;
+  }
+  function schedule() { if (!raf) raf = requestAnimationFrame(render); }
+  window.onSafetyRefresh = schedule;
+
+  function start() {
+    // watch ONLY the status grid; banner and button are outside it, so there is no feedback loop
+    var grid = document.querySelector('#pageSafety .status-grid');
+    if (grid && window.MutationObserver) {
+      new MutationObserver(schedule).observe(grid, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['data-state'] });
+    }
+    setInterval(schedule, 30000);
+    render();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
+
+</body>
+</html>
